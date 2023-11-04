@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View, PanResponder, Animated } from 'react-native';
 import BackButton from '../components/BackButton';
 import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
@@ -24,11 +24,14 @@ const LobbyScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}>
+			style={{ height: '100%', width: '100%' }}
+		>
 			<View style={styles.container}>
 				<BackButton></BackButton>
-				<Text style={[styles.codeTitle, { textAlign: 'center' }]}>Room Code</Text>
-				<Text style={styles.code}>{context.room}</Text>
+				<View>
+					<Text style={[styles.codeTitle, { textAlign: 'center' }]}>Room Code</Text>
+					<Text style={styles.code}>{context.room}</Text>
+				</View>
 				<View style={styles.col}>
 					<Text style={styles.title}>Song</Text>
 					<SongSelector modalVisible={songSelectorVisible} setModalVisible={setSongSelectorVisible}></SongSelector>
@@ -57,26 +60,25 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	title: {
 		fontSize: 25,
-		fontFamily: 'Neulis500'
+		fontFamily: 'Neulis500',
 	},
 	codeTitle: {
 		fontSize: 25,
-		fontFamily: 'Neulis500'
+		fontFamily: 'Neulis500',
 	},
 	code: {
-		fontSize: 300,
+		fontSize: 30,
 		textAlign: 'center',
-		fontFamily: 'Neulis700'
+		fontFamily: 'Neulis700',
 	},
 	col: {
 		display: 'flex',
-		gap: 10
-	}
+		gap: 10,
+	},
 });
 
 export default LobbyScreen;
-
