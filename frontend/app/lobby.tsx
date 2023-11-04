@@ -1,16 +1,18 @@
+import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View, PanResponder, Animated } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/BackButton';
 import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { IPlayer } from '../interfaces/IPlayer';
 import { AppContext } from '../lib/Context';
-import { InitRoomDTO, useWSMessage } from '../lib/ws';
+import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, RemoveContestantDTO, SetSongDTO, useWSMessage } from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
-	const [players, setPlayers] = useState<IPlayer[]>([]);
+	const router = useRouter();
+	const [players, setPlayers] = useState<IPlayer[]>([]); // TODO: consider moving this up to context if not persisted across route changes
 	const [contestants, setContestants] = useState<IPlayer[]>([]);
 	const [host, setHost] = useState<IPlayer>();
 
@@ -20,12 +22,27 @@ const LobbyScreen = () => {
 		setHost(msg.room.host);
 	});
 
+	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
+		router.push('/');
+	});
+
+	useWSMessage<AddContestantDTO>('ADD_CONTESTANT', ({ id }) => {
+		setContestants((contestants) => [...contestants, players.find((p) => p.id === id)!]);
+	});
+
+	useWSMessage<RemoveContestantDTO>('REMOVE_CONTESTANT', ({ id }) => {
+		setContestants((contestants) => contestants.filter((p) => p.id !== id));
+	});
+
+	useWSMessage<SetSongDTO>('SET_SONG', ({ name }) => {
+		// TODO: set song to name, idk how lol
+	});
+
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<View>
@@ -60,25 +77,26 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white',
+		backgroundColor: 'white'
 	},
 	title: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	codeTitle: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
-		fontFamily: 'Neulis700',
+		fontFamily: 'Neulis700'
 	},
 	col: {
 		display: 'flex',
-		gap: 10,
-	},
+		gap: 10
+	}
 });
 
 export default LobbyScreen;
+

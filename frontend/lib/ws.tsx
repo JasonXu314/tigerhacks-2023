@@ -74,6 +74,21 @@ export interface InitRoomDTO {
 	room: ISession;
 }
 
+export interface AddContestantDTO {
+	type: 'ADD_CONTESTANT';
+	id: number;
+}
+
+export interface RemoveContestantDTO {
+	type: 'REMOVE_CONTESTANT';
+	id: number;
+}
+
+export interface SetSongDTO {
+	type: 'SET_SONG';
+	name: string;
+}
+
 export interface ClientErrorDTO {
 	type: 'CLIENT_ERROR';
 }
