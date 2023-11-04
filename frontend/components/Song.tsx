@@ -21,22 +21,22 @@ const Song = ({ song, nonClickable, setModalVisible }: IProps) => {
 				</View>
 			</View>
 		);
-    }
-    return (
-        <TouchableOpacity
-            style={styles.songContainer}
-            onPress={() => {
-                context.setSong(song);
-                setModalVisible(false);
-            }}
-        >
-            <Image source={song.img} style={styles.icon}></Image>
-            <View style={styles.songInfo}>
-                <Text style={styles.songName}>{song.name}</Text>
-                <Text style={styles.songArtist}>{song.artist}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+	}
+	return (
+		<TouchableOpacity
+			style={styles.songContainer}
+			onPress={() => {
+				context.setSong(song);
+				setModalVisible(false);
+			}}
+		>
+			<Image source={song.img} style={styles.icon}></Image>
+			<View style={styles.songInfo}>
+				<Text style={styles.songName}>{song.name}</Text>
+				<Text style={styles.songArtist}>{song.artist}</Text>
+			</View>
+		</TouchableOpacity>
+	);
 };
 
 const styles = StyleSheet.create({

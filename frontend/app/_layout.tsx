@@ -7,6 +7,7 @@ import React from 'react';
 import { AppContext } from '../lib/Context';
 import { ISong } from '../interfaces/ISong';
 import Images from '../lib/Images';
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -54,8 +55,49 @@ function RootLayoutNav() {
 		img: Images.duaLipa,
 		track: 'pathtotrack',
 	});
+	const [room, setRoom] = useState('');
+	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
+
+	async function playSound() {
+		await Audio.setAudioModeAsync({
+			allowsRecordingIOS: false,
+			staysActiveInBackground: true,
+			interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+			playsInSilentModeIOS: true,
+			shouldDuckAndroid: true,
+			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+			playThroughEarpieceAndroid: false,
+		});
+		const { sound } = await Audio.Sound.createAsync(require('../assets/music/bgmusic.mp3'));
+		sound.setIsLoopingAsync(true);
+
+		setBgMusic(sound);
+
+		await sound.playAsync();
+	}
+
+	useEffect(() => {
+		return bgMusic
+			? () => {
+                bgMusic.unloadAsync();
+			  }
+			: undefined;
+	}, [bgMusic]);
+
+	useEffect(() => {
+		playSound();
+	}, []);
+
+    const startBgMusic = async() => {
+        await bgMusic.playAsync()
+    }
+
+    const stopBgMusic = async() => {
+        await bgMusic.stopAsync()
+    }
+
 	return (
-		<AppContext.Provider value={{ song, setSong }}>
+		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic }}>
 			<Stack>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
 				<Stack.Screen name="createroom" options={{ headerShown: false }} />

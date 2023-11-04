@@ -13,10 +13,19 @@ const BackButton = () => {
 					router.back();
 				}
 			}}
+            style={styles.container}
 		>
 			<AntDesign name="leftcircleo" size={40} color="#210461" />
 		</TouchableOpacity>
 	);
 };
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+		top: 20,
+		left: 25,
+    }
+})
 
 export default BackButton;

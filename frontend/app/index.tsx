@@ -10,7 +10,7 @@ const HomeScreen = () => {
 	const createRoom = () => {
 		api.post('/rooms')
 			.then((resp) => {
-				console.log(resp.data);
+				console.log(resp.data.id);
 			})
 			.catch((err) => {
 				console.log(err);
