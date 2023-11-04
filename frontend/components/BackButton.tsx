@@ -15,7 +15,7 @@ const BackButton = () => {
 			}}
 			style={styles.container}
 		>
-			<AntDesign name="leftcircleo" size={40} color="#210461" />
+			<AntDesign name="leftcircleo" size={30} color="#210461" />
 		</TouchableOpacity>
 	);
 };
