@@ -1,15 +1,18 @@
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useRouter } from 'expo-router';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, Text } from 'react-native';
 import { AppContext } from '../lib/Context';
 import { Avatars } from '../lib/Images';
+import { LyricsData } from '../data/LyricsData';
 
 const GameScreen = () => {
 	const router = useRouter();
 	const context = useContext(AppContext);
 	const [song, setSong] = useState<Audio.Sound>(new Audio.Sound());
 	const [recording, setRecording] = useState<Audio.Recording>(new Audio.Recording());
+    const [stopSong, setStopSong] = useState(false);
+    const [words, setWords] = useState<string[]>([]);
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -58,12 +61,21 @@ const GameScreen = () => {
 	}
 
 	const startTicker = useCallback(() => {
+        const lines = LyricsData[context.song.name].lines.reverse();
 		let startTime = performance.now(),
 			timeout: NodeJS.Timeout;
 		const tick = () => {
 			const delta = performance.now() - startTime;
+            // calculate speed of moving color by subtracting next time from current time and dividing by width?
+            if (delta === 7030) {
+                console.log('a')
+            }
 
-			// do something with delta
+            const line = lines.find((line) => parseInt(line.startTimeMs) < delta);
+            
+            if (line && !words.includes(line.startTimeMs)) {
+                setWords([...words, line.words]);
+            }
 
 			timeout = setTimeout(tick, 10);
 		};
@@ -78,6 +90,7 @@ const GameScreen = () => {
 			context.stopBgMusic();
 		}
 		playSound();
+        let stopTicker = startTicker();
 		// startRecording();
 	}, []);
 
@@ -95,6 +108,7 @@ const GameScreen = () => {
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
+                <Text>{words}</Text>
 				<Image source={Avatars['bee']} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
 			</View>

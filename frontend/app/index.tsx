@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	btn: {
-		marginTop: 20,
+		marginTop: 10,
 		backgroundColor: '#C2E812',
 		paddingVertical: 12,
 		width: 200,
