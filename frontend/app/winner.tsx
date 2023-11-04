@@ -7,7 +7,7 @@ const WinnerScreen = () => {
 
 	return (
 		<ImageBackground
-			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
+			source={require('../assets/images/BackgroundPic/WinnerBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%' }}
 		>
@@ -22,6 +22,9 @@ const WinnerScreen = () => {
 
 					<TouchableOpacity style={styles.btn} onPress={() => router.push('createroom')}>
 						<Text style={styles.btnText}>Rematch</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('voting')}>
+						<Text style={styles.btnText}>BTNVoting</Text>
 					</TouchableOpacity>
 				</View>
 			</SafeAreaView>
