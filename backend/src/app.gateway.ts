@@ -4,7 +4,7 @@ import { Player, Room } from '@prisma/client';
 import { randomBytes } from 'crypto';
 import { WebSocket } from 'ws';
 import { AppService } from './app.service';
-import { AddContestantDTO, ClaimCodeDTO, ClientErrorDTO, InitRosterDTO, RemoveContestantDTO } from './dtos';
+import { AddContestantDTO, ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, RemoveContestantDTO } from './dtos';
 
 interface PlayerData extends Player {
 	socket: WebSocket;
@@ -78,13 +78,14 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('CLAIM')
-	public async claimCode(@MessageBody() { otp }: ClaimCodeDTO, @ConnectedSocket() client: WebSocket): Promise<InitRosterDTO | ClientErrorDTO> {
+	public async claimCode(@MessageBody() { otp }: ClaimCodeDTO, @ConnectedSocket() client: WebSocket): Promise<ClaimAcknowledgeDTO | ClientErrorDTO> {
 		for (const room of this.rooms) {
 			if (room.claims.has(otp)) {
 				const claim = room.claims.get(otp)!;
 
 				claim(client);
-				return { type: 'INIT_ROSTER', players: room.players.map(this._pruneSocket) };
+				setImmediate(() => client.send(JSON.stringify({ type: 'INIT_ROSTER', players: room.players.map(this._pruneSocket) })));
+				return { type: 'CLAIM_ACK' };
 			}
 		}
 

@@ -4,7 +4,7 @@ import { fi } from './utils/utils';
 
 export class JoinRoomDTO {
 	@IsString()
-	@Length(1, 16)
+	@Length(1, 12)
 	name: string = fi();
 }
 
@@ -25,6 +25,10 @@ export class AddContestantDTO {
 export class RemoveContestantDTO {
 	@IsNumber()
 	id: number = fi();
+}
+
+export interface ClaimAcknowledgeDTO {
+	type: 'CLAIM_ACK';
 }
 
 export interface InitRosterDTO {
