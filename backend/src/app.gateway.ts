@@ -4,7 +4,7 @@ import { Player, Room } from '@prisma/client';
 import { randomBytes } from 'crypto';
 import { WebSocket } from 'ws';
 import { AppService } from './app.service';
-import { AddContestantDTO, ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, RemoveContestantDTO } from './dtos';
+import { AddContestantDTO, ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, RemoveContestantDTO, SetSongDTO } from './dtos';
 
 interface PlayerData extends Player {
 	socket: WebSocket;
@@ -166,11 +166,31 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 		if (room.contestants[0]?.id === id) {
 			room.contestants[0] = null;
+			room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'REMOVE_CONTESTANT', id })));
 		} else if (room.contestants[1]?.id === id) {
 			room.contestants[1] = null;
+			room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'REMOVE_CONTESTANT', id })));
 		} else {
 			return { type: 'CLIENT_ERROR' };
 		}
+	}
+
+	@SubscribeMessage('SET_SONG')
+	public async setSong(@MessageBody() { name }: SetSongDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+		const data = this._resolve(client);
+
+		if (!data) {
+			client.close();
+			return { type: 'CLIENT_ERROR' };
+		}
+
+		const { player, room } = data;
+
+		if (player !== room.host) {
+			return { type: 'CLIENT_ERROR' };
+		}
+
+		room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'SET_SONG', name })));
 	}
 
 	private _pruneSocket<T extends Record<string, any>>(obj: T): { [K in keyof T]: T[K] extends WebSocket ? never : T[K] } {

@@ -26,6 +26,11 @@ export class RemoveContestantDTO {
 	id: number = fi();
 }
 
+export class SetSongDTO {
+	@IsString()
+	name: string = fi();
+}
+
 export interface ClaimAcknowledgeDTO {
 	type: 'CLAIM_ACK';
 }
