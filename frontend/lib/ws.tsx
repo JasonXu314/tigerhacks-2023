@@ -104,6 +104,11 @@ export interface JoinDTO {
 	player: IPlayer;
 }
 
+export interface VotingEndDTO {
+	type: 'VOTING_END';
+	result: 'TIED' | { winner: number; votes: number };
+}
+
 export function useWS(): WSOperations {
 	const { socket, setSocket } = useContext(WSContext);
 	const meta = useRef<WSMetadata>({ cleanup: null });

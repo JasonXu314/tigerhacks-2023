@@ -5,15 +5,23 @@ import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppContext } from '../lib/Context';
 import { useGame } from '../lib/game-data';
-import { useWS } from '../lib/ws';
+import { VotingEndDTO, useWS, useWSMessage } from '../lib/ws';
 import api from '../services/AxiosConfig';
 
 const VotingScreen = () => {
 	const router = useRouter();
 	const context = useContext(AppContext);
 	const { send } = useWS();
-	const { data } = useGame();
+	const { data, setResults, incrementScore } = useGame();
 	const contestants = useMemo(() => data!.contestants, [data]);
+
+	useWSMessage<VotingEndDTO>('VOTING_END', ({ result }) => {
+		setResults(result);
+		if (result !== 'TIED') {
+			incrementScore(result.winner);
+		}
+		router.push('/winner');
+	});
 
 	useEffect(() => {
 		let playerid = ''; // TODO: replace with actual id

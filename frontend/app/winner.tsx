@@ -1,16 +1,19 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useMemo } from 'react';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useGame } from '../lib/game-data';
 
 const WinnerScreen = () => {
 	const router = useRouter();
+	const { data } = useGame();
+	const results = useMemo(() => data!.results, [data]);
 
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/WinnerBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.box}>
 					<Text style={styles.p}>Winner of this match is..</Text>
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 20,
+		padding: 20
 	},
 	box: {
 		height: 550,
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 30,
 		display: 'flex',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	p: {
 		color: '#210461',
@@ -53,14 +56,14 @@ const styles = StyleSheet.create({
 		fontSize: 25,
 		paddingHorizontal: 30,
 		textAlign: 'center',
-		paddingTop: 20,
+		paddingTop: 20
 	},
 	pWinner: {
 		textDecorationLine: 'underline',
 		color: '#210461',
 		fontFamily: 'Neulis700',
 		fontSize: 25,
-		paddingTop: 20,
+		paddingTop: 20
 	},
 	pLoser: {
 		color: '#210461',
@@ -68,12 +71,12 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		paddingTop: 20,
 		textAlign: 'center',
-		paddingHorizontal: 20,
+		paddingHorizontal: 20
 	},
 	emoji: {
 		marginTop: 20,
 		height: 140,
-		width: 140,
+		width: 140
 	},
 	btn: {
 		backgroundColor: '#C2E812',
@@ -81,14 +84,15 @@ const styles = StyleSheet.create({
 		width: 200,
 		borderRadius: 30,
 		marginLeft: 20,
-		marginTop: 30,
+		marginTop: 30
 	},
 	btnText: {
 		fontFamily: 'Neulis500',
 		color: '#210461',
 		fontSize: 18,
-		textAlign: 'center',
-	},
+		textAlign: 'center'
+	}
 });
 
 export default WinnerScreen;
+
