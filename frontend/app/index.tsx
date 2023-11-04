@@ -11,17 +11,6 @@ const HomeScreen = () => {
 	const router = useRouter();
 	const context = useContext(AppContext);
 
-	const createRoom = () => {
-		api.post('/rooms')
-			.then((resp) => {
-				console.log(resp.data.id);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-		router.push('createroom');
-	};
-
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/HeroPageNoMic.png')}
@@ -38,10 +27,10 @@ const HomeScreen = () => {
 				<Text style={styles.title}>Song Wars</Text>
 				<Text style={styles.p}>Compete with your friends on exciting karaoke arena! Create lobbies, vote and have fun!</Text>
 				<View style={styles.btnBox}>
-					<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('/createroom')}>
 						<Text style={styles.btnText}>Create Room</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.btn} onPress={() => router.push('joinroom')}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('/joinroom')}>
 						<Text style={styles.btnText}>Join Room</Text>
 					</TouchableOpacity>
 				</View>
