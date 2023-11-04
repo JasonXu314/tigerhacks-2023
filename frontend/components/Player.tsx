@@ -1,85 +1,41 @@
 import { View, StyleSheet, Image, Text, TouchableOpacity, PanResponder, Animated } from 'react-native';
 import { Avatars } from '../lib/Images';
 import { useRef, useState } from 'react';
+import { IPlayer } from '../interfaces/IPlayer';
 
 interface IProps {
 	name: string;
 	avatar: string;
+	players: IPlayer[];
+	spectators: IPlayer[];
+	setPlayers: React.Dispatch<React.SetStateAction<IPlayer[]>>;
+	setSpectators: React.Dispatch<React.SetStateAction<IPlayer[]>>;
 }
 
-const Player = ({ name, avatar }: IProps) => {
-	const position = useRef(new Animated.ValueXY()).current;
-	const [pan, setPan] = useState(new Animated.ValueXY());
-	const [dragging, setDragging] = useState(false);
-
-	let val = { x: 0, y: 0 };
-	pan.addListener((value) => (val = value));
-
-    const isDropArea = () => {
-        
-    }
-
-	const panResponder = useRef(
-		PanResponder.create({
-			onStartShouldSetPanResponder: () => true,
-			onMoveShouldSetPanResponder: () => true,
-			onPanResponderGrant: () => {
-				setDragging(true);
-				let temp = pan;
-				temp.setOffset({
-					x: val.x,
-					y: val.y,
-				});
-				temp.setValue({
-					x: 0,
-					y: 0,
-				});
-				setPan(pan);
-			},
-			onPanResponderMove: Animated.event(
-				[
-					null,
-					{
-						dx: pan.x,
-						dy: pan.y,
-					},
-				],
-				{ useNativeDriver: false }
-			),
-			onPanResponderRelease: (e, gesture) => {
-				setDragging(false);
-				Animated.spring(pan, {
-					toValue: { x: 0, y: 0 },
-					friction: 5,
-					useNativeDriver: false,
-				}).start();
-			},
-		})
-	).current;
-
-	const panStyle = {
-		transform: pan.getTranslateTransform(),
+// TODO: Reflect change in backend
+const Player = ({ name, avatar, players, spectators, setPlayers, setSpectators }: IProps) => {
+	const swapSides = () => {
+		const player = players.find((user) => user.name === name);
+		if (player) {
+			// they're playing
+			setSpectators([...spectators, player]);
+			setPlayers((players) => players.filter((user) => user != player));
+		} else {
+			// they're spectating
+            if (players.length >= 4) {
+                return;
+            }
+			const player = spectators.find((user) => user.name === name);
+			setPlayers([...players, player!]);
+			setSpectators((players) => players.filter((user) => user != player));
+		}
 	};
 
 	return (
-		<Animated.View
-			style={[
-				styles.container,
-				panStyle,
-				{
-					transform: pan.getTranslateTransform(),
-					opacity: dragging ? 0.8 : 1,
-				},
-			]}
-			{...panResponder.panHandlers}
-		>
+		<TouchableOpacity style={styles.container} onPress={() => swapSides()}>
 			<Image source={Avatars[avatar]} style={styles.avatar}></Image>
 			<Text style={styles.name}>{name}</Text>
-		</Animated.View>
-		// <View style={styles.container}>
-		// 	<Image source={Avatars[avatar]} style={styles.avatar}></Image>
-		// 	<Text style={styles.name}>{name}</Text>
-		// </View>
+		</TouchableOpacity>
 	);
 };
 
