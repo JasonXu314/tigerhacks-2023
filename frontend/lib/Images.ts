@@ -1,7 +1,11 @@
 import { ImageProps } from 'react-native-elements';
 
 export const Images = {
-	duaLipa: require('../assets/images/icon.png'),
+	DuaLipa: require('../assets/images/songCovers/DuaLipa.png'),
+	Britney: require('../assets/images/songCovers/Britney.png'),
+	CelineDion: require('../assets/images/songCovers/CelineDion.jpeg'),
+	Cranberries: require('../assets/images/songCovers/Cranberries.jpeg'),
+	Weeknd: require('../assets/images/songCovers/Weeknd.png'),
 };
 
 export const Avatars: { [string: string]: ImageProps } = {

@@ -15,7 +15,6 @@ const WinnerScreen = () => {
 				<View style={styles.box}>
 					<Text style={styles.p}>Winner of this match is..</Text>
 					<Image source={require('../assets/images/Emoji.png')} style={styles.emoji}></Image>
-
 					<Text style={styles.pWinner}>Player1!</Text>
 					<Text style={styles.p}>Votes: 0</Text>
 					<Text style={styles.pLoser}>But don't get upset, Player2, you had 0 votes!</Text>
