@@ -20,7 +20,7 @@ const JoinRoomScreen = () => {
 					<Text style={styles.text}>Room Code</Text>
 					<TextInput style={styles.input} />
 
-					<TouchableOpacity style={styles.btn} onPress={() => router.push('winner')}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('voting')}>
 						<Text style={styles.btnText}>Join Room</Text>
 					</TouchableOpacity>
 				</View>

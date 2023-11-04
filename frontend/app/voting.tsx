@@ -16,11 +16,15 @@ const VotingScreen = () => {
 				<View style={styles.playerOne}>
 					<Image source={require('../assets/images/profile-pic/bee.png')} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<AntDesign name="playcircleo" size={24} color="#210461" style={styles.icon} />
+						<TouchableOpacity style={styles.playBtn}>
+							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
+						</TouchableOpacity>
 						<Text style={styles.songName}>Jason - Super Shy</Text>
 					</View>
 					<TouchableOpacity style={styles.btn}>
-						<Text style={styles.btnText}>Vote</Text>
+						<Text style={styles.btnText} onPress={() => router.push('winner')}>
+							Vote
+						</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.between}>
@@ -31,10 +35,12 @@ const VotingScreen = () => {
 				<View style={styles.playerTwo}>
 					<Image source={require('../assets/images/profile-pic/unicorn.png')} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<AntDesign name="playcircleo" size={24} color="#210461" style={styles.icon} />
+						<TouchableOpacity style={styles.playBtn}>
+							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
+						</TouchableOpacity>
 						<Text style={styles.songName}>Jason - Super Shy</Text>
 					</View>
-					<TouchableOpacity style={styles.btn}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('winner')}>
 						<Text style={styles.btnText}>Vote</Text>
 					</TouchableOpacity>
 				</View>
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
 		width: 145,
 		borderRadius: 30,
 		marginLeft: 20,
-		marginTop: 10,
+		marginTop: 3,
 	},
 	btnText: {
 		fontFamily: 'Neulis700',
@@ -96,14 +102,25 @@ const styles = StyleSheet.create({
 	},
 	icon: {},
 	pfp: {
+		marginTop: 10,
 		height: 100,
 		width: 100,
+		borderColor: '#C2E812',
+		borderWidth: 3,
+		borderRadius: 50,
 	},
 	audio: {
 		display: 'flex',
 		flexDirection: 'row',
-		justifyContent: 'space-around',
 		alignItems: 'center',
+		gap: 20,
+		paddingVertical: 23,
+	},
+	songName: {
+		fontFamily: 'Neulis500',
+		color: '#210461',
+		fontSize: 25,
+		textAlign: 'center',
 	},
 });
 
