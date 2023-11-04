@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
+import { IPlayer } from '../interfaces/IPlayer';
 import { ISession } from '../interfaces/ISession';
 
 interface WSCtx {
@@ -91,6 +92,15 @@ export interface SetSongDTO {
 
 export interface ClientErrorDTO {
 	type: 'CLIENT_ERROR';
+}
+
+export interface StartGameDTO {
+	type: 'START_GAME';
+}
+
+export interface JoinDTO {
+	type: 'JOIN';
+	player: IPlayer;
 }
 
 export function useWS(): WSOperations {

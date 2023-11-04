@@ -3,4 +3,6 @@ export interface IPlayer {
 	name: string;
 	roomId: string;
 	score: number;
+	avatar: string;
 }
+

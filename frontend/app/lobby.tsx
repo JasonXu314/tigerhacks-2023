@@ -6,7 +6,7 @@ import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { IPlayer } from '../interfaces/IPlayer';
 import { AppContext } from '../lib/Context';
-import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, RemoveContestantDTO, SetSongDTO, useWSMessage } from '../lib/ws';
+import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWSMessage } from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
@@ -23,6 +23,7 @@ const LobbyScreen = () => {
 	});
 
 	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
+		console.error('WS Client error');
 		router.push('/');
 	});
 
@@ -36,6 +37,15 @@ const LobbyScreen = () => {
 
 	useWSMessage<SetSongDTO>('SET_SONG', ({ name }) => {
 		// TODO: set song to name, idk how lol
+	});
+
+	useWSMessage<JoinDTO>('JOIN', ({ player }) => {
+		setPlayers((players) => [...players, player]);
+	});
+
+	useWSMessage<StartGameDTO>('START_GAME', () => {
+		router.push('/game');
+		// whatever else needs to be done here?
 	});
 
 	return (
