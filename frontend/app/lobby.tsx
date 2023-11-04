@@ -1,21 +1,26 @@
-import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useContext, useState } from 'react';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/BackButton';
-import SongSelector from '../components/SongSelector';
-import { useState, useEffect, useContext } from 'react';
-import { AppContext } from '../lib/Context';
 import Player from '../components/Player';
+import SongSelector from '../components/SongSelector';
+import { IPlayer } from '../interfaces/IPlayer';
+import { AppContext } from '../lib/Context';
+import { InitRosterDTO, useWSMessage } from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
+	const [players, setPlayers] = useState<IPlayer[]>([]);
+
+	useWSMessage<InitRosterDTO>('INIT_ROSTER', (msg) => {
+		setPlayers(msg.players);
+	});
 
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<Text style={[styles.codeTitle, { textAlign: 'center' }]}>Room Code</Text>
@@ -30,10 +35,10 @@ const LobbyScreen = () => {
 				<View style={styles.col}>
 					<Text style={styles.title}>Spectators</Text>
 				</View>
-                <TouchableOpacity>
-                    <Text>Start Game</Text>
-                </TouchableOpacity>
-                <Player name="Cooly4477888" avatar="bee"></Player>
+				<TouchableOpacity>
+					<Text>Start Game</Text>
+				</TouchableOpacity>
+				<Player name="Cooly4477888" avatar="bee"></Player>
 			</View>
 		</ImageBackground>
 	);
@@ -48,25 +53,26 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white',
+		backgroundColor: 'white'
 	},
 	title: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	codeTitle: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	code: {
 		fontSize: 300,
 		textAlign: 'center',
-		fontFamily: 'Neulis700',
+		fontFamily: 'Neulis700'
 	},
 	col: {
 		display: 'flex',
-		gap: 10,
-	},
+		gap: 10
+	}
 });
 
 export default LobbyScreen;
+

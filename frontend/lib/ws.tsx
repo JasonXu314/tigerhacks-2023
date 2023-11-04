@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
 import { IPlayer } from '../interfaces/IPlayer';
 
 interface WSCtx {
@@ -50,10 +50,10 @@ export class WS extends WebSocket {
 
 const WSContext = React.createContext<WSCtx>({ socket: null, setSocket: () => {} });
 
-export const WSProvider: React.FC = () => {
+export const WSProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [socket, setSocket] = useState<WS | null>(null);
 
-	return <WSContext.Provider value={{ socket, setSocket }}></WSContext.Provider>;
+	return <WSContext.Provider value={{ socket, setSocket }}>{children}</WSContext.Provider>;
 };
 
 interface WSOperations {
@@ -138,3 +138,4 @@ export function useWSMessage<T extends { type: string }>(type: T['type'], listen
 		}
 	});
 }
+
