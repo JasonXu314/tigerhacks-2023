@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import BackButton from '../components/BackButton';
 import api from '../services/AxiosConfig';
+import { AntDesign } from '@expo/vector-icons';
 
 const HomeScreen = () => {
 	const router = useRouter();
@@ -25,6 +26,10 @@ const HomeScreen = () => {
 			style={{ height: '100%', width: '100%' }}
 		>
 			<SafeAreaView style={styles.container}>
+				<TouchableOpacity style={styles.audio} onPress={() => createRoom()}>
+					{/* <AntDesign name="sound" size={55} color="#D7E0EB" /> */}
+					<AntDesign name="sound" size={45} color="#C2E812" />
+				</TouchableOpacity>
 				{/*<BackButton></BackButton>*/}
 				<Image source={require('../assets/images/mic.png')} style={styles.logo}></Image>
 				<Text style={styles.title}>Song Wars</Text>
@@ -89,6 +94,11 @@ const styles = StyleSheet.create({
 		marginTop: 50,
 		width: 200,
 		height: 200,
+	},
+	audio: {
+		position: 'absolute',
+		right: 26,
+		top: 65,
 	},
 });
 
