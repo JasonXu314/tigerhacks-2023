@@ -4,8 +4,8 @@ export const Images = {
 	DuaLipa: require('../assets/images/songCovers/DuaLipa.png'),
 	Britney: require('../assets/images/songCovers/Britney.png'),
 	CelineDion: require('../assets/images/songCovers/CelineDion.jpeg'),
-	Cranberries: require('../assets/images/songCovers/Cranberries.jpeg'),
-	Weeknd: require('../assets/images/songCovers/Weeknd.png'),
+	Cranberries: require('../assets/images/songCovers/Cranberries.jpg'),
+	Weeknd: require('../assets/images/songCovers/Weeknd.jpeg'),
 };
 
 export const Avatars: { [string: string]: ImageProps } = {
