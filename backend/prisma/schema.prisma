@@ -13,12 +13,13 @@ datasource db {
 model Room {
     id String @id
 
-    Player Player[]
+    players Player[]
 }
 
 model Player {
     id     Int    @id
     roomId String
+    score  Int
 
     room Room @relation(fields: [roomId], references: [id])
 }
