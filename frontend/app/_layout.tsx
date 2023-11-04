@@ -1,18 +1,20 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { ISong } from '../interfaces/ISong';
+import { useEffect, useState } from 'react';
+import { createContext } from 'react';
+import React from 'react';
 import { AppContext } from '../lib/Context';
+import { ISong } from '../interfaces/ISong';
 import Images from '../lib/Images';
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 
 export {
 	// Catch any errors thrown by the Layout component.
-	ErrorBoundary
+	ErrorBoundary,
 } from 'expo-router';
 export const unstable_settings = {
-	initialRouteName: 'home'
+	initialRouteName: 'home',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -26,7 +28,7 @@ export default function RootLayout() {
 		Neulis700: require('../assets/fonts/NeulisNeue700.ttf'),
 		Neulis800: require('../assets/fonts/NeulisNeue800.ttf'),
 		ProximaNova: require('../assets/fonts/Proxima-Nova.otf'),
-		...FontAwesome.font
+		...FontAwesome.font,
 	});
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -52,11 +54,10 @@ function RootLayoutNav() {
 		name: 'Dance The Night',
 		artist: 'Dua Lipa',
 		img: Images.duaLipa,
-		track: 'pathtotrack'
+		track: 'pathtotrack',
 	});
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
-	const [socket, setSocket] = useState<WebSocket | null>(null);
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -66,7 +67,7 @@ function RootLayoutNav() {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false
+			playThroughEarpieceAndroid: false,
 		});
 		const { sound } = await Audio.Sound.createAsync(require('../assets/music/bgmusic.mp3'));
 		sound.setIsLoopingAsync(true);
@@ -79,7 +80,7 @@ function RootLayoutNav() {
 	useEffect(() => {
 		return bgMusic
 			? () => {
-					bgMusic.unloadAsync();
+                bgMusic.unloadAsync();
 			  }
 			: undefined;
 	}, [bgMusic]);
@@ -88,16 +89,16 @@ function RootLayoutNav() {
 		playSound();
 	}, []);
 
-	const startBgMusic = async () => {
-		await bgMusic.playAsync();
-	};
+    const startBgMusic = async() => {
+        await bgMusic.playAsync()
+    }
 
-	const stopBgMusic = async () => {
-		await bgMusic.stopAsync();
-	};
+    const stopBgMusic = async() => {
+        await bgMusic.stopAsync()
+    }
 
 	return (
-		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic, socket, setSocket }}>
+		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic }}>
 			<Stack>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
 				<Stack.Screen name="createroom" options={{ headerShown: false }} />
@@ -109,4 +110,3 @@ function RootLayoutNav() {
 		</AppContext.Provider>
 	);
 }
-
