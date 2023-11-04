@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import BackButton from '../components/BackButton';
 
 const JoinRoomScreen = () => {
 	const router = useRouter();
@@ -13,11 +14,13 @@ const JoinRoomScreen = () => {
 		>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.box}>
+					<BackButton></BackButton>
 					<Text style={styles.text}>Name</Text>
-					{/* <TextInput style={styles.input} placeholder="useless placeholder" /> */}
+					<TextInput style={styles.input} />
 					<Text style={styles.text}>Room Code</Text>
-					{/* <TextInput style={styles.input} placeholder="useless placeholder" keyboardType="numeric" /> */}
-					<TouchableOpacity style={styles.btn} onPress={() => router.push('')}>
+					<TextInput style={styles.input} />
+
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('winner')}>
 						<Text style={styles.btnText}>Join Room</Text>
 					</TouchableOpacity>
 				</View>
@@ -32,19 +35,25 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
+		flexDirection: 'column',
 	},
 	box: {
+		display: 'flex',
+		gap: 16,
 		backgroundColor: 'white',
 		borderRadius: 30,
-		height: 300,
+		height: 350,
 		width: 300,
+		paddingTop: 70,
+		paddingHorizontal: 30,
 	},
 	btn: {
-		marginTop: 20,
 		backgroundColor: '#C2E812',
 		paddingVertical: 12,
 		width: 200,
 		borderRadius: 30,
+		marginLeft: 20,
+		marginTop: 10,
 	},
 	btnText: {
 		fontFamily: 'Neulis500',
@@ -54,8 +63,10 @@ const styles = StyleSheet.create({
 	},
 
 	input: {
-		height: 100,
-		width: 200,
+		height: 40,
+		backgroundColor: '#D7E0EB',
+		borderRadius: 8,
+		paddingHorizontal: 4,
 	},
 	text: {
 		fontFamily: 'Neulis500',
