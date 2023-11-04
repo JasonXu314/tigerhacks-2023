@@ -18,8 +18,8 @@ const LobbyScreen = () => {
 			name: 'Cooly',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'dolphin',
-		},
+			avatar: 'dolphin'
+		}
 	]); // TODO: consider moving this up to context if not persisted across route changes
 	const [contestants, setContestants] = useState<IPlayer[]>([
 		{
@@ -27,29 +27,29 @@ const LobbyScreen = () => {
 			name: 'BBEBEBE',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'bee',
+			avatar: 'bee'
 		},
 		{
 			id: 1235,
 			name: 'Joe',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'cat',
+			avatar: 'cat'
 		},
 		{
 			id: 1234,
 			name: 'Bobb',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'chicken',
+			avatar: 'chicken'
 		},
 		{
 			id: 12345,
 			name: 'Bob',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'dog',
-		},
+			avatar: 'dog'
+		}
 	]);
 	const [host, setHost] = useState<IPlayer>();
 	const [error, setError] = useState('');
@@ -100,8 +100,7 @@ const LobbyScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<View>
@@ -116,39 +115,39 @@ const LobbyScreen = () => {
 					<Text style={styles.title}>Singers</Text>
 					{error && <Text style={styles.error}>{error}</Text>}
 					<ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
-						{players &&
-							players.map((player) => (
+						{contestants &&
+							contestants.map((player) => (
 								<Player
 									key={player.id}
+									id={player.id}
 									name={player.name}
 									avatar={player.avatar}
-									players={players}
-									spectators={contestants}
-									setPlayers={setPlayers}
-									setSpectators={setContestants}
-								></Player>
+									contestants={contestants}
+									isHost={player.id === host?.id}
+								/>
 							))}
-						{players.length < 4 && <View style={styles.slot}></View>}
-						{players.length < 3 && <View style={styles.slot}></View>}
-						{players.length < 2 && <View style={styles.slot}></View>}
-						{players.length < 1 && <View style={styles.slot}></View>}
+						{contestants.length < 4 && <View style={styles.slot}></View>}
+						{contestants.length < 3 && <View style={styles.slot}></View>}
+						{contestants.length < 2 && <View style={styles.slot}></View>}
+						{contestants.length < 1 && <View style={styles.slot}></View>}
 					</ScrollView>
 				</View>
 				<View style={styles.col}>
 					<Text style={styles.title}>Spectators</Text>
 					<ScrollView horizontal contentContainerStyle={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
-						{contestants &&
-							contestants.map((player) => (
-								<Player
-									key={player.id}
-									name={player.name}
-									spectators={contestants}
-									avatar={player.avatar}
-									players={players}
-									setPlayers={setPlayers}
-									setSpectators={setContestants}
-								></Player>
-							))}
+						{players &&
+							players
+								.filter((player) => !contestants.some((p) => p.id === player.id))
+								.map((player) => (
+									<Player
+										key={player.id}
+										id={player.id}
+										name={player.name}
+										avatar={player.avatar}
+										contestants={contestants}
+										isHost={player.id === host?.id}
+									/>
+								))}
 					</ScrollView>
 				</View>
 				<TouchableOpacity style={styles.button} onPress={() => startGame()}>
@@ -168,32 +167,32 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white',
+		backgroundColor: 'white'
 	},
 	title: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
-		color: '#210461',
+		color: '#210461'
 	},
 	codeTitle: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
-		color: '#210461',
+		color: '#210461'
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
 		fontFamily: 'Neulis700',
-		color: '#210461',
+		color: '#210461'
 	},
 	col: {
 		display: 'flex',
-		gap: 10,
+		gap: 10
 	},
 	row: {
 		display: 'flex',
 		flexDirection: 'row',
-		gap: 10,
+		gap: 10
 	},
 	button: {
 		backgroundColor: '#C2E812',
@@ -201,19 +200,19 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 50,
 		borderRadius: 30,
 		alignSelf: 'center',
-		marginTop: 'auto',
+		marginTop: 'auto'
 	},
 	buttonText: {
 		fontSize: 20,
 		fontFamily: 'Neulis500',
 		color: '#210461',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	slot: {
 		backgroundColor: '#DEDEDE',
 		height: 50,
 		width: 50,
-		borderRadius: 50,
+		borderRadius: 50
 	},
 	error: {
 		color: 'red',
@@ -222,8 +221,9 @@ const styles = StyleSheet.create({
 		borderColor: 'red',
 		borderWidth: 1,
 		padding: 10,
-		borderRadius: 20,
-	},
+		borderRadius: 20
+	}
 });
 
 export default LobbyScreen;
+

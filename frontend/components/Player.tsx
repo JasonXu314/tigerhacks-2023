@@ -1,38 +1,31 @@
-import { View, StyleSheet, Image, Text, TouchableOpacity, PanResponder, Animated } from 'react-native';
-import { Avatars } from '../lib/Images';
-import { useRef, useState } from 'react';
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { IPlayer } from '../interfaces/IPlayer';
+import { Avatars } from '../lib/Images';
+import { useWS } from '../lib/ws';
 
 interface IProps {
 	name: string;
+	id: number;
 	avatar: string;
-	players: IPlayer[];
-	spectators: IPlayer[];
-	setPlayers: React.Dispatch<React.SetStateAction<IPlayer[]>>;
-	setSpectators: React.Dispatch<React.SetStateAction<IPlayer[]>>;
+	isHost: boolean;
+	contestants: IPlayer[];
 }
 
 // TODO: Reflect change in backend
-const Player = ({ name, avatar, players, spectators, setPlayers, setSpectators }: IProps) => {
+const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => {
+	const { send } = useWS();
+
 	const swapSides = () => {
-		const player = players.find((user) => user.name === name);
-		if (player) {
-			// they're playing
-			setSpectators([...spectators, player]);
-			setPlayers((players) => players.filter((user) => user != player));
-		} else {
-			// they're spectating
-            if (players.length >= 4) {
-                return;
-            }
-			const player = spectators.find((user) => user.name === name);
-			setPlayers([...players, player!]);
-			setSpectators((players) => players.filter((user) => user != player));
+		if (contestants.some((p) => p.id === id)) {
+			send({ type: 'REMOVE_CONTESTANT', data: { id } });
+		} else if (contestants.length < 4) {
+			send({ type: 'ADD_CONTESTANT', data: { id } });
 		}
 	};
 
 	return (
-		<TouchableOpacity style={styles.container} onPress={() => swapSides()}>
+		<TouchableOpacity style={styles.container} onPress={isHost ? swapSides : () => {}}>
 			<Image source={Avatars[avatar]} style={styles.avatar}></Image>
 			<Text style={styles.name}>{name}</Text>
 		</TouchableOpacity>
@@ -42,19 +35,20 @@ const Player = ({ name, avatar, players, spectators, setPlayers, setSpectators }
 const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'flex-start',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	avatar: {
 		height: 50,
 		width: 50,
 		borderRadius: 50,
-		overflow: 'hidden',
+		overflow: 'hidden'
 	},
 	name: {
 		fontSize: 15,
 		fontFamily: 'Neulis500',
-		color: '#210461',
-	},
+		color: '#210461'
+	}
 });
 
 export default Player;
+

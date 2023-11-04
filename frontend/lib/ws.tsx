@@ -60,6 +60,7 @@ export const WSProvider: React.FC<PropsWithChildren> = ({ children }) => {
 interface WSOperations {
 	connect(otp: string): void;
 	disconnect(): void;
+	send(msg: any): void;
 }
 
 interface WSMetadata {
@@ -136,6 +137,17 @@ export function useWS(): WSOperations {
 			socket?.close();
 			socket?.off();
 			setSocket(null);
+		},
+		send: (msg: any) => {
+			if (socket) {
+				if (typeof msg === 'string') {
+					socket.send(msg);
+				} else {
+					socket.send(JSON.stringify(msg));
+				}
+			} else {
+				console.warn('Socket send while disconnected');
+			}
 		}
 	};
 }
