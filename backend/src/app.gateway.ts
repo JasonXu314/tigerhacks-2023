@@ -84,7 +84,20 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 				const claim = room.claims.get(otp)!;
 
 				claim(client);
-				setImmediate(() => client.send(JSON.stringify({ type: 'INIT_ROSTER', players: room.players.map(this._pruneSocket) })));
+				const { id, host, contestants, players } = room;
+				setImmediate(() =>
+					client.send(
+						JSON.stringify({
+							type: 'INIT_ROOM',
+							room: {
+								id,
+								host: this._pruneSocket(host!),
+								contestants: contestants.flatMap((p) => (p ? [this._pruneSocket(p)] : [])),
+								players: players.map(this._pruneSocket)
+							}
+						})
+					)
+				);
 				return { type: 'CLAIM_ACK' };
 			}
 		}

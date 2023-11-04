@@ -1,4 +1,3 @@
-import { Player } from '@prisma/client';
 import { IsIn, IsNumber, IsOptional, IsString, Length } from 'class-validator';
 import { fi } from './utils/utils';
 
@@ -29,11 +28,6 @@ export class RemoveContestantDTO {
 
 export interface ClaimAcknowledgeDTO {
 	type: 'CLAIM_ACK';
-}
-
-export interface InitRosterDTO {
-	type: 'INIT_ROSTER';
-	players: Player[];
 }
 
 export interface ClientErrorDTO {
