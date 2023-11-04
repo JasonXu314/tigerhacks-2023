@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useState, useContext, useEffect } from 'react';
 import Song from './Song';
-import Images from '../lib/Images';
+import { Images } from '../lib/Images';
 import { EvilIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { AppContext } from '../lib/Context';
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		paddingLeft: 15,
 		height: 45,
-        fontSize: 16
+		fontSize: 16,
 	},
 	searchIcon: {
 		position: 'absolute',

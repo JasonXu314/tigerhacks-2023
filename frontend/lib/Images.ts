@@ -1,5 +1,9 @@
-const Images = {
-    duaLipa: require('../assets/images/icon.png'),
+import { ImageProps } from 'react-native-elements';
+
+export const Images = {
+	duaLipa: require('../assets/images/icon.png'),
 };
 
-export default Images;
+export const Avatars: { [string: string]: ImageProps } = {
+	bee: require('../assets/images/profile-pic/bee.png'),
+};
