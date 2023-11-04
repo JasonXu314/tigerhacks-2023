@@ -1,15 +1,16 @@
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 import { ISong } from '../interfaces/ISong';
 import Images from './Images';
-import { Audio } from 'expo-av';
 
 interface IProps {
 	song: ISong;
 	setSong: any;
 	room: string;
 	setRoom: any;
+	socket: WebSocket | null;
 	startBgMusic: () => void;
 	stopBgMusic: () => void;
+	setSocket: React.Dispatch<React.SetStateAction<WebSocket | null>>;
 }
 
 export const AppContext = createContext<IProps>({
@@ -17,11 +18,14 @@ export const AppContext = createContext<IProps>({
 		name: 'Dance The Night',
 		artist: 'Dua Lipa',
 		img: Images.duaLipa,
-		track: 'pathtotrack',
+		track: 'pathtotrack'
 	},
+	socket: null,
 	setSong: (a: ISong) => {},
 	room: '',
 	setRoom: (a: string) => {},
 	startBgMusic: () => {},
 	stopBgMusic: () => {},
+	setSocket: () => {}
 });
+
