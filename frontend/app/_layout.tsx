@@ -53,7 +53,7 @@ function RootLayoutNav() {
 		name: 'Dance The Night',
 		artist: 'Dua Lipa',
 		img: Images.DuaLipa,
-		track: 'pathtotrack',
+		track: require('../assets/musicMinus/dancethenight.mp3'),
 	});
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
