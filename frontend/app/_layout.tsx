@@ -106,6 +106,7 @@ function RootLayoutNav() {
 				<Stack.Screen name="joinroom" options={{ headerShown: false }} />
 				<Stack.Screen name="voting" options={{ headerShown: false }} />
 				<Stack.Screen name="winner" options={{ headerShown: false }} />
+				<Stack.Screen name="lobby" options={{ headerShown: false }} />
 			</Stack>
 		</AppContext.Provider>
 	);

@@ -36,11 +36,11 @@ const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 							}}
 							style={styles.back}
 						>
-							<AntDesign name="leftcircleo" size={25} color="#210461" />
+							<AntDesign name="leftcircleo" size={40} color="#210461" />
 						</TouchableOpacity>
 						<View style={styles.searchbar}>
 							<TextInput placeholder="Search song..." style={styles.input}></TextInput>
-							<EvilIcons name="search" size={24} color="black" style={styles.searchIcon} />
+							<EvilIcons name="search" size={30} color="black" style={styles.searchIcon} />
 						</View>
 						<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 							<View onStartShouldSetResponder={() => true}>
@@ -67,15 +67,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	modalContainer: {
-		backgroundColor: '#F2E9F9',
-		display: 'flex',
-		height: '65%',
-		width: '75%',
-		borderRadius: 20,
+		flex: 1,
+		marginHorizontal: 20,
+		marginVertical: '15%',
+		borderRadius: 30,
 		overflow: 'hidden',
-		paddingTop: 65,
-		paddingBottom: 40,
-		paddingHorizontal: 25,
+		padding: 25,
+		paddingTop: 70,
+		gap: 10,
+		backgroundColor: 'white',
 	},
 	centeredView: {
 		justifyContent: 'center',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		elevation: 2,
 		width: 300,
-        paddingLeft: 30,
+		paddingLeft: 30,
 	},
 	buttonOpen: {
 		backgroundColor: '#F194FF',
@@ -122,15 +122,16 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		flexDirection: 'row',
 		width: '100%',
-		borderRadius: 20,
+		borderRadius: 35,
 		overflow: 'hidden',
 		marginBottom: 10,
 	},
 	input: {
-		backgroundColor: 'white',
+		backgroundColor: '#DEDEDE',
 		width: '100%',
 		paddingLeft: 15,
-		height: 30,
+		height: 45,
+        fontSize: 16
 	},
 	searchIcon: {
 		position: 'absolute',
