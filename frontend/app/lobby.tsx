@@ -5,15 +5,19 @@ import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { IPlayer } from '../interfaces/IPlayer';
 import { AppContext } from '../lib/Context';
-import { InitRosterDTO, useWSMessage } from '../lib/ws';
+import { InitRoomDTO, useWSMessage } from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
 	const [players, setPlayers] = useState<IPlayer[]>([]);
+	const [contestants, setContestants] = useState<IPlayer[]>([]);
+	const [host, setHost] = useState<IPlayer>();
 
-	useWSMessage<InitRosterDTO>('INIT_ROSTER', (msg) => {
-		setPlayers(msg.players);
+	useWSMessage<InitRoomDTO>('INIT_ROOM', (msg) => {
+		setPlayers(msg.room.players);
+		setContestants(msg.room.contestants);
+		setHost(msg.room.host);
 	});
 
 	return (

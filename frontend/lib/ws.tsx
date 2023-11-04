@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useContext, useEffect, useRef, useState } from 'react';
-import { IPlayer } from '../interfaces/IPlayer';
+import { ISession } from '../interfaces/ISession';
 
 interface WSCtx {
 	socket: WS | null;
@@ -69,9 +69,9 @@ export interface ClaimAcknowledgeDTO {
 	type: 'CLAIM_ACK';
 }
 
-export interface InitRosterDTO {
-	type: 'INIT_ROSTER';
-	players: IPlayer[];
+export interface InitRoomDTO {
+	type: 'INIT_ROOM';
+	room: ISession;
 }
 
 export interface ClientErrorDTO {
