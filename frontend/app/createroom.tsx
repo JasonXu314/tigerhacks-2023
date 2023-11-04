@@ -4,6 +4,7 @@ import BackButton from '../components/BackButton';
 import SongSelector from '../components/SongSelector';
 import { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../lib/Context';
+import Player from '../components/Player';
 
 const CreateRoomScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
@@ -32,6 +33,7 @@ const CreateRoomScreen = () => {
                 <TouchableOpacity>
                     <Text>Start Game</Text>
                 </TouchableOpacity>
+                <Player name="bruh" avatar="bee"></Player>
 			</View>
 		</ImageBackground>
 	);

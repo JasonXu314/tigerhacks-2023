@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 import { ISong } from '../interfaces/ISong';
-import Images from './Images';
+import { Images } from './Images';
 import { Audio } from 'expo-av';
 
 interface IProps {
@@ -10,6 +10,10 @@ interface IProps {
 	setRoom: any;
 	startBgMusic: () => void;
 	stopBgMusic: () => void;
+	name: string;
+	setName: any;
+	avatar: string;
+	setAvatar: any;
 }
 
 export const AppContext = createContext<IProps>({
@@ -24,4 +28,8 @@ export const AppContext = createContext<IProps>({
 	setRoom: (a: string) => {},
 	startBgMusic: () => {},
 	stopBgMusic: () => {},
+	name: '',
+	setName: (a: string) => {},
+	avatar: '',
+	setAvatar: (a: string) => {},
 });

@@ -6,7 +6,7 @@ import { createContext } from 'react';
 import React from 'react';
 import { AppContext } from '../lib/Context';
 import { ISong } from '../interfaces/ISong';
-import Images from '../lib/Images';
+import { Images } from '../lib/Images';
 import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 
 export {
@@ -58,6 +58,8 @@ function RootLayoutNav() {
 	});
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
+	const [name, setName] = useState('');
+	const [avatar, setAvatar] = useState('');
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -80,7 +82,7 @@ function RootLayoutNav() {
 	useEffect(() => {
 		return bgMusic
 			? () => {
-                bgMusic.unloadAsync();
+					bgMusic.unloadAsync();
 			  }
 			: undefined;
 	}, [bgMusic]);
@@ -89,16 +91,16 @@ function RootLayoutNav() {
 		playSound();
 	}, []);
 
-    const startBgMusic = async() => {
-        await bgMusic.playAsync()
-    }
+	const startBgMusic = async () => {
+		await bgMusic.playAsync();
+	};
 
-    const stopBgMusic = async() => {
-        await bgMusic.stopAsync()
-    }
+	const stopBgMusic = async () => {
+		await bgMusic.stopAsync();
+	};
 
 	return (
-		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic }}>
+		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic, name, setName, avatar, setAvatar }}>
 			<Stack>
 				<Stack.Screen name="index" options={{ headerShown: false }} />
 				<Stack.Screen name="createroom" options={{ headerShown: false }} />
