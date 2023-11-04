@@ -1,13 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable, ScrollView, TouchableWithoutFeedback, TextInput } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { useState, useContext, useEffect } from 'react';
-import Song from './Song';
-import { Images } from '../lib/Images';
-import { EvilIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { AppContext } from '../lib/Context';
+import { AntDesign, EvilIcons } from '@expo/vector-icons';
+import { useContext } from 'react';
+import { Modal, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { SongList } from '../data/SongList';
+import { AppContext } from '../lib/Context';
+import Song from './Song';
 
 interface IProps {
 	modalVisible: boolean;
@@ -15,7 +11,6 @@ interface IProps {
 }
 
 const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
-	const router = useRouter();
 	const context = useContext(AppContext);
 
 	return (
@@ -26,16 +21,14 @@ const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 				visible={modalVisible}
 				onRequestClose={() => {
 					setModalVisible(!modalVisible);
-				}}
-			>
+				}}>
 				<Pressable onPress={(event) => event.target == event.currentTarget && setModalVisible(false)} style={styles.background}>
 					<View style={styles.modalContainer}>
 						<TouchableOpacity
 							onPress={() => {
 								setModalVisible(false);
 							}}
-							style={styles.back}
-						>
+							style={styles.back}>
 							<AntDesign name="leftcircleo" size={40} color="#210461" />
 						</TouchableOpacity>
 						<View style={styles.searchbar}>
@@ -64,7 +57,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex: 1,
+		flex: 1
 	},
 	modalContainer: {
 		flex: 1,
@@ -75,11 +68,11 @@ const styles = StyleSheet.create({
 		padding: 25,
 		paddingTop: 70,
 		gap: 10,
-		backgroundColor: 'white',
+		backgroundColor: 'white'
 	},
 	centeredView: {
 		justifyContent: 'center',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	modalView: {
 		margin: 20,
@@ -90,33 +83,33 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 2,
+			height: 2
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
-		elevation: 5,
+		elevation: 5
 	},
 	button: {
 		borderRadius: 20,
 		padding: 10,
 		elevation: 2,
 		width: 300,
-		paddingLeft: 30,
+		paddingLeft: 30
 	},
 	buttonOpen: {
-		backgroundColor: '#F194FF',
+		backgroundColor: '#F194FF'
 	},
 	buttonClose: {
-		backgroundColor: '#2196F3',
+		backgroundColor: '#2196F3'
 	},
 	textStyle: {
 		color: 'white',
 		fontWeight: 'bold',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	modalText: {
 		marginBottom: 15,
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	searchbar: {
 		display: 'flex',
@@ -124,25 +117,26 @@ const styles = StyleSheet.create({
 		width: '100%',
 		borderRadius: 35,
 		overflow: 'hidden',
-		marginBottom: 10,
+		marginBottom: 10
 	},
 	input: {
 		backgroundColor: '#DEDEDE',
 		width: '100%',
 		paddingLeft: 15,
 		height: 45,
-		fontSize: 16,
+		fontSize: 16
 	},
 	searchIcon: {
 		position: 'absolute',
 		right: 10,
-		alignSelf: 'center',
+		alignSelf: 'center'
 	},
 	back: {
 		position: 'absolute',
 		top: 20,
-		left: 25,
-	},
+		left: 25
+	}
 });
 
 export default SongSelector;
+

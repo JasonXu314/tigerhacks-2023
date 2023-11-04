@@ -1,63 +1,25 @@
 import { useRouter } from 'expo-router';
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/BackButton';
 import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
-import { IPlayer } from '../interfaces/IPlayer';
 import { AppContext } from '../lib/Context';
+import { useGame } from '../lib/game-data';
 import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWSMessage } from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
 	const router = useRouter();
-	const [players, setPlayers] = useState<IPlayer[]>([
-		{
-			id: 123,
-			name: 'Cooly',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'dolphin'
-		}
-	]); // TODO: consider moving this up to context if not persisted across route changes
-	const [contestants, setContestants] = useState<IPlayer[]>([
-		{
-			id: 113,
-			name: 'BBEBEBE',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'bee'
-		},
-		{
-			id: 1235,
-			name: 'Joe',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'cat'
-		},
-		{
-			id: 1234,
-			name: 'Bobb',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'chicken'
-		},
-		{
-			id: 12345,
-			name: 'Bob',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'dog'
-		}
-	]);
-	const [host, setHost] = useState<IPlayer>();
+	const { init, addContestant, removeContestant, addPlayer, data } = useGame();
+	const players = useMemo(() => (data === null ? [] : data.players), [data]);
+	const contestants = useMemo(() => (data === null ? [] : data.contestants), [data]);
+	const host = useMemo(() => (data === null ? null : data.host), [data]);
 	const [error, setError] = useState('');
 
-	useWSMessage<InitRoomDTO>('INIT_ROOM', (msg) => {
-		setPlayers(msg.room.players);
-		setContestants(msg.room.contestants);
-		setHost(msg.room.host);
+	useWSMessage<InitRoomDTO>('INIT_ROOM', ({ room: { players, contestants, host } }) => {
+		init(players, contestants, host);
 	});
 
 	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
@@ -66,11 +28,11 @@ const LobbyScreen = () => {
 	});
 
 	useWSMessage<AddContestantDTO>('ADD_CONTESTANT', ({ id }) => {
-		setContestants((contestants) => [...contestants, players.find((p) => p.id === id)!]);
+		addContestant(id);
 	});
 
 	useWSMessage<RemoveContestantDTO>('REMOVE_CONTESTANT', ({ id }) => {
-		setContestants((contestants) => contestants.filter((p) => p.id !== id));
+		removeContestant(id);
 	});
 
 	useWSMessage<SetSongDTO>('SET_SONG', ({ name }) => {
@@ -88,7 +50,7 @@ const LobbyScreen = () => {
 	};
 
 	useWSMessage<JoinDTO>('JOIN', ({ player }) => {
-		setPlayers((players) => [...players, player]);
+		addPlayer(player);
 	});
 
 	useWSMessage<StartGameDTO>('START_GAME', () => {

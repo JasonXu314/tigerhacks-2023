@@ -12,7 +12,6 @@ interface IProps {
 	contestants: IPlayer[];
 }
 
-// TODO: Reflect change in backend
 const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => {
 	const { send } = useWS();
 

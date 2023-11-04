@@ -6,14 +6,15 @@ import React, { useEffect, useState } from 'react';
 import { ISong } from '../interfaces/ISong';
 import { AppContext } from '../lib/Context';
 import { Images } from '../lib/Images';
+import { GameProvider } from '../lib/game-data';
 import { WSProvider } from '../lib/ws';
 
 export {
 	// Catch any errors thrown by the Layout component.
-	ErrorBoundary,
+	ErrorBoundary
 } from 'expo-router';
 export const unstable_settings = {
-	initialRouteName: 'home',
+	initialRouteName: 'home'
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -27,7 +28,7 @@ export default function RootLayout() {
 		Neulis700: require('../assets/fonts/NeulisNeue700.ttf'),
 		Neulis800: require('../assets/fonts/NeulisNeue800.ttf'),
 		ProximaNova: require('../assets/fonts/Proxima-Nova.otf'),
-		...FontAwesome.font,
+		...FontAwesome.font
 	});
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -53,7 +54,7 @@ function RootLayoutNav() {
 		name: 'Dance The Night',
 		artist: 'Dua Lipa',
 		img: Images.DuaLipa,
-		track: require('../assets/musicMinus/dancethenight.mp3'),
+		track: require('../assets/musicMinus/dancethenight.mp3')
 	});
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
@@ -69,7 +70,7 @@ function RootLayoutNav() {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false,
+			playThroughEarpieceAndroid: false
 		});
 		const { sound } = await Audio.Sound.createAsync(require('../assets/music/bgmusic.mp3'));
 		sound.setIsLoopingAsync(true);
@@ -104,16 +105,19 @@ function RootLayoutNav() {
 	return (
 		<AppContext.Provider value={{ song, setSong, room, setRoom, bgMusic: playingBgMusic, startBgMusic, stopBgMusic, name, setName, avatar, setAvatar }}>
 			<WSProvider>
-				<Stack>
-					<Stack.Screen name="index" options={{ headerShown: false }} />
-					<Stack.Screen name="createroom" options={{ headerShown: false }} />
-					<Stack.Screen name="game" options={{ headerShown: false }} />
-					<Stack.Screen name="joinroom" options={{ headerShown: false }} />
-					<Stack.Screen name="voting" options={{ headerShown: false }} />
-					<Stack.Screen name="winner" options={{ headerShown: false }} />
-					<Stack.Screen name="lobby" options={{ headerShown: false }} />
-				</Stack>
+				<GameProvider>
+					<Stack>
+						<Stack.Screen name="index" options={{ headerShown: false }} />
+						<Stack.Screen name="createroom" options={{ headerShown: false }} />
+						<Stack.Screen name="game" options={{ headerShown: false }} />
+						<Stack.Screen name="joinroom" options={{ headerShown: false }} />
+						<Stack.Screen name="voting" options={{ headerShown: false }} />
+						<Stack.Screen name="winner" options={{ headerShown: false }} />
+						<Stack.Screen name="lobby" options={{ headerShown: false }} />
+					</Stack>
+				</GameProvider>
 			</WSProvider>
 		</AppContext.Provider>
 	);
 }
+
