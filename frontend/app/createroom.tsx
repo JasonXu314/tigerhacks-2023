@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'red',
         borderRadius: 30,
         overflow: 'hidden',
+        padding: 20,
 	},
     title: {
         fontSize: 25,
