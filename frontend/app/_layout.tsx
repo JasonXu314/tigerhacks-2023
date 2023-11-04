@@ -25,6 +25,7 @@ export default function RootLayout() {
 		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
 		Neulis: require('../assets/fonts/NeulisNeue400.ttf'),
 		Neulis500: require('../assets/fonts/NeulisNeue500.ttf'),
+		Neulis700: require('../assets/fonts/NeulisNeue700.ttf'),
 		Neulis800: require('../assets/fonts/NeulisNeue800.ttf'),
 		ProximaNova: require('../assets/fonts/Proxima-Nova.otf'),
 		...FontAwesome.font,

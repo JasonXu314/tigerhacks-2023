@@ -1,22 +1,12 @@
 import { Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { Player, Room } from '@prisma/client';
 import { randomInt } from 'crypto';
-import { readFileSync } from 'fs';
 import { AppGateway } from './app.gateway';
-import { Song } from './models';
 import { PrismaService } from './prisma/prisma.service';
 
 @Injectable()
 export class AppService {
-	private readonly songs: Song[];
-
-	public constructor(private readonly prisma: PrismaService, @Inject(forwardRef(() => AppGateway)) private readonly gateway: AppGateway) {
-		this.songs = JSON.parse(readFileSync('./assets/songs.json').toString());
-	}
-
-	public getSongs(): Song[] {
-		return this.songs;
-	}
+	public constructor(private readonly prisma: PrismaService, @Inject(forwardRef(() => AppGateway)) private readonly gateway: AppGateway) {}
 
 	public async createRoom(): Promise<Room> {
 		const id = await this.generateNewRoomId();
