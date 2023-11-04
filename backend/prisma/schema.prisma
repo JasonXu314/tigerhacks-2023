@@ -18,9 +18,11 @@ model Room {
 
 model Player {
     id     Int    @id @default(autoincrement())
-    name   String @unique
+    name   String
     roomId String
     score  Int
 
     room Room @relation(fields: [roomId], references: [id])
+
+    @@unique([name, roomId])
 }
