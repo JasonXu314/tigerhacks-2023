@@ -23,7 +23,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
 		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-		Neulis: require('../assets/fonts/Neulisneue400.ttf'),
+		Neulis: require('../assets/fonts/NeulisNeue400.ttf'),
 		Neulis500: require('../assets/fonts/NeulisNeue500.ttf'),
 		Neulis800: require('../assets/fonts/NeulisNeue800.ttf'),
 		ProximaNova: require('../assets/fonts/Proxima-Nova.otf'),
@@ -50,11 +50,11 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const [song, setSong] = useState<ISong>({
-        name: 'Dance The Night',
-        artist: 'Dua Lipa',
-        img: Images.duaLipa,
-        track: 'pathtotrack'
-    });
+		name: 'Dance The Night',
+		artist: 'Dua Lipa',
+		img: Images.duaLipa,
+		track: 'pathtotrack',
+	});
 	return (
 		<AppContext.Provider value={{ song, setSong }}>
 			<Stack>
