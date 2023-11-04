@@ -40,9 +40,9 @@ const LobbyScreen = () => {
 	});
 
 	const startGame = () => {
-		if (players.length === 0) {
+		if (contestants.length === 0) {
 			setError('Not enough players singing to start. Add some singers!');
-		} else if (players.length === 1 || players.length === 3) {
+		} else if (contestants.length === 1 || contestants.length === 3) {
 			setError('Odd number of singers found. Please only have 2 or 4 singers!');
 		} else {
 			router.push('/game');

@@ -62,7 +62,7 @@ export const LyricsData: { [string: string]: ILyrics }  = {
 			{ startTimeMs: '170790', words: '', syllables: [], endTimeMs: '0' },
 		],
 	},
-	'My Heart Will Go on': {
+	'My Heart Will Go On': {
 		error: false,
 		syncType: 'LINE_SYNCED',
 		lines: [
@@ -98,7 +98,7 @@ export const LyricsData: { [string: string]: ILyrics }  = {
 			{ startTimeMs: '245960', words: '', syllables: [], endTimeMs: '0' },
 		],
 	},
-	Zombie: {
+	'Zombie': {
 		error: false,
 		syncType: 'LINE_SYNCED',
 		lines: [

@@ -9,13 +9,13 @@ export const SongList: ISong[] = [
         track: require('../assets/musicMinus/dancethenight.mp3'),
 	},
 	{
-		name: 'Oops!... I Did It Agin',
+		name: 'Oops!... I Did It Again',
 		artist: 'Britney Spears',
 		img: Images.Britney,
 		track: require('../assets/musicMinus/oopsididitagain.mp3'),
 	},
 	{
-		name: 'My Heart Will Go on',
+		name: 'My Heart Will Go On',
 		artist: 'Celine Dion',
 		img: Images.CelineDion,
 		track: require('../assets/musicMinus/myheartwillgoon.mp3'),

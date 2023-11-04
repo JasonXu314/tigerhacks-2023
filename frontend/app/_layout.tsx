@@ -50,12 +50,12 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-	const [song, setSong] = useState<ISong>({
-		name: 'Dance The Night',
-		artist: 'Dua Lipa',
-		img: Images.DuaLipa,
-		track: require('../assets/musicMinus/dancethenight.mp3')
-	});
+	const [song, setSong] = useState<ISong>(	{
+		name: 'Oops!... I Did It Again',
+		artist: 'Britney Spears',
+		img: Images.Britney,
+		track: require('../assets/musicMinus/oopsididitagain.mp3'),
+	},);
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
 	const [name, setName] = useState('');

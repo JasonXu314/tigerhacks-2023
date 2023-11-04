@@ -1,9 +1,4 @@
-interface ILine {
-    startTimeMs: string;
-    words: string;
-    syllables: string[];
-    endTimeMs: string;
-}
+import { ILine } from "./ILine";
 
 export interface ILyrics {
 	error: boolean;
