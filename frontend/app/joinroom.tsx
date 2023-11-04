@@ -10,7 +10,7 @@ const JoinRoomScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
+			style={{ height: '100%', width: '100%', justifyContent: 'center' }}
 		>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.box}>
@@ -30,22 +30,33 @@ const JoinRoomScreen = () => {
 };
 
 const styles = StyleSheet.create({
+	// container: {
+	// 	flex: 1,
+	// 	display: 'flex',
+	// 	justifyContent: 'center',
+	// 	alignItems: 'center',
+	// 	flexDirection: 'column',
+	// },
+	// box: {
+	// 	display: 'flex',
+	// 	gap: 16,
+	// 	backgroundColor: 'white',
+	// 	borderRadius: 30,
+	// 	height: 350,
+	// 	width: 300,
+	// 	paddingTop: 70,
+	// 	paddingHorizontal: 30,
+	// },
 	container: {
-		flex: 1,
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'column',
-	},
-	box: {
-		display: 'flex',
-		gap: 16,
-		backgroundColor: 'white',
+		marginHorizontal: 20,
 		borderRadius: 30,
-		height: 350,
-		width: 300,
-		paddingTop: 70,
-		paddingHorizontal: 30,
+		height: '40%',
+		overflow: 'hidden',
+		padding: 25,
+		gap: 10,
+		backgroundColor: 'white',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	btn: {
 		backgroundColor: '#C2E812',

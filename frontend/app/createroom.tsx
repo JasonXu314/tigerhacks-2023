@@ -25,8 +25,8 @@ const CreateRoomScreen = () => {
 				context.setRoom(id);
 
 				api.post<{ otp: string }>(`/rooms/${id}/join`, {
-                    name
-                })
+					name,
+				})
 					.then((res) => {
 						const { otp } = res.data;
 
@@ -51,7 +51,7 @@ const CreateRoomScreen = () => {
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<Text style={[styles.title]}>Enter Name</Text>
-                {error && <Text style={styles.error}>Please enter a name</Text>}
+				{error && <Text style={styles.error}>Please enter a name</Text>}
 				<TextInput placeholder="Name" style={styles.input} value={name} onChangeText={setName} maxLength={12}></TextInput>
 				<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
 					<Text style={styles.btnText}>Create Room</Text>
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
+		color: '#210461',
 	},
 	btn: {
 		marginTop: 20,
@@ -101,9 +102,9 @@ const styles = StyleSheet.create({
 		height: 50,
 		paddingLeft: 20,
 	},
-    error: {
-        color: 'red'
-    }
+	error: {
+		color: 'red',
+	},
 });
 
 export default CreateRoomScreen;

@@ -173,15 +173,18 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
+		color: '#210461',
 	},
 	codeTitle: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
+		color: '#210461',
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
 		fontFamily: 'Neulis700',
+		color: '#210461',
 	},
 	col: {
 		display: 'flex',
