@@ -4,9 +4,12 @@ import { useRouter } from 'expo-router';
 import BackButton from '../components/BackButton';
 import api from '../services/AxiosConfig';
 import { AntDesign } from '@expo/vector-icons';
+import { AppContext } from '../lib/Context';
+import { useContext } from 'react';
 
 const HomeScreen = () => {
 	const router = useRouter();
+	const context = useContext(AppContext);
 
 	const createRoom = () => {
 		api.post('/rooms')
@@ -26,7 +29,7 @@ const HomeScreen = () => {
 			style={{ height: '100%', width: '100%' }}
 		>
 			<SafeAreaView style={styles.container}>
-				<TouchableOpacity style={styles.audio} onPress={() => createRoom()}>
+				<TouchableOpacity style={styles.audio} onPress={() => context.stopBgMusic()}>
 					{/* <AntDesign name="sound" size={55} color="#D7E0EB" /> */}
 					<AntDesign name="sound" size={45} color="#C2E812" />
 				</TouchableOpacity>
@@ -38,7 +41,7 @@ const HomeScreen = () => {
 					<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
 						<Text style={styles.btnText}>Create Room</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('joinroom')}>
 						<Text style={styles.btnText}>Join Room</Text>
 					</TouchableOpacity>
 				</View>
