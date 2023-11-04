@@ -17,7 +17,8 @@ model Room {
 }
 
 model Player {
-    id     Int    @id
+    id     Int    @id @default(autoincrement())
+    name   String @unique
     roomId String
     score  Int
 
