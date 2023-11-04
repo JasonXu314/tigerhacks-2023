@@ -23,13 +23,6 @@ const LobbyScreen = () => {
 	]); // TODO: consider moving this up to context if not persisted across route changes
 	const [contestants, setContestants] = useState<IPlayer[]>([
 		{
-			id: 123,
-			name: 'Cooly',
-			roomId: 'ACSN',
-			score: 1,
-			avatar: 'dolphin',
-		},
-		{
 			id: 113,
 			name: 'BBEBEBE',
 			roomId: 'ACSN',

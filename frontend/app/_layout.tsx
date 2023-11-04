@@ -10,10 +10,10 @@ import { WSProvider } from '../lib/ws';
 
 export {
 	// Catch any errors thrown by the Layout component.
-	ErrorBoundary
+	ErrorBoundary,
 } from 'expo-router';
 export const unstable_settings = {
-	initialRouteName: 'home'
+	initialRouteName: 'home',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -27,7 +27,7 @@ export default function RootLayout() {
 		Neulis700: require('../assets/fonts/NeulisNeue700.ttf'),
 		Neulis800: require('../assets/fonts/NeulisNeue800.ttf'),
 		ProximaNova: require('../assets/fonts/Proxima-Nova.otf'),
-		...FontAwesome.font
+		...FontAwesome.font,
 	});
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -52,14 +52,14 @@ function RootLayoutNav() {
 	const [song, setSong] = useState<ISong>({
 		name: 'Dance The Night',
 		artist: 'Dua Lipa',
-		img: Images.duaLipa,
-		track: 'pathtotrack'
+		img: Images.DuaLipa,
+		track: 'pathtotrack',
 	});
 	const [room, setRoom] = useState('');
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
 	const [name, setName] = useState('');
 	const [avatar, setAvatar] = useState('');
-    const [playingBgMusic, setPlayingBgMusic] = useState(true);
+	const [playingBgMusic, setPlayingBgMusic] = useState(true);
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -69,7 +69,7 @@ function RootLayoutNav() {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false
+			playThroughEarpieceAndroid: false,
 		});
 		const { sound } = await Audio.Sound.createAsync(require('../assets/music/bgmusic.mp3'));
 		sound.setIsLoopingAsync(true);
@@ -93,12 +93,12 @@ function RootLayoutNav() {
 
 	const startBgMusic = async () => {
 		await bgMusic.playAsync();
-        setPlayingBgMusic(true);
+		setPlayingBgMusic(true);
 	};
 
 	const stopBgMusic = async () => {
 		await bgMusic.stopAsync();
-        setPlayingBgMusic(false);
+		setPlayingBgMusic(false);
 	};
 
 	return (
@@ -117,4 +117,3 @@ function RootLayoutNav() {
 		</AppContext.Provider>
 	);
 }
-
