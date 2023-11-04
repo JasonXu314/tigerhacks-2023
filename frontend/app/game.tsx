@@ -1,12 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { useEffect, useContext, useState } from 'react';
-import { AppContext } from '../lib/Context';
-import { Image } from 'react-native';
-import { Avatars } from '../lib/Images';
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
-import { SongList } from '../data/SongList';
+import { useRouter } from 'expo-router';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
+import { AppContext } from '../lib/Context';
+import { Avatars } from '../lib/Images';
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -22,7 +19,7 @@ const GameScreen = () => {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false,
+			playThroughEarpieceAndroid: false
 		});
 		const { sound } = await Audio.Sound.createAsync(context.song.track);
 		sound.setIsLoopingAsync(true);
@@ -37,7 +34,7 @@ const GameScreen = () => {
 			await Audio.requestPermissionsAsync();
 			await Audio.setAudioModeAsync({
 				allowsRecordingIOS: true,
-				playsInSilentModeIOS: true,
+				playsInSilentModeIOS: true
 			});
 
 			console.log('Starting recording..');
@@ -54,11 +51,27 @@ const GameScreen = () => {
 		setRecording(new Audio.Recording());
 		await recording.stopAndUnloadAsync();
 		await Audio.setAudioModeAsync({
-			allowsRecordingIOS: false,
+			allowsRecordingIOS: false
 		});
 		const uri = recording.getURI();
 		console.log('Recording stopped and stored at', uri);
 	}
+
+	const startTicker = useCallback(() => {
+		let startTime = performance.now(),
+			timeout: NodeJS.Timeout;
+		const tick = () => {
+			const delta = performance.now() - startTime;
+
+			// do something with delta
+
+			timeout = setTimeout(tick, 10);
+		};
+
+		timeout = setTimeout(tick, 10);
+
+		return () => clearTimeout(timeout);
+	}, []);
 
 	useEffect(() => {
 		if (context.bgMusic) {
@@ -80,8 +93,7 @@ const GameScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/PlaneBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<Image source={Avatars['bee']} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
@@ -95,18 +107,19 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 20,
+		padding: 20
 	},
 	avatar: {
 		position: 'absolute',
 		bottom: 35,
 		height: 110,
-		width: 110,
+		width: 110
 	},
 	ring: {
 		position: 'absolute',
-		bottom: 0,
-	},
+		bottom: 0
+	}
 });
 
 export default GameScreen;
+
