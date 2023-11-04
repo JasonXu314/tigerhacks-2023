@@ -14,6 +14,7 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.useWebSocketAdapter(new WsAdapter(app));
 
+	app.enableCors({ origin: true });
 	app.use(cookieParser())
 		.useGlobalPipes(new ValidationPipe({ transform: true, transformOptions: { enableImplicitConversion: true } }))
 		.useGlobalFilters(new ErrorPageFilter(app.get(HttpAdapterHost).httpAdapter), new RedirectFilter());
