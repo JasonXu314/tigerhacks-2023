@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/BackButton';
 import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
@@ -18,33 +18,45 @@ const LobbyScreen = () => {
 			name: 'Cooly',
 			roomId: 'ACSN',
 			score: 1,
-		},
+			avatar: 'dolphin'
+		}
 	]); // TODO: consider moving this up to context if not persisted across route changes
 	const [contestants, setContestants] = useState<IPlayer[]>([
+		{
+			id: 123,
+			name: 'Cooly',
+			roomId: 'ACSN',
+			score: 1,
+			avatar: 'dolphin'
+		},
 		{
 			id: 113,
 			name: 'BBEBEBE',
 			roomId: 'ACSN',
 			score: 1,
+			avatar: 'bee'
 		},
 		{
 			id: 1235,
 			name: 'Joe',
 			roomId: 'ACSN',
 			score: 1,
+			avatar: 'cat'
 		},
 		{
 			id: 1234,
 			name: 'Bobb',
 			roomId: 'ACSN',
 			score: 1,
+			avatar: 'chicken'
 		},
 		{
 			id: 12345,
 			name: 'Bob',
 			roomId: 'ACSN',
 			score: 1,
-		},
+			avatar: 'dog'
+		}
 	]);
 	const [host, setHost] = useState<IPlayer>();
 
@@ -84,8 +96,7 @@ const LobbyScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<View>
@@ -108,8 +119,7 @@ const LobbyScreen = () => {
 									players={players}
 									spectators={contestants}
 									setPlayers={setPlayers}
-									setSpectators={setContestants}
-								></Player>
+									setSpectators={setContestants}></Player>
 							))}
 						{players.length < 4 && <View style={styles.slot}></View>}
 						{players.length < 3 && <View style={styles.slot}></View>}
@@ -129,8 +139,7 @@ const LobbyScreen = () => {
 									avatar={'bee'}
 									players={players}
 									setPlayers={setPlayers}
-									setSpectators={setContestants}
-								></Player>
+									setSpectators={setContestants}></Player>
 							))}
 					</ScrollView>
 				</View>
@@ -151,49 +160,50 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white',
+		backgroundColor: 'white'
 	},
 	title: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	codeTitle: {
 		fontSize: 25,
-		fontFamily: 'Neulis500',
+		fontFamily: 'Neulis500'
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
-		fontFamily: 'Neulis700',
+		fontFamily: 'Neulis700'
 	},
 	col: {
 		display: 'flex',
-		gap: 10,
+		gap: 10
 	},
 	row: {
 		display: 'flex',
 		flexDirection: 'row',
-		gap: 10,
+		gap: 10
 	},
 	button: {
 		backgroundColor: '#C2E812',
 		paddingVertical: 13,
 		paddingHorizontal: 50,
 		borderRadius: 30,
-		alignSelf: 'center',
+		alignSelf: 'center'
 	},
 	buttonText: {
 		fontSize: 20,
 		fontFamily: 'Neulis500',
 		color: '#210461',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	slot: {
 		backgroundColor: '#DEDEDE',
 		height: 50,
 		width: 50,
-		borderRadius: 50,
-	},
+		borderRadius: 50
+	}
 });
 
 export default LobbyScreen;
+
