@@ -44,6 +44,10 @@ function RootLayoutNav() {
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false }} />
 			<Stack.Screen name="createroom" options={{ headerShown: false }} />
+			<Stack.Screen name="game" options={{ headerShown: false }} />
+			<Stack.Screen name="joinroom" options={{ headerShown: false }} />
+			<Stack.Screen name="voting" options={{ headerShown: false }} />
+			<Stack.Screen name="winner" options={{ headerShown: false }} />
 		</Stack>
 	);
 }
