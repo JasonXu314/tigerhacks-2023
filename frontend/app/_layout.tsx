@@ -12,7 +12,6 @@ export {
 	// Catch any errors thrown by the Layout component.
 	ErrorBoundary,
 } from 'expo-router';
-
 export const unstable_settings = {
 	initialRouteName: 'home',
 };
@@ -50,11 +49,11 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
 	const [song, setSong] = useState<ISong>({
-        name: 'Dance The Night',
-        artist: 'Dua Lipa',
-        img: Images.duaLipa,
-        track: 'pathtotrack'
-    });
+		name: 'Dance The Night',
+		artist: 'Dua Lipa',
+		img: Images.duaLipa,
+		track: 'pathtotrack',
+	});
 	return (
 		<AppContext.Provider value={{ song, setSong }}>
 			<Stack>
