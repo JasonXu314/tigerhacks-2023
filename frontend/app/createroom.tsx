@@ -44,13 +44,14 @@ const CreateRoomScreen = () => {
 
 	return (
 		<ImageBackground
-			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
+			source={require('../assets/images/BackgroundPic/WelcomeBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%', justifyContent: 'center' }}
 		>
 			<View style={styles.container}>
+				<Text style={styles.title}>Song Wars</Text>
 				<BackButton></BackButton>
-				<Text style={[styles.title]}>Enter Name</Text>
+				<Text style={styles.text}>Enter Name</Text>
 				{error && <Text style={styles.error}>Please enter a name</Text>}
 				<TextInput placeholder="Name" style={styles.input} value={name} onChangeText={setName} maxLength={12}></TextInput>
 				<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
@@ -66,27 +67,33 @@ const CreateRoomScreen = () => {
 
 const styles = StyleSheet.create({
 	container: {
+		backgroundColor: 'white',
 		marginHorizontal: 20,
 		borderRadius: 30,
-		height: '40%',
-		overflow: 'hidden',
-		padding: 25,
-		gap: 10,
-		backgroundColor: 'white',
-		alignItems: 'center',
-		justifyContent: 'center',
+		height: 320,
+		padding: 20,
 	},
 	title: {
-		fontSize: 25,
+		top: -5.55,
+		color: '#210461',
+		fontSize: 33,
+		fontFamily: 'Neulis700',
+		textAlign: 'center',
+	},
+	text: {
 		fontFamily: 'Neulis500',
 		color: '#210461',
+		fontSize: 19,
+		textAlign: 'left',
+		paddingVertical: 5,
 	},
 	btn: {
-		marginTop: 20,
+		marginTop: 17,
 		backgroundColor: '#C2E812',
 		paddingVertical: 12,
 		width: 200,
 		borderRadius: 30,
+		alignSelf: 'center',
 	},
 	btnText: {
 		fontFamily: 'Neulis500',
@@ -95,12 +102,12 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	input: {
-		backgroundColor: '#DEDEDE',
-		padding: 10,
-		borderRadius: 20,
-		width: '100%',
 		height: 50,
+		backgroundColor: '#D7E0EB',
+		borderRadius: 20,
 		paddingLeft: 20,
+		width: '100%',
+		marginVertical: 5,
 	},
 	error: {
 		color: 'red',

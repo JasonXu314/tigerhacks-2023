@@ -8,19 +8,20 @@ const JoinRoomScreen = () => {
 
 	return (
 		<ImageBackground
-			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
+			source={require('../assets/images/BackgroundPic/WelcomeBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%', justifyContent: 'center' }}
 		>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.box}>
 					<BackButton></BackButton>
-					<Text style={styles.text}>Name</Text>
-					<TextInput style={styles.input} />
+					<Text style={styles.title}>Song Wars</Text>
+					<Text style={styles.textOne}>Name</Text>
+					<TextInput placeholder="Enter the name..." style={styles.input} maxLength={12} />
 					<Text style={styles.text}>Room Code</Text>
-					<TextInput style={styles.input} />
+					<TextInput placeholder="Enter the code.." style={styles.input} maxLength={12} />
 
-					<TouchableOpacity style={styles.btn} onPress={() => router.push('voting')}>
+					<TouchableOpacity style={[styles.btn, { alignItems: 'center' }]} onPress={() => router.push('voting')}>
 						<Text style={styles.btnText}>Join Room</Text>
 					</TouchableOpacity>
 				</View>
@@ -30,41 +31,22 @@ const JoinRoomScreen = () => {
 };
 
 const styles = StyleSheet.create({
-	// container: {
-	// 	flex: 1,
-	// 	display: 'flex',
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	flexDirection: 'column',
-	// },
-	// box: {
-	// 	display: 'flex',
-	// 	gap: 16,
-	// 	backgroundColor: 'white',
-	// 	borderRadius: 30,
-	// 	height: 350,
-	// 	width: 300,
-	// 	paddingTop: 70,
-	// 	paddingHorizontal: 30,
-	// },
-	container: {
+	container: {},
+	box: {
+		backgroundColor: 'white',
 		marginHorizontal: 20,
 		borderRadius: 30,
-		height: '40%',
-		overflow: 'hidden',
-		padding: 25,
-		gap: 10,
-		backgroundColor: 'white',
-		alignItems: 'center',
-		justifyContent: 'center',
+		height: 350,
+		padding: 20,
 	},
 	btn: {
+		marginTop: 17,
 		backgroundColor: '#C2E812',
 		paddingVertical: 12,
 		width: 200,
 		borderRadius: 30,
-		marginLeft: 20,
-		marginTop: 10,
+
+		alignSelf: 'center',
 	},
 	btnText: {
 		fontFamily: 'Neulis500',
@@ -74,16 +56,33 @@ const styles = StyleSheet.create({
 	},
 
 	input: {
-		height: 40,
+		height: 50,
 		backgroundColor: '#D7E0EB',
-		borderRadius: 8,
-		paddingHorizontal: 4,
+		borderRadius: 20,
+		paddingLeft: 20,
+		width: '100%',
+		marginVertical: 5,
 	},
 	text: {
 		fontFamily: 'Neulis500',
 		color: '#210461',
-		fontSize: 18,
+		fontSize: 19,
 		textAlign: 'left',
+		paddingBottom: 6,
+	},
+	textOne: {
+		fontFamily: 'Neulis500',
+		color: '#210461',
+		fontSize: 19,
+		textAlign: 'left',
+		paddingVertical: 6,
+	},
+	title: {
+		top: -5.55,
+		color: '#210461',
+		fontSize: 33,
+		fontFamily: 'Neulis700',
+		textAlign: 'center',
 	},
 });
 
