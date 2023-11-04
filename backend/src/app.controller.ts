@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Param, Post, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Room } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { memoryStorage } from 'multer';
 import { AppGateway } from './app.gateway';
 import { AppService } from './app.service';
@@ -17,14 +18,22 @@ export class AppController {
 
 	@Post('/rooms/:id/join')
 	public async joinRoom(@Param('id') id: string, @Body() { name }: JoinRoomDTO): Promise<{ otp: string }> {
-		const player = await this.service.createPlayer(id, name);
 		try {
-			const otp = this.gateway.allocateOTP(id, player);
+			const player = await this.service.createPlayer(id, name);
+			try {
+				const otp = this.gateway.allocateOTP(id, player);
 
-			return { otp };
+				return { otp };
+			} catch (err) {
+				await this.service.deletePlayer(id, player.id);
+				throw err;
+			}
 		} catch (err) {
-			await this.service.deletePlayer(id, player.id);
-			throw err;
+			if (err instanceof PrismaClientKnownRequestError) {
+				throw new BadRequestException('Invalid username');
+			} else {
+				throw err;
+			}
 		}
 	}
 
