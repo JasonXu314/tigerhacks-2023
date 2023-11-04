@@ -58,6 +58,10 @@ const LobbyScreen = () => {
 		// whatever else needs to be done here?
 	});
 
+	if (!data) {
+		return null; // TODO: loading state here
+	}
+
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
