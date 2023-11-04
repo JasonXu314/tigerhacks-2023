@@ -1,7 +1,6 @@
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
-import { AppContext } from '../lib/Context';
-import { useContext } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ISong } from '../interfaces/ISong';
+import { useWS } from '../lib/ws';
 
 interface IProps {
 	song: ISong;
@@ -10,7 +9,8 @@ interface IProps {
 }
 
 const Song = ({ song, nonClickable, setModalVisible }: IProps) => {
-	const context = useContext(AppContext);
+	const { send } = useWS();
+
 	if (nonClickable) {
 		return (
 			<View style={styles.songContainer}>
@@ -26,10 +26,9 @@ const Song = ({ song, nonClickable, setModalVisible }: IProps) => {
 		<TouchableOpacity
 			style={styles.songContainer}
 			onPress={() => {
-				context.setSong(song);
+				send({ type: 'SET_SONG', data: { name: song.name } });
 				setModalVisible(false);
-			}}
-		>
+			}}>
 			<Image source={song.img} style={styles.icon}></Image>
 			<View style={styles.songInfo}>
 				<Text style={styles.songName}>{song.name}</Text>
@@ -47,26 +46,27 @@ const styles = StyleSheet.create({
 		gap: 20,
 		// borderBottomWidth: 2,
 		// borderBottomColor: '#210461',
-		paddingVertical: 7,
+		paddingVertical: 7
 	},
 	songInfo: {
 		display: 'flex',
 		gap: 5,
-		color: '#210461',
+		color: '#210461'
 	},
 	icon: {
 		flex: 1,
 		resizeMode: 'contain',
 		maxHeight: 50,
-		maxWidth: 50,
+		maxWidth: 50
 	},
 	songName: {
 		fontSize: 18,
-		fontWeight: 'bold',
+		fontWeight: 'bold'
 	},
 	songArtist: {
-		fontSize: 14,
-	},
+		fontSize: 14
+	}
 });
 
 export default Song;
+
