@@ -7,6 +7,7 @@ interface IProps {
 	setSong: any;
 	room: string;
 	setRoom: any;
+    bgMusic: boolean;
 	startBgMusic: () => void;
 	stopBgMusic: () => void;
 	name: string;
@@ -25,6 +26,7 @@ export const AppContext = createContext<IProps>({
 	setSong: (a: ISong) => {},
 	room: '',
 	setRoom: (a: string) => {},
+    bgMusic: true,
 	startBgMusic: () => {},
 	stopBgMusic: () => {},
 	name: '',

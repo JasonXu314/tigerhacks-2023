@@ -1,17 +1,30 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useEffect, useContext } from 'react';
+import { AppContext } from '../lib/Context';
+import { Image } from 'react-native';
 
 const GameScreen = () => {
 	const router = useRouter();
+	const context = useContext(AppContext);
+
+	useEffect(() => {
+		if (context.bgMusic) {
+			context.stopBgMusic();
+		}
+	}, []);
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<Text>Hello</Text>
-			<TouchableOpacity onPress={() => router.push('createroom')}>
-				<Text>Create Room</Text>
-			</TouchableOpacity>
-		</SafeAreaView>
+		<ImageBackground
+			source={require('../assets/images/BackgroundPic/PlaneBG.png')}
+			imageStyle={{ resizeMode: 'cover' }}
+			style={{ height: '100%', width: '100%' }}
+		>
+			<View style={styles.container}>
+				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
+			</View>
+		</ImageBackground>
 	);
 };
 
@@ -21,6 +34,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		padding: 20,
+	},
+	ring: {
+		position: 'absolute',
+		bottom: 0,
 	},
 });
 

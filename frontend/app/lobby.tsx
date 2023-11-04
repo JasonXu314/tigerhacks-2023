@@ -18,8 +18,8 @@ const LobbyScreen = () => {
 			name: 'Cooly',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'dolphin'
-		}
+			avatar: 'dolphin',
+		},
 	]); // TODO: consider moving this up to context if not persisted across route changes
 	const [contestants, setContestants] = useState<IPlayer[]>([
 		{
@@ -27,38 +27,39 @@ const LobbyScreen = () => {
 			name: 'Cooly',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'dolphin'
+			avatar: 'dolphin',
 		},
 		{
 			id: 113,
 			name: 'BBEBEBE',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'bee'
+			avatar: 'bee',
 		},
 		{
 			id: 1235,
 			name: 'Joe',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'cat'
+			avatar: 'cat',
 		},
 		{
 			id: 1234,
 			name: 'Bobb',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'chicken'
+			avatar: 'chicken',
 		},
 		{
 			id: 12345,
 			name: 'Bob',
 			roomId: 'ACSN',
 			score: 1,
-			avatar: 'dog'
-		}
+			avatar: 'dog',
+		},
 	]);
 	const [host, setHost] = useState<IPlayer>();
+	const [error, setError] = useState('');
 
 	useWSMessage<InitRoomDTO>('INIT_ROOM', (msg) => {
 		setPlayers(msg.room.players);
@@ -83,6 +84,16 @@ const LobbyScreen = () => {
 		context.setSong(name);
 	});
 
+	const startGame = () => {
+		if (players.length === 0) {
+			setError('Not enough players singing to start. Add some singers!');
+		} else if (players.length === 1 || players.length === 3) {
+			setError('Odd number of singers found. Please only have 2 or 4 singers!');
+		} else {
+			router.push('/game');
+		}
+	};
+
 	useWSMessage<JoinDTO>('JOIN', ({ player }) => {
 		setPlayers((players) => [...players, player]);
 	});
@@ -96,7 +107,8 @@ const LobbyScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}>
+			style={{ height: '100%', width: '100%' }}
+		>
 			<View style={styles.container}>
 				<BackButton></BackButton>
 				<View>
@@ -109,17 +121,19 @@ const LobbyScreen = () => {
 				</View>
 				<View style={styles.col}>
 					<Text style={styles.title}>Singers</Text>
+					{error && <Text style={styles.error}>{error}</Text>}
 					<ScrollView horizontal contentContainerStyle={{ gap: 10 }}>
 						{players &&
 							players.map((player) => (
 								<Player
 									key={player.id}
 									name={player.name}
-									avatar={'bee'}
+									avatar={player.avatar}
 									players={players}
 									spectators={contestants}
 									setPlayers={setPlayers}
-									setSpectators={setContestants}></Player>
+									setSpectators={setContestants}
+								></Player>
 							))}
 						{players.length < 4 && <View style={styles.slot}></View>}
 						{players.length < 3 && <View style={styles.slot}></View>}
@@ -136,14 +150,15 @@ const LobbyScreen = () => {
 									key={player.id}
 									name={player.name}
 									spectators={contestants}
-									avatar={'bee'}
+									avatar={player.avatar}
 									players={players}
 									setPlayers={setPlayers}
-									setSpectators={setContestants}></Player>
+									setSpectators={setContestants}
+								></Player>
 							))}
 					</ScrollView>
 				</View>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity style={styles.button} onPress={() => startGame()}>
 					<Text style={styles.buttonText}>Start</Text>
 				</TouchableOpacity>
 			</View>
@@ -160,50 +175,59 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	title: {
 		fontSize: 25,
-		fontFamily: 'Neulis500'
+		fontFamily: 'Neulis500',
 	},
 	codeTitle: {
 		fontSize: 25,
-		fontFamily: 'Neulis500'
+		fontFamily: 'Neulis500',
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
-		fontFamily: 'Neulis700'
+		fontFamily: 'Neulis700',
 	},
 	col: {
 		display: 'flex',
-		gap: 10
+		gap: 10,
 	},
 	row: {
 		display: 'flex',
 		flexDirection: 'row',
-		gap: 10
+		gap: 10,
 	},
 	button: {
 		backgroundColor: '#C2E812',
 		paddingVertical: 13,
 		paddingHorizontal: 50,
 		borderRadius: 30,
-		alignSelf: 'center'
+		alignSelf: 'center',
+		marginTop: 'auto',
 	},
 	buttonText: {
 		fontSize: 20,
 		fontFamily: 'Neulis500',
 		color: '#210461',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	slot: {
 		backgroundColor: '#DEDEDE',
 		height: 50,
 		width: 50,
-		borderRadius: 50
-	}
+		borderRadius: 50,
+	},
+	error: {
+		color: 'red',
+		fontFamily: 'Neulis',
+		fontSize: 15,
+		borderColor: 'red',
+		borderWidth: 1,
+		padding: 10,
+		borderRadius: 20,
+	},
 });
 
 export default LobbyScreen;
-

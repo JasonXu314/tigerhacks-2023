@@ -59,6 +59,7 @@ function RootLayoutNav() {
 	const [bgMusic, setBgMusic] = useState<Audio.Sound>(new Audio.Sound());
 	const [name, setName] = useState('');
 	const [avatar, setAvatar] = useState('');
+    const [playingBgMusic, setPlayingBgMusic] = useState(true);
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -92,14 +93,16 @@ function RootLayoutNav() {
 
 	const startBgMusic = async () => {
 		await bgMusic.playAsync();
+        setPlayingBgMusic(true);
 	};
 
 	const stopBgMusic = async () => {
 		await bgMusic.stopAsync();
+        setPlayingBgMusic(false);
 	};
 
 	return (
-		<AppContext.Provider value={{ song, setSong, room, setRoom, startBgMusic, stopBgMusic, name, setName, avatar, setAvatar }}>
+		<AppContext.Provider value={{ song, setSong, room, setRoom, bgMusic: playingBgMusic, startBgMusic, stopBgMusic, name, setName, avatar, setAvatar }}>
 			<WSProvider>
 				<Stack>
 					<Stack.Screen name="index" options={{ headerShown: false }} />

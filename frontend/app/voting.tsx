@@ -2,9 +2,24 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { AntDesign } from '@expo/vector-icons';
+import { useEffect, useContext } from 'react';
+import api from '../services/AxiosConfig';
+import { AppContext } from '../lib/Context';
 
 const VotingScreen = () => {
 	const router = useRouter();
+	const context = useContext(AppContext);
+
+	useEffect(() => {
+		let playerid = ''; // TODO: replace with actual id
+		api.get(`/room/${context.room}/recording/${playerid}`)
+        .then((resp) => {
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+	}, []);
 
 	return (
 		<ImageBackground
@@ -16,13 +31,13 @@ const VotingScreen = () => {
 				<View style={styles.playerOne}>
 					<Image source={require('../assets/images/profile-pic/bee.png')} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity style={styles.playBtn}>
+						<TouchableOpacity>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
 						<Text style={styles.songName}>Jason - Super Shy</Text>
 					</View>
 					<TouchableOpacity style={styles.btn}>
-						<Text style={styles.btnText} onPress={() => router.push('winner')}>
+						<Text style={styles.btnText} onPress={() => router.push('/winner')}>
 							Vote
 						</Text>
 					</TouchableOpacity>
@@ -35,12 +50,12 @@ const VotingScreen = () => {
 				<View style={styles.playerTwo}>
 					<Image source={require('../assets/images/profile-pic/unicorn.png')} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity style={styles.playBtn}>
+						<TouchableOpacity>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
 						<Text style={styles.songName}>Jason - Super Shy</Text>
 					</View>
-					<TouchableOpacity style={styles.btn} onPress={() => router.push('winner')}>
+					<TouchableOpacity style={styles.btn} onPress={() => router.push('/winner')}>
 						<Text style={styles.btnText}>Vote</Text>
 					</TouchableOpacity>
 				</View>
