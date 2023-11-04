@@ -1,4 +1,6 @@
-export const LyricsData = {
+import { ILyrics } from "../interfaces/ILyrics";
+
+export const LyricsData: { [string: string]: ILyrics }  = {
 	'Dance The Night': {
 		error: false,
 		syncType: 'LINE_SYNCED',
