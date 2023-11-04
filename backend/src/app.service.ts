@@ -26,6 +26,14 @@ export class AppService {
 		return this.prisma.player.create({ data: { name, score: 0, roomId } });
 	}
 
+	public async deletePlayer(roomId: string, id: number): Promise<Player> {
+		return this.prisma.player.delete({ where: { roomId, id } });
+	}
+
+	public async incrementScore(roomId: string, id: number): Promise<Player> {
+		return this.prisma.player.update({ where: { roomId, id }, data: { score: { increment: 1 } } });
+	}
+
 	private async generateNewRoomId(): Promise<string> {
 		let id: string;
 

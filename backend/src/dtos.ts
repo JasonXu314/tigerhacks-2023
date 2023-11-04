@@ -31,6 +31,11 @@ export class SetSongDTO {
 	name: string = fi();
 }
 
+export class SubmitVoteDTO {
+	@IsNumber()
+	id: number = fi();
+}
+
 export interface ClaimAcknowledgeDTO {
 	type: 'CLAIM_ACK';
 }
