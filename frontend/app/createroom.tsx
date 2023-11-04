@@ -1,16 +1,16 @@
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import SongSelector from '../components/SongSelector';
 import { useState, useEffect } from 'react';
 
 const CreateRoomScreen = () => {
-    const [songSelectorVisible, setSongSelectorVisible] = useState(false);
+	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 
 	return (
 		<SafeAreaView style={styles.container}>
-            <BackButton></BackButton>
-            <SongSelector modalVisible={songSelectorVisible} setModalVisible={setSongSelectorVisible}></SongSelector>
+			<BackButton></BackButton>
+			<SongSelector modalVisible={songSelectorVisible} setModalVisible={setSongSelectorVisible}></SongSelector>
 			<Text>Hello</Text>
 		</SafeAreaView>
 	);
