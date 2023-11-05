@@ -1,4 +1,4 @@
-import { IsIn, IsNumber, IsOptional, IsString, Length } from 'class-validator';
+import { IsNumber, IsString, Length } from 'class-validator';
 import { fi } from './utils/utils';
 
 export class JoinRoomDTO {
@@ -16,8 +16,8 @@ export class AddContestantDTO {
 	@IsNumber()
 	id: number = fi();
 
-	@IsIn(['LEFT', 'RIGHT'])
-	@IsOptional()
+	// @IsIn(['LEFT', 'RIGHT'])
+	// @IsOptional()
 	position?: 'LEFT' | 'RIGHT';
 }
 
@@ -47,3 +47,4 @@ export interface ClientErrorDTO {
 export interface MessageAckDTO {
 	type: 'MESSAGE_ACK';
 }
+
