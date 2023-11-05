@@ -48,17 +48,16 @@ const CreateRoomScreen = () => {
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%', justifyContent: 'center' }}
 		>
-			<View style={styles.container}>
-				<Text style={styles.title}>Song Wars</Text>
+			<View style={styles.box}>
 				<BackButton></BackButton>
-				<Text style={styles.text}>Enter Name</Text>
-				{error && <Text style={styles.error}>Please enter a name</Text>}
-				<TextInput placeholder="Name" style={styles.input} value={name} onChangeText={setName} maxLength={12}></TextInput>
-				<TouchableOpacity style={styles.btn} onPress={() => createRoom()}>
+				<Text style={styles.title}>Song Wars</Text>
+				<View>
+					<Text style={styles.text}>Name</Text>
+					<TextInput placeholder="Enter the name..." style={styles.input} value={name} onChangeText={setName} maxLength={12} />
+				</View>
+
+				<TouchableOpacity style={[styles.btn, { alignItems: 'center' }]} onPress={() => createRoom()}>
 					<Text style={styles.btnText}>Create Room</Text>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.btn} onPress={() => router.push('/lobby')}>
-					<Text style={styles.btnText}>Skip</Text>
 				</TouchableOpacity>
 			</View>
 		</ImageBackground>
@@ -66,34 +65,22 @@ const CreateRoomScreen = () => {
 };
 
 const styles = StyleSheet.create({
-	container: {
+	box: {
 		backgroundColor: 'white',
 		marginHorizontal: 20,
 		borderRadius: 30,
-		height: 320,
-		padding: 20,
-	},
-	title: {
-		top: -5.55,
-		color: '#210461',
-		fontSize: 33,
-		fontFamily: 'Neulis700',
-		textAlign: 'center',
-	},
-	text: {
-		fontFamily: 'Neulis500',
-		color: '#210461',
-		fontSize: 19,
-		textAlign: 'left',
-		paddingVertical: 5,
+		paddingHorizontal: 20,
+		paddingVertical: 40,
+		gap: 15,
+		justifyContent: 'center',
 	},
 	btn: {
-		marginTop: 17,
 		backgroundColor: '#C2E812',
 		paddingVertical: 12,
 		width: 200,
 		borderRadius: 30,
 		alignSelf: 'center',
+		marginTop: 8,
 	},
 	btnText: {
 		fontFamily: 'Neulis500',
@@ -101,16 +88,28 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		textAlign: 'center',
 	},
+
 	input: {
 		height: 50,
 		backgroundColor: '#D7E0EB',
 		borderRadius: 20,
 		paddingLeft: 20,
 		width: '100%',
-		marginVertical: 5,
+        fontSize: 16,
+        marginTop: 2,
 	},
-	error: {
-		color: 'red',
+	text: {
+		fontFamily: 'Neulis500',
+		color: '#210461',
+		fontSize: 19,
+		textAlign: 'left',
+		paddingLeft: 10,
+	},
+	title: {
+		color: '#210461',
+		fontSize: 33,
+		fontFamily: 'Neulis700',
+		textAlign: 'center',
 	},
 });
 

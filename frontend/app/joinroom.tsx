@@ -2,9 +2,12 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ImageBackgr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import BackButton from '../components/BackButton';
+import { useState } from 'react';
 
 const JoinRoomScreen = () => {
 	const router = useRouter();
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
 
 	return (
 		<ImageBackground
@@ -17,11 +20,11 @@ const JoinRoomScreen = () => {
 				<Text style={styles.title}>Song Wars</Text>
 				<View>
 					<Text style={styles.text}>Name</Text>
-					<TextInput placeholder="Enter the name..." style={styles.input} maxLength={12} />
+					<TextInput placeholder="Enter the name..." style={styles.input} maxLength={12} value={name} onChangeText={setName} />
 				</View>
 				<View>
 					<Text style={styles.text}>Room Code</Text>
-					<TextInput placeholder="Enter the code.." style={styles.input} maxLength={12} />
+					<TextInput placeholder="Enter the code.." style={styles.input} maxLength={4} value={code} onChangeText={setCode} autoCapitalize = {"characters"}/>
 				</View>
 
 				<TouchableOpacity style={[styles.btn, { alignItems: 'center' }]} onPress={() => router.push('voting')}>
@@ -33,7 +36,6 @@ const JoinRoomScreen = () => {
 };
 
 const styles = StyleSheet.create({
-	container: {},
 	box: {
 		backgroundColor: 'white',
 		marginHorizontal: 20,
@@ -64,6 +66,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		paddingLeft: 20,
 		width: '100%',
+        fontSize: 16,
+        marginTop: 2,
 	},
 	text: {
 		fontFamily: 'Neulis500',

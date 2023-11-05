@@ -6,6 +6,8 @@ import { AppContext } from '../lib/Context';
 import { Avatars } from '../lib/Images';
 import { LyricsData } from '../data/LyricsData';
 import { ILine } from '../interfaces/ILine';
+import * as FileSystem from 'expo-file-system';
+import api from '../services/AxiosConfig';
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -23,7 +25,8 @@ const GameScreen = () => {
 			if (!status.didJustFinish) {
 				return;
 			}
-			// stopRecording()
+			stopRecording();
+
 			// send recording and then move screens
 		}
 	}
@@ -72,8 +75,30 @@ const GameScreen = () => {
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 		});
-		const uri = recording.getURI();
-		console.log('Recording stopped and stored at', uri);
+		const recordingUri = recording.getURI();
+		if (recordingUri) {
+			const recordingBase64 = await FileSystem.readAsStringAsync(recordingUri, {
+				encoding: FileSystem.EncodingType.Base64,
+			});
+			const languageCode = 'en';
+			console.log(languageCode);
+			console.log(recordingBase64);
+
+			const buffer = Buffer.from(recordingBase64, 'base64');
+			const blob = new Blob([buffer], { type: 'audio/mp3' });
+			const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            api.post(`/room${context.room}/recording`, formData)
+            .then((resp) => {
+                console.log(resp)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+		}
 	}
 
 	const startTicker = useCallback(() => {
@@ -98,7 +123,7 @@ const GameScreen = () => {
 					}
 					return words;
 				});
-                setAhead(lines[lines.indexOf(line) - 1].words);
+				setAhead(lines[lines.indexOf(line) - 1].words);
 			}
 
 			timeout = setTimeout(tick, 10);
@@ -115,29 +140,39 @@ const GameScreen = () => {
 		const tick = () => {
 			const delta = performance.now() - startTime;
 			if (delta > 3000) {
-				setWords((words) => [...words, {
-                    startTimeMs: '0',
-                    words: '1',
-                    syllables: [],
-                    endTimeMs: '',
-                }]);
+				setWords((words) => [
+					...words,
+					{
+						startTimeMs: '0',
+						words: '1',
+						syllables: [],
+						endTimeMs: '',
+					},
+				]);
+				startRecording();
 				playSound();
 				startTicker();
 				return;
 			} else if (delta > 2000) {
-                setWords((words) => [...words, {
-                    startTimeMs: '0',
-                    words: '2',
-                    syllables: [],
-                    endTimeMs: '',
-                }]);
+				setWords((words) => [
+					...words,
+					{
+						startTimeMs: '0',
+						words: '2',
+						syllables: [],
+						endTimeMs: '',
+					},
+				]);
 			} else if (delta > 1000) {
-                setWords((words) => [...words, {
-                    startTimeMs: '0',
-                    words: '3',
-                    syllables: [],
-                    endTimeMs: '',
-                }]);
+				setWords((words) => [
+					...words,
+					{
+						startTimeMs: '0',
+						words: '3',
+						syllables: [],
+						endTimeMs: '',
+					},
+				]);
 			}
 
 			timeout = setTimeout(tick, 1000);
@@ -153,7 +188,6 @@ const GameScreen = () => {
 			context.stopBgMusic();
 		}
 		secondTicker();
-		// startRecording();
 	}, []);
 
 	useEffect(() => {
@@ -223,7 +257,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	lyricsContainer: {
-        paddingTop: 40,
+		paddingTop: 40,
 		display: 'flex',
 		maxHeight: '50%',
 		overflow: 'hidden',

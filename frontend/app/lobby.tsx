@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useContext, useMemo, useState } from 'react';
 import { ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BackButton from '../components/BackButton';
+import Loading from '../components/Loading';
 import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { AppContext } from '../lib/Context';
@@ -59,7 +60,7 @@ const LobbyScreen = () => {
 	});
 
 	if (!data) {
-		return null; // TODO: loading state here
+		return <Loading></Loading>;
 	}
 
 	return (
