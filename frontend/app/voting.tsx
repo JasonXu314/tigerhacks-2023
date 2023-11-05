@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		color: '#C2E812',
-		fontSize: 35,
+		fontSize: 55,
 		fontFamily: 'Neulis800',
 		textAlign: 'center',
 		paddingHorizontal: 15,
