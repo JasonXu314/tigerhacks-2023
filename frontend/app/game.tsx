@@ -8,6 +8,7 @@ import { LyricsData } from '../data/LyricsData';
 import { ILine } from '../interfaces/ILine';
 import * as FileSystem from 'expo-file-system';
 import api from '../services/AxiosConfig';
+import { SongList } from '../data/SongList';
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -42,7 +43,7 @@ const GameScreen = () => {
 			playThroughEarpieceAndroid: false,
 		});
 
-		const { sound } = await Audio.Sound.createAsync(context.song.track);
+		const { sound } = await Audio.Sound.createAsync(SongList.find((sng) => sng.name === context.song)!.track);
 
 		sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
@@ -102,7 +103,7 @@ const GameScreen = () => {
 	}
 
 	const startTicker = useCallback(() => {
-		const lines = LyricsData[context.song.name].lines.reverse();
+		const lines = LyricsData[context.name].lines.reverse();
 		let startTime = performance.now(),
 			timeout: NodeJS.Timeout;
 		const tick = () => {
