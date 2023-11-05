@@ -4,7 +4,7 @@ import { Player, Room } from '@prisma/client';
 import { randomBytes, randomInt } from 'crypto';
 import { WebSocket } from 'ws';
 import { AppService } from './app.service';
-import { AddContestantDTO, ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, RemoveContestantDTO, SetSongDTO, SubmitVoteDTO } from './dtos';
+import { AddContestantDTO, ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, MessageAckDTO, RemoveContestantDTO, SetSongDTO, SubmitVoteDTO } from './dtos';
 import { AVATARS } from './utils/utils';
 
 interface PlayerData extends Player {
@@ -179,7 +179,10 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('ADD_CONTESTANT')
-	public async addContestant(@MessageBody() { id, position }: AddContestantDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+	public async addContestant(
+		@MessageBody() { id, position }: AddContestantDTO,
+		@ConnectedSocket() client: WebSocket
+	): Promise<ClientErrorDTO | MessageAckDTO> {
 		this.logger.log(`adding contestant ${id}`);
 		const data = this._resolve(client);
 
@@ -203,22 +206,22 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 				// TODO: revisit this if we do implement stage part
 				room.contestants[0] = contestant;
 				room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id, position })));
-				return;
+				return { type: 'MESSAGE_ACK' };
 			} else if (position === 'RIGHT') {
 				room.contestants[1] = contestant;
 				room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id, position })));
-				return;
+				return { type: 'MESSAGE_ACK' };
 			} else {
 				if (!room.contestants[0]) {
 					this.logger.log('assigning to place 1');
 					room.contestants[0] = contestant;
 					room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id })));
-					return;
+					return { type: 'MESSAGE_ACK' };
 				} else if (!room.contestants[1]) {
-					this.logger.log('assigning to place 1');
+					this.logger.log('assigning to place 2');
 					room.contestants[1] = contestant;
 					room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id })));
-					return;
+					return { type: 'MESSAGE_ACK' };
 				} else {
 					return { type: 'CLIENT_ERROR' };
 				}

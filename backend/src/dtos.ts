@@ -44,3 +44,6 @@ export interface ClientErrorDTO {
 	type: 'CLIENT_ERROR';
 }
 
+export interface MessageAckDTO {
+	type: 'MESSAGE_ACK';
+}
