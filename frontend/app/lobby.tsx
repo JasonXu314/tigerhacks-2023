@@ -67,7 +67,7 @@ const LobbyScreen = () => {
 	if (!data) {
 		return <Loading></Loading>;
 	}
-	console.log(contestants);
+
 	return (
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}

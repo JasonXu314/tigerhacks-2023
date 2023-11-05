@@ -2,12 +2,33 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ImageBackgr
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import BackButton from '../components/BackButton';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import api from '../services/AxiosConfig';
+import { AppContext } from '../lib/Context';
+import { useWS } from '../lib/ws';
 
 const JoinRoomScreen = () => {
 	const router = useRouter();
-    const [name, setName] = useState('');
-    const [code, setCode] = useState('');
+	const [name, setName] = useState('');
+	const [code, setCode] = useState('');
+	const context = useContext(AppContext);
+    const { connect } = useWS();
+
+	const joinRoom = () => {
+		api.post<{ otp: string }>(`/rooms/${code}/join`, {
+			name,
+		})
+			.then((res) => {
+				const { otp } = res.data;
+				context.setName(name);
+
+				connect(otp);
+				router.push('/lobby');
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
 
 	return (
 		<ImageBackground
@@ -24,10 +45,17 @@ const JoinRoomScreen = () => {
 				</View>
 				<View>
 					<Text style={styles.text}>Room Code</Text>
-					<TextInput placeholder="Enter the code.." style={styles.input} maxLength={4} value={code} onChangeText={setCode} autoCapitalize = {"characters"}/>
+					<TextInput
+						placeholder="Enter the code.."
+						style={styles.input}
+						maxLength={4}
+						value={code}
+						onChangeText={setCode}
+						autoCapitalize={'characters'}
+					/>
 				</View>
 
-				<TouchableOpacity style={[styles.btn, { alignItems: 'center' }]} onPress={() => router.push('voting')}>
+				<TouchableOpacity style={[styles.btn, { alignItems: 'center' }]} onPress={() => joinRoom()}>
 					<Text style={styles.btnText}>Join Room</Text>
 				</TouchableOpacity>
 			</View>
@@ -66,8 +94,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		paddingLeft: 20,
 		width: '100%',
-        fontSize: 16,
-        marginTop: 2,
+		fontSize: 16,
+		marginTop: 2,
 	},
 	text: {
 		fontFamily: 'Neulis500',
