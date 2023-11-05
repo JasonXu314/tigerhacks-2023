@@ -41,6 +41,7 @@ export class AppController {
 	@HttpCode(HttpStatus.OK)
 	@UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
 	public submitRecording(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body('id') userId: string): void {
+		console.log(file.size);
 		this.gateway.submitRecording(id, Number(userId), file.buffer);
 	}
 
