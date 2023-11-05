@@ -24,8 +24,8 @@ interface Session extends Room {
 @WebSocketGateway({ path: '/gateway' })
 export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisconnect<WebSocket> {
 	private readonly logger = new ConsoleLogger('Gateway');
-	private readonly rooms: Session[] = [];
 	private readonly sockTimeouts: Map<WebSocket, NodeJS.Timeout> = new Map();
+	private rooms: Session[] = [];
 
 	public constructor(@Inject(forwardRef(() => AppService)) private readonly service: AppService) {}
 
@@ -138,6 +138,13 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 				if (client === player.socket) {
 					this.logger.log(`player ${player.id} disconnected`);
 					room.players = room.players.filter((p) => p !== player);
+					if (player === room.host) {
+						room.players.forEach(({ socket }) => {
+							socket.send(JSON.stringify({ type: 'ROOM_CLOSE' }));
+							socket.close(1000);
+						});
+						this.rooms = this.rooms.filter((r) => r !== room);
+					}
 					return;
 				}
 			}
@@ -282,7 +289,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('START_GAME')
-	public async startGame(@MessageBody() { name }: SetSongDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+	public async startGame(@ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
 		const data = this._resolve(client);
 
 		if (!data) {
@@ -296,7 +303,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 			return { type: 'CLIENT_ERROR' };
 		}
 
-		room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'START_GAME', name })));
+		room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'START_GAME' })));
 	}
 
 	@SubscribeMessage('SUBMIT_VOTE')
