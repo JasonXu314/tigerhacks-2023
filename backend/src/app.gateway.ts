@@ -184,6 +184,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		const data = this._resolve(client);
 
 		if (!data) {
+			this.logger.log('no data, closing socket');
 			client.close();
 			return { type: 'CLIENT_ERROR' };
 		}
@@ -195,6 +196,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		}
 
 		const contestant = room.players.find((p) => p.id === id);
+		this.logger.log('found contestant');
 
 		if (contestant) {
 			if (position === 'LEFT') {
@@ -208,10 +210,12 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 				return;
 			} else {
 				if (!room.contestants[0]) {
+					this.logger.log('assigning to place 1');
 					room.contestants[0] = contestant;
 					room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id })));
 					return;
 				} else if (!room.contestants[1]) {
+					this.logger.log('assigning to place 1');
 					room.contestants[1] = contestant;
 					room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'ADD_CONTESTANT', id })));
 					return;
@@ -219,6 +223,8 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 					return { type: 'CLIENT_ERROR' };
 				}
 			}
+		} else {
+			return { type: 'CLIENT_ERROR' };
 		}
 	}
 
