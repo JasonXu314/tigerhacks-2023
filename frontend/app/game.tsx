@@ -1,7 +1,7 @@
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS, AVPlaybackStatus } from 'expo-av';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useContext, useEffect, useState, useRef } from 'react';
-import { Image, ImageBackground, StyleSheet, View, Text, ScrollView } from 'react-native';
+import { Image, ImageBackground, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { AppContext } from '../lib/Context';
 import { Avatars } from '../lib/Images';
 import { LyricsData } from '../data/LyricsData';
@@ -223,6 +223,7 @@ const GameScreen = () => {
 						<Text style={styles.ahead}>{ahead}</Text>
 					</ScrollView>
 				</View>
+                <TouchableOpacity onPress={() => stopRecording()}><Text>Stop Recording</Text></TouchableOpacity>
 
 				<Image source={Avatars['bee']} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>

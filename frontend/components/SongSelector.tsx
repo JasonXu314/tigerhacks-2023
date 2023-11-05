@@ -48,7 +48,7 @@ const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 				</Pressable>
 			</Modal>
 			<TouchableOpacity style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
-				<Song song={context.song} setModalVisible={setModalVisible} nonClickable={true}></Song>
+				<Song song={SongList.find((sng) => sng.name === context.song)!} setModalVisible={setModalVisible} nonClickable={true}></Song>
 			</TouchableOpacity>
 		</View>
 	);
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 30,
 	},
 	buttonOpen: {
-		backgroundColor: '#ccf1fc',
+		backgroundColor: '#F194FF',
 	},
 	buttonClose: {
 		backgroundColor: '#2196F3',
