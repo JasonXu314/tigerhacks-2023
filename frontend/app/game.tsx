@@ -93,7 +93,7 @@ const GameScreen = () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            api.post(`/room${context.room}/recording`, formData)
+            api.post(`/room/${context.room}/submit`, formData)
             .then((resp) => {
                 console.log(resp)
             })
