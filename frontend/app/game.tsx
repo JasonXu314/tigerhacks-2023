@@ -113,7 +113,7 @@ const GameScreen = () => {
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						const length = line.words.split(' ').length;
-						const time = lines[idx + 1] ? parseInt(lines[idx + 1].startTimeMs) - delta : delta - parseInt(lines[idx - 1].startTimeMs); // meh heuristic
+						const time = Math.abs(lines[idx + 1] ? parseInt(lines[idx + 1].startTimeMs) - delta : delta - parseInt(lines[idx - 1].startTimeMs)); // meh heuristic
 						const step = time / length;
 						console.log(time, length, step);
 
@@ -237,7 +237,7 @@ const GameScreen = () => {
 							scrollViewRef.current.scrollToEnd({ animated: true });
 						}}>
 						{words.map((line, i) => (
-							<View key={i} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10}}>
+							<View key={i} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10 }}>
 								{line.words.split(' ').map((word, j) => (
 									<Text key={j} style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>
 										{word}
