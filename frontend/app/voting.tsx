@@ -90,7 +90,7 @@ const VotingScreen = () => {
 						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)}>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
-						<Text style={styles.songName}>Jason - Super Shy</Text>
+						<Text style={styles.songName}>{player1?.name} - {context.song}</Text>
 					</View>
 					<TouchableOpacity
 						disabled={voted === 'top'}
@@ -109,15 +109,15 @@ const VotingScreen = () => {
 					<Image source={require('../assets/images/MicRight.png')} style={styles.icon}></Image>
 				</View>
 				<View style={styles.playerTwo}>
-					<Image source={require('../assets/images/profile-pic/unicorn.png')} style={styles.pfp}></Image>
+					<Image source={Avatars[player2?.avatar!]} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)}>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
-						<Text style={styles.songName}>Jason - Super Shy</Text>
+						<Text style={styles.songName}>{player2?.name} - {context.song}</Text>
 					</View>
 					<TouchableOpacity
-						style={[styles.btn, voted === 'top' ? { backgroundColor: 'lightgrey' } : {}]}
+						style={[styles.btn, voted === 'bottom' ? { backgroundColor: 'lightgrey' } : {}]}
 						disabled={voted === 'bottom'}
 						onPress={() => {
 							setVoted('bottom');
