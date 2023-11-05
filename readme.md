@@ -16,11 +16,11 @@ It all started with a passion for singing. I wasn't a pro singer by any chance, 
 
 ## How we built it 🎮
 
-We used React Native for the frontend, Rest API WebSockets backed by Prisma connection to MySQL database. All file storage is handled in memory and thrown out when needed. For the framework, we used raw WebSockets and nestJS, because that is the fastest way to develop scalable prototypes. For lyrics animation we incorporated a double timer using nested tail recursion. Allocated new mySQL and user to compile with the principle least privilege to go along with it to ensure data separation and integrity.
+We used React Native for the frontend, and implemented a Rest API & WebSocket Gateway backed by a Prisma connection to MySQL database. All file storage is handled in memory and discarded when needed. For the backend framework, we used raw WebSockets and NestJS, because that is the fastest way to develop scalable prototypes. For lyrics animation we incorporated a from-scratch double timer using nested tail recursion in order to try and mitigate timing imprecision. We also allocated a new MySQL and user to comply with the principle of least privilege to go along with it to ensure data separation and integrity.
 
 ## Challenges we ran into 🏋️
 
-Coming up with an upbeat design and pleasant user experience. Developing the whole structure of the game, writing the game logic, and separating users into spectators and singers. Dealing with audio files in React Native and handling the errors was the big part of the struggles. We couldn't figure out for a long time how to get back the audio recorded from user from buffer tp return it back. The blackened is hosted on our server, and we needed to handle it with NGINX. "Nginx [engine x] is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP/UDP proxy server". We needed to configure proxy settings to handle webSocket connection.
+Coming up with an upbeat design and pleasant user experience. Developing the whole structure of the game, writing the game logic, and separating users into spectators and singers. Dealing with audio files in React Native and handling the errors was the big part of the struggles. We couldn't figure out for a long time how to get back the audio recorded from user from buffer tp return it back. The backend is hosted on our server, using NGINX as a HTTP reverse proxy. We needed to configure NGINX settings to handle webSocket connection.
 
 ## Accomplishments that we're proud of 🏅
 
