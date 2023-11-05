@@ -12,6 +12,7 @@ import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
 import { Buffer } from 'buffer';
 import { Avatars } from '../lib/Images';
 import Loading from '../components/Loading';
+import * as FileSystem from 'expo-file-system';
 
 interface VotePlayer {
 	player: IPlayer;
@@ -25,9 +26,10 @@ const VotingScreen = () => {
 	const { data, setResults, incrementScore } = useGame();
 	const contestants = useMemo(() => data!.contestants, [data]);
 	const [voted, setVoted] = useState<'top' | 'bottom' | ''>('');
-	const [player1, setPlayer1] = useState<VotePlayer>();
-	const [player2, setPlayer2] = useState<VotePlayer>();
-    const [init, setInit] = useState(true);
+	const [player1, setPlayer1] = useState<IPlayer>();
+	const [player2, setPlayer2] = useState<IPlayer>();
+	const [init, setInit] = useState(true);
+	const [song, setSong] = useState<Audio.Sound>(new Audio.Sound());
 
 	useWSMessage<VotingEndDTO>('VOTING_END', ({ result }) => {
 		setResults(result);
@@ -40,23 +42,27 @@ const VotingScreen = () => {
 	useEffect(() => {
 		if (data) {
 			const contestants = data.contestants;
-			api.get(`/room/${context.room}/recording/${contestants[0].id}`)
-				.then((resp: any) => {
-					const blob = new Blob([resp], { type: 'audio/mp3' });
-					const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
-					setPlayer1({
-						player: contestants[0],
-						recording: file,
-					});
-                    setInit(false);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+            setPlayer1(contestants[0]);
+            setPlayer2(contestants[1]);
+			// playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`);
+			// api.get(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)
+			// 	.then((resp: any) => {
+			// 		const blob = new Blob([resp], { type: 'audio/mp3' });
+			// 		const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
+			//         playSound()
+			// 		setPlayer1({
+			// 			player: contestants[0],
+			// 			recording: file,
+			// 		});
+			// 		setInit(false);
+			// 	})
+			// 	.catch((err) => {
+			// 		console.log(err);
+			// 	});
 		}
 	}, []);
 
-    async function playSound(file: File) {
+	async function playSound(uri: string) {
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			staysActiveInBackground: true,
@@ -67,16 +73,22 @@ const VotingScreen = () => {
 			playThroughEarpieceAndroid: false,
 		});
 
-		const { sound } = await Audio.Sound.createAsync(file);
-
-		// sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+		const { sound } = await Audio.Sound.createAsync({ uri });
 
 		setSong(sound);
 
 		await sound.playAsync();
 	}
 
-    if (init) return <Loading></Loading>
+	useEffect(() => {
+		return song
+			? () => {
+					song.unloadAsync();
+			  }
+			: undefined;
+	}, [song]);
+
+	if (init) return <Loading></Loading>;
 
 	return (
 		<ImageBackground
@@ -86,9 +98,9 @@ const VotingScreen = () => {
 		>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.playerOne}>
-					<Image source={Avatars[player1?.player.avatar!]} style={styles.pfp}></Image>
+					<Image source={Avatars[player1?.avatar!]} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)}>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
 						<Text style={styles.songName}>Jason - Super Shy</Text>
