@@ -25,17 +25,26 @@ const WinnerScreen = () => {
 				<View style={styles.box}>
 					<Text style={styles.p}>Winner of this match is..</Text>
 					<Image source={require('../assets/images/Emoji.png')} style={styles.emoji}></Image>
-					<Text style={styles.pWinner}>{results === 'TIED' ? `${data?.contestants[0]} and ${data?.contestants[1]}` : results?.winner}!</Text>
+					<Text style={styles.pWinner}>
+						{results === 'TIED'
+							? `${data?.contestants[0]} and ${data?.contestants[1]}`
+							: data?.players.find((player) => player.id === results?.winner)?.name}
+					</Text>
 					<Text style={styles.p}>Votes: {results === 'TIED' ? `${data?.players.length! - 2}` : results?.votes}</Text>
-					<Text style={styles.pLoser}>But don't get upset, Player2, you had 0 votes!</Text>
+					{results !== 'TIED' && (
+						<Text style={styles.pLoser}>
+							But don't get upset, {data?.contestants.find((player) => player.id !== results?.winner)!.name}, you had{' '}
+							{results?.votes! - data?.players.length! - 2} votes!
+						</Text>
+					)}
 
 					{/* TODO: this is not how to rematch, send CLOSE_ROUND websocket event */}
 					<TouchableOpacity
 						style={styles.btn}
 						onPress={() => {
 							router.back();
-                            router.back();
-                            router.back();
+							router.back();
+							router.back();
 						}}
 					>
 						<Text style={styles.btnText}>Rematch</Text>
