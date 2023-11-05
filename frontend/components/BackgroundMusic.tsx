@@ -27,7 +27,7 @@ const BackgroundMusic = () => {
 const styles = StyleSheet.create({
 	audio: {
 		position: 'absolute',
-		top: 20,
+		top: 70,
 		right: 25,
 		zIndex: 99,
 	},
