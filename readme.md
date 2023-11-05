@@ -22,7 +22,7 @@ We used React Native for the frontend, and implemented a Rest API & WebSocket Ga
 
 ## Challenges we ran into 🏋️
 
-Coming up with an upbeat design and pleasant user experience. Developing the whole structure of the game, writing the game logic, and separating users into spectators and singers. Dealing with audio files in React Native and handling the errors was the big part of the struggles. We couldn't figure out for a long time how to get back the audio recorded from user from buffer tp return it back. The backend is hosted on our server, using NGINX as a HTTP reverse proxy. We needed to configure NGINX settings to handle webSocket connection.
+Coming up with an upbeat design and pleasant user experience. Developing the whole structure of the game, writing the game logic, and separating users into spectators and singers. Dealing with audio files in React Native and handling the errors was the big part of the struggles. We couldn't figure out for a long time how to get back the audio recorded from user from buffer tp return it back. The backend is hosted on our server, using NGINX as a HTTP reverse proxy. We needed to configure NGINX settings to handle webSocket connection & ensure that the sockets were not automatically timed out by NGINX.
 
 ## Accomplishments that we're proud of 🏅
 
