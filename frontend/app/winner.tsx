@@ -34,7 +34,7 @@ const WinnerScreen = () => {
 					{results !== 'TIED' && (
 						<Text style={styles.pLoser}>
 							But don't get upset, {data?.contestants.find((player) => player.id !== results?.winner)!.name}, you had{' '}
-							{results?.votes! - data?.players.length! - 2} votes!
+							{data?.players.length! - 2 - results?.votes!} votes!
 						</Text>
 					)}
 
