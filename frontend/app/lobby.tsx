@@ -8,6 +8,7 @@ import SongSelector from '../components/SongSelector';
 import { AppContext } from '../lib/Context';
 import { useGame } from '../lib/game-data';
 import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWS, useWSMessage } from '../lib/ws';
+import { Foundation } from '@expo/vector-icons';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
@@ -42,7 +43,7 @@ const LobbyScreen = () => {
 	});
 
 	const startGame = () => {
-		if (contestants.length < 2 ) {
+		if (contestants.length < 2) {
 			setError('Not enough players singing to start. Add some singers!');
 		} else {
 			send({ event: 'START_GAME' });
@@ -70,7 +71,8 @@ const LobbyScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/DefaultBackground.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}>
+			style={{ height: '100%', width: '100%' }}
+		>
 			<View style={styles.container}>
 				<BackButton onPress={() => disconnect()}></BackButton>
 				<View>
@@ -135,32 +137,32 @@ const styles = StyleSheet.create({
 		overflow: 'hidden',
 		padding: 25,
 		gap: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	title: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
-		color: '#210461'
+		color: '#210461',
 	},
 	codeTitle: {
 		fontSize: 25,
 		fontFamily: 'Neulis500',
-		color: '#210461'
+		color: '#210461',
 	},
 	code: {
 		fontSize: 30,
 		textAlign: 'center',
 		fontFamily: 'Neulis700',
-		color: '#210461'
+		color: '#210461',
 	},
 	col: {
 		display: 'flex',
-		gap: 10
+		gap: 10,
 	},
 	row: {
 		display: 'flex',
 		flexDirection: 'row',
-		gap: 10
+		gap: 10,
 	},
 	button: {
 		backgroundColor: '#C2E812',
@@ -168,19 +170,19 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 50,
 		borderRadius: 30,
 		alignSelf: 'center',
-		marginTop: 'auto'
+		marginTop: 'auto',
 	},
 	buttonText: {
 		fontSize: 20,
 		fontFamily: 'Neulis500',
 		color: '#210461',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	slot: {
 		backgroundColor: '#DEDEDE',
 		height: 50,
 		width: 50,
-		borderRadius: 50
+		borderRadius: 50,
 	},
 	error: {
 		color: 'red',
@@ -189,9 +191,8 @@ const styles = StyleSheet.create({
 		borderColor: 'red',
 		borderWidth: 1,
 		padding: 10,
-		borderRadius: 20
-	}
+		borderRadius: 20,
+	},
 });
 
 export default LobbyScreen;
-
