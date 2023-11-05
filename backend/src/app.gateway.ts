@@ -180,7 +180,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 	@SubscribeMessage('ADD_CONTESTANT')
 	public async addContestant(@MessageBody() { id, position }: AddContestantDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
-		console.log(`adding contestant ${id}`);
+		this.logger.log(`adding contestant ${id}`);
 		const data = this._resolve(client);
 
 		if (!data) {
@@ -224,7 +224,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 	@SubscribeMessage('REMOVE_CONTESTANT')
 	public async removeContestant(@MessageBody() { id }: RemoveContestantDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
-		console.log(`removing contestant ${id}`);
+		this.logger.log(`removing contestant ${id}`);
 		const data = this._resolve(client);
 
 		if (!data) {
