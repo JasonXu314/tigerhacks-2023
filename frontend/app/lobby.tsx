@@ -90,7 +90,7 @@ const LobbyScreen = () => {
 									name={player.name}
 									avatar={player.avatar}
 									contestants={contestants}
-									isHost={player.id === host?.id}
+									isHost={context.name === host?.name} // Should be using id but whatever
 								/>
 							))}
 						{contestants.length < 4 && <View style={styles.slot}></View>}
@@ -112,7 +112,7 @@ const LobbyScreen = () => {
 										name={player.name}
 										avatar={player.avatar}
 										contestants={contestants}
-										isHost={player.id === host?.id}
+										isHost={context.name === host?.name}
 									/>
 								))}
 					</ScrollView>

@@ -14,6 +14,7 @@ interface IProps {
 
 const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => {
 	const { send } = useWS();
+	console.log(isHost);
 
 	const swapSides = () => {
 		if (contestants.some((p) => p.id === id)) {
