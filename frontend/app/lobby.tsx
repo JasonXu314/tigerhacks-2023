@@ -74,7 +74,7 @@ const LobbyScreen = () => {
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
-				<BackButton></BackButton>
+				<BackButton onPress={() => send({ event: 'LEAVE_ROOM' })}></BackButton>
 				<View>
 					<Text style={[styles.codeTitle, { textAlign: 'center' }]}>Room Code</Text>
 					<Text style={styles.code}>{context.room}</Text>
