@@ -103,7 +103,7 @@ const GameScreen = () => {
 	}
 
 	const startTicker = useCallback(() => {
-		const lines = LyricsData[context.name].lines.reverse();
+		const lines = LyricsData[context.song].lines.reverse();
 		let startTime = performance.now(),
 			timeout: NodeJS.Timeout;
 		const tick = () => {

@@ -42,10 +42,8 @@ const LobbyScreen = () => {
 	});
 
 	const startGame = () => {
-		if (contestants.length === 0) {
+		if (contestants.length < 2 ) {
 			setError('Not enough players singing to start. Add some singers!');
-		} else if (contestants.length === 1 || contestants.length === 3) {
-			setError('Odd number of singers found. Please only have 2 or 4 singers!');
 		} else {
 			send({ event: 'START_GAME' });
 		}
@@ -98,8 +96,6 @@ const LobbyScreen = () => {
 									isHost={context.name === host?.name} // Should be using id but whatever
 								/>
 							))}
-						{contestants.length < 4 && <View style={styles.slot}></View>}
-						{contestants.length < 3 && <View style={styles.slot}></View>}
 						{contestants.length < 2 && <View style={styles.slot}></View>}
 						{contestants.length < 1 && <View style={styles.slot}></View>}
 					</ScrollView>
