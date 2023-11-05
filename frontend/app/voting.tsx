@@ -1,18 +1,15 @@
 import { AntDesign } from '@expo/vector-icons';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useRouter } from 'expo-router';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Loading from '../components/Loading';
 import { IPlayer } from '../interfaces/IPlayer';
 import { AppContext } from '../lib/Context';
+import { Avatars } from '../lib/Images';
 import { useGame } from '../lib/game-data';
 import { VotingEndDTO, useWS, useWSMessage } from '../lib/ws';
-import api from '../services/AxiosConfig';
-import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from 'expo-av';
-import { Buffer } from 'buffer';
-import { Avatars } from '../lib/Images';
-import Loading from '../components/Loading';
-import * as FileSystem from 'expo-file-system';
 
 interface VotePlayer {
 	player: IPlayer;
@@ -57,7 +54,7 @@ const VotingScreen = () => {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false,
+			playThroughEarpieceAndroid: false
 		});
 
 		const { sound } = await Audio.Sound.createAsync({ uri });
@@ -81,16 +78,17 @@ const VotingScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/VoteBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<SafeAreaView style={styles.container}>
 				<View style={styles.playerOne}>
 					<Image source={Avatars[player1?.avatar!]} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)}>
+						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/rooms/${context.room}/recordings/${contestants[0].id}`)}>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
-						<Text style={styles.songName}>{player1?.name} - {context.song}</Text>
+						<Text style={styles.songName}>
+							{player1?.name} - {context.song}
+						</Text>
 					</View>
 					<TouchableOpacity
 						disabled={voted === 'top'}
@@ -98,8 +96,7 @@ const VotingScreen = () => {
 						onPress={() => {
 							setVoted('top');
 							send({ event: 'SUBMIT_VOTE', data: { id: contestants[0].id } });
-						}}
-					>
+						}}>
 						<Text style={styles.btnText}>{voted === 'top' ? 'Voted' : 'Vote'}</Text>
 					</TouchableOpacity>
 				</View>
@@ -111,10 +108,12 @@ const VotingScreen = () => {
 				<View style={styles.playerTwo}>
 					<Image source={Avatars[player2?.avatar!]} style={styles.pfp}></Image>
 					<View style={styles.audio}>
-						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)}>
+						<TouchableOpacity onPress={() => playSound(`https://hktn.jasonxu.dev/rooms/${context.room}/recordings/${contestants[0].id}`)}>
 							<AntDesign name="playcircleo" size={30} color="#210461" style={styles.icon} />
 						</TouchableOpacity>
-						<Text style={styles.songName}>{player2?.name} - {context.song}</Text>
+						<Text style={styles.songName}>
+							{player2?.name} - {context.song}
+						</Text>
 					</View>
 					<TouchableOpacity
 						style={[styles.btn, voted === 'bottom' ? { backgroundColor: 'lightgrey' } : {}]}
@@ -122,8 +121,7 @@ const VotingScreen = () => {
 						onPress={() => {
 							setVoted('bottom');
 							send({ event: 'SUBMIT_VOTE', data: { id: contestants[1].id } });
-						}}
-					>
+						}}>
 						<Text style={styles.btnText}>{voted === 'bottom' ? 'Voted' : 'Vote'}</Text>
 					</TouchableOpacity>
 				</View>
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-around',
 		// padding: 20,
-		paddingVertical: 47,
+		paddingVertical: 47
 	},
 	playerOne: {
 		backgroundColor: 'white',
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
 		height: 260,
 		width: 350,
 		borderRadius: 30,
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	playerTwo: {
 		backgroundColor: 'white',
@@ -154,7 +152,7 @@ const styles = StyleSheet.create({
 		height: 260,
 		width: 350,
 		borderRadius: 30,
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	btn: {
 		backgroundColor: '#C2E812',
@@ -162,26 +160,26 @@ const styles = StyleSheet.create({
 		width: 145,
 		borderRadius: 30,
 		marginLeft: 20,
-		marginTop: 3,
+		marginTop: 3
 	},
 	btnText: {
 		fontFamily: 'Neulis700',
 		color: '#210461',
 		fontSize: 18,
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	title: {
 		color: '#C2E812',
 		fontSize: 35,
 		fontFamily: 'Neulis800',
 		textAlign: 'center',
-		paddingHorizontal: 15,
+		paddingHorizontal: 15
 	},
 	between: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		alignItems: 'center',
+		alignItems: 'center'
 	},
 	icon: {},
 	pfp: {
@@ -190,21 +188,22 @@ const styles = StyleSheet.create({
 		width: 100,
 		borderColor: '#C2E812',
 		borderWidth: 3,
-		borderRadius: 50,
+		borderRadius: 50
 	},
 	audio: {
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 20,
-		paddingVertical: 23,
+		paddingVertical: 23
 	},
 	songName: {
 		fontFamily: 'Neulis500',
 		color: '#210461',
 		fontSize: 25,
-		textAlign: 'center',
-	},
+		textAlign: 'center'
+	}
 });
 
 export default VotingScreen;
+
