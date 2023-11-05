@@ -9,6 +9,7 @@ import { ILine } from '../interfaces/ILine';
 import * as FileSystem from 'expo-file-system';
 import api from '../services/AxiosConfig';
 import { SongList } from '../data/SongList';
+import { Buffer } from "buffer";
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -224,7 +225,7 @@ const GameScreen = () => {
 						<Text style={styles.ahead}>{ahead}</Text>
 					</ScrollView>
 				</View>
-                <TouchableOpacity onPress={() => stopRecording()}><Text>Stop Recording</Text></TouchableOpacity>
+                <TouchableOpacity style={{zIndex: 99}} onPress={() => stopRecording()}><Text>Stop Recording</Text></TouchableOpacity>
 
 				<Image source={Avatars['bee']} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
