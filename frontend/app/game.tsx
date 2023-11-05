@@ -71,7 +71,7 @@ const GameScreen = () => {
 			console.log('Starting recording..');
 			const data = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
             recording = data.recording
-            recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+            // recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
             await recording.startAsync();
 			console.log('Recording started');
 		} catch (err) {
