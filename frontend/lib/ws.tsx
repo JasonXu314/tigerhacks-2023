@@ -68,44 +68,44 @@ interface WSMetadata {
 }
 
 export interface ClaimAcknowledgeDTO {
-	type: 'CLAIM_ACK';
+	event: 'CLAIM_ACK';
 }
 
 export interface InitRoomDTO {
-	type: 'INIT_ROOM';
+	event: 'INIT_ROOM';
 	room: ISession;
 }
 
 export interface AddContestantDTO {
-	type: 'ADD_CONTESTANT';
+	event: 'ADD_CONTESTANT';
 	id: number;
 }
 
 export interface RemoveContestantDTO {
-	type: 'REMOVE_CONTESTANT';
+	event: 'REMOVE_CONTESTANT';
 	id: number;
 }
 
 export interface SetSongDTO {
-	type: 'SET_SONG';
+	event: 'SET_SONG';
 	name: string;
 }
 
 export interface ClientErrorDTO {
-	type: 'CLIENT_ERROR';
+	event: 'CLIENT_ERROR';
 }
 
 export interface StartGameDTO {
-	type: 'START_GAME';
+	event: 'START_GAME';
 }
 
 export interface JoinDTO {
-	type: 'JOIN';
+	event: 'JOIN';
 	player: IPlayer;
 }
 
 export interface VotingEndDTO {
-	type: 'VOTING_END';
+	event: 'VOTING_END';
 	result: 'TIED' | { winner: number; votes: number };
 }
 
@@ -130,7 +130,7 @@ export function useWS(): WSOperations {
 							const msg = JSON.parse(evt.data) as ClaimAcknowledgeDTO | ClientErrorDTO;
 							console.log('parsed json');
 
-							if (msg.type === 'CLAIM_ACK') {
+							if (msg.event === 'CLAIM_ACK') {
 								console.log('claim ack');
 								setSocket(sock);
 							}
@@ -173,12 +173,12 @@ export function useWSSubscribe<T extends keyof WebSocketEventMap>(evt: T, listen
 	}, [socket, evt, listener]);
 }
 
-export function useWSMessage<T extends { type: string }>(type: T['type'], listener: (msg: T) => void): void {
+export function useWSMessage<T extends { event: string }>(event: T['event'], listener: (msg: T) => void): void {
 	useWSSubscribe('message', (evt) => {
 		try {
 			const msg = JSON.parse(evt.data) as T; // typescript hack lul
 
-			if ('type' in msg && msg.type === type) {
+			if ('event' in msg && msg.event === event) {
 				listener(msg);
 			}
 		} catch (err) {
