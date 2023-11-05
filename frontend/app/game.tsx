@@ -14,29 +14,31 @@ import { useGame } from '../lib/game-data';
 import { IPlayer } from '../interfaces/IPlayer';
 import { AxiosError } from 'axios';
 
+let recording = new Audio.Recording();
+
 const GameScreen = () => {
 	const router = useRouter();
 	const context = useContext(AppContext);
 	const [song, setSong] = useState<Audio.Sound>(new Audio.Sound());
-	const [recording, setRecording] = useState<Audio.Recording>(new Audio.Recording());
 	const [stopSong, setStopSong] = useState(false);
 	const [words, setWords] = useState<ILine[]>([]);
 	const [over, setOver] = useState(false);
 	const [ahead, setAhead] = useState('');
 	const scrollViewRef = useRef<any>(null);
+    const [test, setTest] = useState();
 
 	const { data } = useGame();
 
-	function onPlaybackStatusUpdate(status: AVPlaybackStatus) {
-		if (status.isLoaded) {
-			if (!status.didJustFinish) {
-				return;
-			}
-			stopRecording();
+	// function onPlaybackStatusUpdate(status: AVPlaybackStatus) {
+	// 	if (status.isLoaded) {
+	// 		if (!status.didJustFinish) {
+	// 			return;
+	// 		}
+	// 		stopRecording();
 
 			// send recording and then move screens
-		}
-	}
+	// 	}
+	// }
 
 	async function playSound() {
 		await Audio.setAudioModeAsync({
@@ -51,7 +53,7 @@ const GameScreen = () => {
 
 		const { sound } = await Audio.Sound.createAsync(SongList.find((sng) => sng.name === context.song)!.track);
 
-		sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+		// sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
 		setSong(sound);
 
@@ -67,8 +69,10 @@ const GameScreen = () => {
 			});
 
 			console.log('Starting recording..');
-			const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
-			setRecording(recording);
+			const data = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+            recording = data.recording
+            recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+            await recording.startAsync();
 			console.log('Recording started');
 		} catch (err) {
 			console.error('Failed to start recording', err);
@@ -77,32 +81,31 @@ const GameScreen = () => {
 
 	async function stopRecording() {
 		console.log('Stopping recording..');
-		setRecording(new Audio.Recording());
 		await recording.stopAndUnloadAsync();
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 		});
 		const recordingUri = recording.getURI();
 		if (recordingUri) {
-			const recordingBase64 = await FileSystem.readAsStringAsync(recordingUri, {
-				encoding: FileSystem.EncodingType.Base64,
-			});
-			const languageCode = 'en';
-
-			const buffer = Buffer.from(recordingBase64, 'base64');
-			const blob = new Blob([buffer], { type: 'audio/mp3' });
-			const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
-
 			const formData = new FormData();
 			if (data?.players) {
 				const player = data.players.find((player) => player.name === context.name)!;
 				formData.append('id', player.id.toString());
 			}
-			formData.append('file', file);
+			formData.append('file', {
+                //@ts-expect-error
+				uri: recordingUri,
+				type: 'image/mp3',
+				name: 'file.mp3',
+			});
 
-			api.post(`/rooms/${context.room}/submit`, formData)
-				.then(() => {
-				})
+			api.post(`/rooms/${context.room}/submit`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+				transformRequest: (data, headers) => {
+					return formData;
+				},
+			})
+				.then(() => {})
 				.catch((err) => {
 					console.log(err);
 				});
@@ -121,10 +124,8 @@ const GameScreen = () => {
 
 			if (line && lines.indexOf(line) === 0) {
 				setAhead('');
-				return;
 			}
-
-			if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
+			else if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						return [...words, line];
@@ -133,6 +134,10 @@ const GameScreen = () => {
 				});
 				setAhead(lines[lines.indexOf(line) - 1].words);
 			}
+            if (delta + 5000 > parseInt(lines[0].startTimeMs)) {
+                stopRecording();
+                return;
+            }
 
 			timeout = setTimeout(tick, 10);
 		};
@@ -235,7 +240,7 @@ const GameScreen = () => {
 					<Text>Stop Recording</Text>
 				</TouchableOpacity>
 
-				<Image source={Avatars[context.avatar]} style={styles.avatar}></Image>
+				{data && <Image source={Avatars[data.players.find((player) => player.name === context.name)!.avatar]} style={styles.avatar}></Image>}
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
 			</View>
 		</ImageBackground>
