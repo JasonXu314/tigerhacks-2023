@@ -44,27 +44,26 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 20,
-		// borderBottomWidth: 2,
-		// borderBottomColor: '#210461',
-		paddingVertical: 7
+		paddingVertical: 8
 	},
 	songInfo: {
 		display: 'flex',
-		gap: 5,
 		color: '#210461'
 	},
 	icon: {
 		flex: 1,
 		resizeMode: 'contain',
 		maxHeight: 50,
-		maxWidth: 50
+		maxWidth: 50,
+        borderRadius: 50
 	},
 	songName: {
-		fontSize: 18,
+		fontSize: 19,
+        fontFamily: "Neulis500",
 		fontWeight: 'bold'
 	},
 	songArtist: {
-		fontSize: 14
+		fontSize: 15
 	}
 });
 

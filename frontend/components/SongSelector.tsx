@@ -1,5 +1,5 @@
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { SongList } from '../data/SongList';
 import { AppContext } from '../lib/Context';
@@ -12,6 +12,13 @@ interface IProps {
 
 const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 	const context = useContext(AppContext);
+	const [search, setSearch] = useState('');
+    const [songList, setSongList] = useState(SongList);
+
+    const searchHandler = (text: string) => {
+        setSearch(text);
+        setSongList([...SongList.filter((song) => song.name.startsWith(text))]);
+    }
 
 	return (
 		<View style={styles.centeredView}>
@@ -31,15 +38,15 @@ const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 							}}
 							style={styles.back}
 						>
-							<AntDesign name="leftcircleo" size={40} color="#210461" />
+							<AntDesign name="leftcircleo" size={30} color="#210461" />
 						</TouchableOpacity>
 						<View style={styles.searchbar}>
-							<TextInput placeholder="Search song..." style={styles.input}></TextInput>
+							<TextInput placeholder="Search song..." style={styles.input} value={search} onChangeText={searchHandler}></TextInput>
 							<EvilIcons name="search" size={30} color="black" style={styles.searchIcon} />
 						</View>
 						<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 							<View onStartShouldSetResponder={() => true}>
-								{SongList.map((song) => (
+								{songList.map((song) => (
 									<Song song={song} key={song.name} setModalVisible={setModalVisible}></Song>
 								))}
 							</View>
@@ -96,10 +103,10 @@ const styles = StyleSheet.create({
 		padding: 10,
 		elevation: 2,
 		width: 300,
-		paddingLeft: 30,
+		paddingLeft: 15,
 	},
 	buttonOpen: {
-		backgroundColor: '#F194FF',
+		backgroundColor: '#fad2fa',
 	},
 	buttonClose: {
 		backgroundColor: '#2196F3',
@@ -122,7 +129,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	input: {
-		backgroundColor: '#DEDEDE',
+		backgroundColor: '#D7E0EB',
 		width: '100%',
 		paddingLeft: 15,
 		height: 45,
