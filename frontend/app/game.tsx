@@ -113,7 +113,9 @@ const GameScreen = () => {
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						const length = line.words.split(' ').length;
-						const time = (parseInt(lines[idx + 1].startTimeMs) - delta) * 0.9;
+						const time = lines[idx + 1]
+							? (parseInt(lines[idx + 1].startTimeMs) - delta) * 0.9
+							: (delta - parseInt(lines[idx - 1].startTimeMs)) * 0.9; // meh heuristic
 						const step = time / length;
 
 						setLineHighlightIdx(0);
@@ -238,7 +240,9 @@ const GameScreen = () => {
 						{words.map((line, i) => (
 							<View key={i}>
 								{line.words.split(' ').map((word, j) => (
-									<Text style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>{word}</Text>
+									<Text key={j} style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>
+										{word}
+									</Text>
 								))}
 							</View>
 						))}
