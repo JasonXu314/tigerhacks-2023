@@ -236,7 +236,7 @@ const GameScreen = () => {
 							scrollViewRef.current.scrollToEnd({ animated: true });
 						}}>
 						{words.map((line, i) => (
-							<View key={i} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 10}}>
+							<View key={i} style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 3}}>
 								{line.words.split(' ').map((word, j) => (
 									<Text key={j} style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>
 										{word}
