@@ -1,7 +1,4 @@
-
 ![Final](https://github.com/JasonXu314/tigerhacks-2023/assets/86029622/92008be4-3c8b-4606-9b8d-d47d14cd3c58)
-
-
 
 ## Installation Instructions
 
@@ -21,7 +18,7 @@ Requires NodeJS and one of: an **Android emulator**, **Expo Go**, or **XCode**.
 
 ## How we built it 🎮
 
-We used React Native for the frontend, and implemented a Rest API & WebSocket Gateway backed by a Prisma connection to MySQL database. All file storage is handled in memory and discarded when needed. For the backend framework, we used raw WebSockets and NestJS, because that is the fastest way to develop scalable prototypes. For lyrics animation we incorporated a from-scratch double timer using nested tail recursion in order to try and mitigate timing imprecision. We also allocated a new MySQL and user to comply with the principle of least privilege to go along with it to ensure data separation and integrity.
+We used React Native for the frontend, and implemented a Rest API & WebSocket Gateway backed by a Prisma connection to MySQL database. All file storage is handled in memory and discarded when needed. For the backend framework, we used raw WebSockets and NestJS, because that is the fastest way to develop scalable prototypes. For lyrics animation we incorporated a from-scratch double timer using nested tail recursion in order to try and mitigate timing imprecision. We also allocated a new MySQL and user to comply with the principle of least privilege and ensure data separation and integrity.
 
 ## Challenges we ran into 🏋️
 
