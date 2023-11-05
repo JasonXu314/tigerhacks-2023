@@ -12,6 +12,7 @@ import { SongList } from '../data/SongList';
 import { Buffer } from 'buffer';
 import { useGame } from '../lib/game-data';
 import { IPlayer } from '../interfaces/IPlayer';
+import { AxiosError } from 'axios';
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -95,16 +96,15 @@ const GameScreen = () => {
 			const formData = new FormData();
 			if (data?.players) {
 				const player = data.players.find((player) => player.name === context.name)!;
-                formData.append('id', player.id.toString());
+				formData.append('id', player.id.toString());
 			}
 			formData.append('file', file);
 
 			api.post(`/rooms/${context.room}/submit`, formData)
-				.then((resp) => {
-					console.log(resp);
+				.then(() => {
 				})
 				.catch((err) => {
-					console.log(err.response);
+					console.log(err);
 				});
 		}
 	}
@@ -235,7 +235,7 @@ const GameScreen = () => {
 					<Text>Stop Recording</Text>
 				</TouchableOpacity>
 
-				<Image source={Avatars['bee']} style={styles.avatar}></Image>
+				<Image source={Avatars[context.avatar]} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
 			</View>
 		</ImageBackground>
