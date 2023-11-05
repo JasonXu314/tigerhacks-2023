@@ -1,3 +1,7 @@
+
+
+
+
 ## Installation Instructions
 
 Requires NodeJS and one of: an **Android emulator**, **Expo Go**, or **XCode**.
@@ -8,7 +12,7 @@ Requires NodeJS and one of: an **Android emulator**, **Expo Go**, or **XCode**.
 
 ## Inspiration 🎤
 
-It all started with a passion for singing. I wasn't a pro singer by any chance, but among my friends, I was the best! We used to go to karaoke together, but as we got older and life got busier, we drifted apart because of college, work, and the pandemic. I used to complain about it a lot. This is how the ultimate idea was born. From being a local joke, the "Song Wars" grew into a full commitment. My teammates and I thought, why not use technology to bring friends and family together and let them sing and have a blast, just like in the good old days.
+> It all started with a passion for singing. I wasn't a pro singer by any chance, but among my friends, I was the best! We used to go to karaoke together, but as we got older and life got busier, we drifted apart because of college, work, and the pandemic. I used to complain about it a lot. This is how the ultimate idea was born. From being a local joke, the "Song Wars" grew into a full commitment. My teammates and I thought, why not use technology to bring friends and family together and let them sing and have a blast, just like in the good old days.
 
 ## What it does?
 
