@@ -239,7 +239,7 @@ const GameScreen = () => {
 						{words.map((line, i) => (
 							<View key={i} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 3, flexWrap: 'wrap' }}>
 								{line.words.split(' ').map((word, j) => (
-									<Text key={j} style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>
+									<Text key={j} style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.lineBold) : styles.line}>
 										{word}
 									</Text>
 								))}
@@ -305,7 +305,14 @@ const styles = StyleSheet.create({
 	},
 	test: {
 		flex: 1
-	}
+	},
+    lineBold: {
+        color: '#FFFFFF',
+		opacity: 0.5,
+		fontSize: 22,
+		fontFamily: 'Neulis700',
+		textAlign: 'center'
+    }
 });
 
 export default GameScreen;
