@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Image } from 'react-native-elements';
 import { Images } from '../lib/Images';
@@ -13,7 +13,7 @@ interface NoteData {
 	rotDelta: number;
 }
 
-export const NoteFloat: React.FC = () => {
+export const NoteFloat: React.FC<PropsWithChildren> = ({ children }) => {
 	const [noteData, setNoteData] = useState<NoteData[]>([]);
 
 	useEffect(() => {
@@ -62,7 +62,7 @@ export const NoteFloat: React.FC = () => {
 
 	return (
 		<View style={styles.container}>
-			{noteData.map(({ note, position: [x, y], rotation }, i) => (
+			{noteData.map(({ note, life, ticks, position: [x, y], rotation }, i) => (
 				<Image
 					key={i}
 					source={Images[`Note${note}`]}
@@ -70,17 +70,22 @@ export const NoteFloat: React.FC = () => {
 						position: 'relative',
 						top: '45%',
 						left: '45%',
+						zIndex: 0,
+						opacity: 1 - ticks / life,
 						transform: [{ scale: 0.125 }, { translateX: x, translateY: y }, { rotate: `${rotation}rad` }]
 					}}
 				/>
 			))}
+			{children}
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
-		overflow: 'visible'
+		overflow: 'visible',
+		zIndex: 0,
+		position: 'relative'
 	}
 });
 
