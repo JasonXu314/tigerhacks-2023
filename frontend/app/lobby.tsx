@@ -59,6 +59,10 @@ const LobbyScreen = () => {
 		// whatever else needs to be done here?
 	});
 
+	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
+		console.warn('client error ws');
+	});
+
 	if (!data) {
 		return <Loading></Loading>;
 	}

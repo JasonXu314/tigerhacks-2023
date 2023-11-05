@@ -154,6 +154,7 @@ export function useWS(): WSOperations {
 			setSocket(null);
 		},
 		send: (msg: any) => {
+			console.log('sending', msg);
 			if (socket) {
 				if (typeof msg === 'string') {
 					socket.send(msg);
