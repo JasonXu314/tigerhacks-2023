@@ -1,6 +1,6 @@
 ## Installation Instructions
 
-Requires an **Android emulator**, **Expo Go**, or **XCode**.
+Requires NodeJS and one of: an **Android emulator**, **Expo Go**, or **XCode**.
 
 1. Clone the repo
 2. `npm install` in the `frontend` directory
