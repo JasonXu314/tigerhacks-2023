@@ -42,14 +42,14 @@ const VotingScreen = () => {
 	useEffect(() => {
 		if (data) {
 			const contestants = data.contestants;
-            setPlayer1(contestants[0]);
-            setPlayer2(contestants[1]);
-            setInit(false)
+			setPlayer1(contestants[0]);
+			setPlayer2(contestants[1]);
+			setInit(false);
 		}
 	}, []);
 
 	async function playSound(uri: string) {
-        console.log('playing sound')
+		console.log('playing sound');
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			staysActiveInBackground: true,
@@ -94,7 +94,7 @@ const VotingScreen = () => {
 					</View>
 					<TouchableOpacity
 						disabled={voted === 'top'}
-						style={styles.btn}
+						style={[styles.btn, voted === 'top' ? { backgroundColor: 'lightgrey' } : {}]}
 						onPress={() => {
 							setVoted('top');
 							send({ event: 'SUBMIT_VOTE', data: { id: contestants[0].id } });
@@ -117,7 +117,7 @@ const VotingScreen = () => {
 						<Text style={styles.songName}>Jason - Super Shy</Text>
 					</View>
 					<TouchableOpacity
-						style={styles.btn}
+						style={[styles.btn, voted === 'top' ? { backgroundColor: 'lightgrey' } : {}]}
 						disabled={voted === 'bottom'}
 						onPress={() => {
 							setVoted('bottom');
