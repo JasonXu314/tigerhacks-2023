@@ -1,18 +1,14 @@
-import { Audio, InterruptionModeAndroid, InterruptionModeIOS, AVPlaybackStatus } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useRouter } from 'expo-router';
-import React, { useCallback, useContext, useEffect, useState, useRef } from 'react';
-import { Image, ImageBackground, StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LyricsData } from '../data/LyricsData';
+import { SongList } from '../data/SongList';
+import { ILine } from '../interfaces/ILine';
 import { AppContext } from '../lib/Context';
 import { Avatars } from '../lib/Images';
-import { LyricsData } from '../data/LyricsData';
-import { ILine } from '../interfaces/ILine';
-import * as FileSystem from 'expo-file-system';
-import api from '../services/AxiosConfig';
-import { SongList } from '../data/SongList';
-import { Buffer } from 'buffer';
 import { useGame } from '../lib/game-data';
-import { IPlayer } from '../interfaces/IPlayer';
-import { AxiosError } from 'axios';
+import api from '../services/AxiosConfig';
 
 let recording = new Audio.Recording();
 
@@ -25,7 +21,8 @@ const GameScreen = () => {
 	const [over, setOver] = useState(false);
 	const [ahead, setAhead] = useState('');
 	const scrollViewRef = useRef<any>(null);
-    const [test, setTest] = useState();
+	const [test, setTest] = useState();
+	const [lineHighlightIdx, setLineHighlightIdx] = useState<number>(0);
 
 	const { data } = useGame();
 
@@ -36,7 +33,7 @@ const GameScreen = () => {
 	// 		}
 	// 		stopRecording();
 
-			// send recording and then move screens
+	// send recording and then move screens
 	// 	}
 	// }
 
@@ -48,7 +45,7 @@ const GameScreen = () => {
 			playsInSilentModeIOS: true,
 			shouldDuckAndroid: true,
 			interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
-			playThroughEarpieceAndroid: false,
+			playThroughEarpieceAndroid: false
 		});
 
 		const { sound } = await Audio.Sound.createAsync(SongList.find((sng) => sng.name === context.song)!.track);
@@ -65,14 +62,14 @@ const GameScreen = () => {
 			await Audio.requestPermissionsAsync();
 			await Audio.setAudioModeAsync({
 				allowsRecordingIOS: true,
-				playsInSilentModeIOS: true,
+				playsInSilentModeIOS: true
 			});
 
 			console.log('Starting recording..');
 			const data = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
-            recording = data.recording
-            // recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
-            await recording.startAsync();
+			recording = data.recording;
+			// recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+			await recording.startAsync();
 			console.log('Recording started');
 		} catch (err) {
 			console.error('Failed to start recording', err);
@@ -83,7 +80,7 @@ const GameScreen = () => {
 		console.log('Stopping recording..');
 		await recording.stopAndUnloadAsync();
 		await Audio.setAudioModeAsync({
-			allowsRecordingIOS: false,
+			allowsRecordingIOS: false
 		});
 		const recordingUri = recording.getURI();
 		if (recordingUri) {
@@ -92,18 +89,18 @@ const GameScreen = () => {
 				const player = data.players.find((player) => player.name === context.name)!;
 				formData.append('id', player.id.toString());
 			}
+			//@ts-expect-error
 			formData.append('file', {
-                //@ts-expect-error
 				uri: recordingUri,
 				type: 'image/mp3',
-				name: 'file.mp3',
+				name: 'file.mp3'
 			});
 
 			api.post(`/rooms/${context.room}/submit`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 				transformRequest: (data, headers) => {
 					return formData;
-				},
+				}
 			})
 				.then(() => {})
 				.catch((err) => {
@@ -124,20 +121,27 @@ const GameScreen = () => {
 
 			if (line && lines.indexOf(line) === 0) {
 				setAhead('');
-			}
-			else if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
+			} else if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
+				const idx = lines.indexOf(line);
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
+						const length = line.words.split(' ').length;
+						const time = (parseInt(lines[idx + 1].startTimeMs) - delta) * 0.9;
+						const step = time / length;
+
+						setLineHighlightIdx(0);
+						startWordTicker(step, length);
+
 						return [...words, line];
 					}
 					return words;
 				});
-				setAhead(lines[lines.indexOf(line) - 1].words);
+				setAhead(lines[idx - 1].words);
 			}
-            if (delta + 5000 > parseInt(lines[0].startTimeMs)) {
-                stopRecording();
-                return;
-            }
+			if (delta + 5000 > parseInt(lines[0].startTimeMs)) {
+				stopRecording();
+				return;
+			}
 
 			timeout = setTimeout(tick, 10);
 		};
@@ -159,8 +163,8 @@ const GameScreen = () => {
 						startTimeMs: '0',
 						words: '1',
 						syllables: [],
-						endTimeMs: '',
-					},
+						endTimeMs: ''
+					}
 				]);
 				startRecording();
 				playSound();
@@ -173,8 +177,8 @@ const GameScreen = () => {
 						startTimeMs: '0',
 						words: '2',
 						syllables: [],
-						endTimeMs: '',
-					},
+						endTimeMs: ''
+					}
 				]);
 			} else if (delta > 1000) {
 				setWords((words) => [
@@ -183,8 +187,8 @@ const GameScreen = () => {
 						startTimeMs: '0',
 						words: '3',
 						syllables: [],
-						endTimeMs: '',
-					},
+						endTimeMs: ''
+					}
 				]);
 			}
 
@@ -192,6 +196,23 @@ const GameScreen = () => {
 		};
 
 		timeout = setTimeout(tick, 1000);
+
+		return () => clearTimeout(timeout);
+	}, []);
+
+	const startWordTicker = useCallback((step: number, count: number) => {
+		let timeout: NodeJS.Timeout,
+			idx: number = 0;
+
+		const tick = () => {
+			setLineHighlightIdx((idx) => idx + 1);
+
+			if (++idx < count) {
+				timeout = setTimeout(tick, step);
+			}
+		};
+
+		timeout = setTimeout(tick, step);
 
 		return () => clearTimeout(timeout);
 	}, []);
@@ -215,8 +236,7 @@ const GameScreen = () => {
 		<ImageBackground
 			source={require('../assets/images/BackgroundPic/PlaneBG.png')}
 			imageStyle={{ resizeMode: 'cover' }}
-			style={{ height: '100%', width: '100%' }}
-		>
+			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
 				<View style={styles.lyricsContainer}>
 					<View style={styles.test}></View>
@@ -226,12 +246,13 @@ const GameScreen = () => {
 						ref={scrollViewRef}
 						onContentSizeChange={() => {
 							scrollViewRef.current.scrollToEnd({ animated: true });
-						}}
-					>
+						}}>
 						{words.map((line, i) => (
-							<Text key={i} style={i === words.length - 1 ? styles.current : styles.line}>
-								{line.words}
-							</Text>
+							<View key={i}>
+								{line.words.split(' ').map((word, j) => (
+									<Text style={i === words.length - 1 ? (j <= lineHighlightIdx ? styles.current : styles.line) : styles.line}>{word}</Text>
+								))}
+							</View>
 						))}
 						<Text style={styles.ahead}>{ahead}</Text>
 					</ScrollView>
@@ -252,17 +273,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
-		padding: 20,
+		padding: 20
 	},
 	avatar: {
 		position: 'absolute',
 		bottom: 35,
 		height: 110,
-		width: 110,
+		width: 110
 	},
 	ring: {
 		position: 'absolute',
-		bottom: 0,
+		bottom: 0
 	},
 	line: {
 		marginTop: 'auto',
@@ -270,34 +291,35 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 		fontSize: 18,
 		fontFamily: 'Neulis',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	lyricsContainer: {
 		paddingTop: 40,
 		display: 'flex',
 		maxHeight: '50%',
 		overflow: 'hidden',
-		marginBottom: 'auto',
+		marginBottom: 'auto'
 	},
 	lyricsContainerInside: {
-		marginTop: 'auto',
+		marginTop: 'auto'
 	},
 	ahead: {
 		color: '#FFFFFF',
 		opacity: 0.5,
 		fontSize: 18,
 		fontFamily: 'Neulis',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	current: {
 		color: '#FFFFFF',
 		fontSize: 22,
 		fontFamily: 'Neulis700',
-		textAlign: 'center',
+		textAlign: 'center'
 	},
 	test: {
-		flex: 1,
-	},
+		flex: 1
+	}
 });
 
 export default GameScreen;
+
