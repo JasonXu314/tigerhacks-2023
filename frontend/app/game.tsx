@@ -83,8 +83,6 @@ const GameScreen = () => {
 				encoding: FileSystem.EncodingType.Base64,
 			});
 			const languageCode = 'en';
-			console.log(languageCode);
-			console.log(recordingBase64);
 
 			const buffer = Buffer.from(recordingBase64, 'base64');
 			const blob = new Blob([buffer], { type: 'audio/mp3' });
@@ -93,7 +91,7 @@ const GameScreen = () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            api.post(`/room/${context.room}/submit`, formData)
+            api.post(`/rooms/${context.room}/submit`, formData)
             .then((resp) => {
                 console.log(resp)
             })
