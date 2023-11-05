@@ -12,7 +12,7 @@ export class WS extends WebSocket {
 		close: [],
 		error: [],
 		message: [],
-		open: [],
+		open: []
 	};
 
 	public on<T extends keyof WebSocketEventMap>(evt: T, listener: (evt: WebSocketEventMap[T]) => void, once: boolean = false): () => void {
@@ -143,7 +143,7 @@ export function useWS(): WSOperations {
 		},
 		disconnect: () => {
 			meta.current.cleanup?.();
-			socket?.close();
+			socket?.close(1000);
 			socket?.off();
 			setSocket(null);
 		},
@@ -157,7 +157,7 @@ export function useWS(): WSOperations {
 			} else {
 				console.warn('Socket send while disconnected');
 			}
-		},
+		}
 	};
 }
 
@@ -184,3 +184,4 @@ export function useWSMessage<T extends { type: string }>(type: T['type'], listen
 		}
 	});
 }
+

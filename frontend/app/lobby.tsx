@@ -18,7 +18,7 @@ const LobbyScreen = () => {
 	const contestants = useMemo(() => (data === null ? [] : data.contestants), [data]);
 	const host = useMemo(() => (data === null ? null : data.host), [data]);
 	const [error, setError] = useState('');
-	const { send } = useWS();
+	const { send, disconnect } = useWS();
 
 	useWSMessage<InitRoomDTO>('INIT_ROOM', ({ room: { players, contestants, host } }) => {
 		init(players, contestants, host);
@@ -74,7 +74,7 @@ const LobbyScreen = () => {
 			imageStyle={{ resizeMode: 'cover' }}
 			style={{ height: '100%', width: '100%' }}>
 			<View style={styles.container}>
-				<BackButton onPress={() => send({ event: 'LEAVE_ROOM' })}></BackButton>
+				<BackButton onPress={() => disconnect()}></BackButton>
 				<View>
 					<Text style={[styles.codeTitle, { textAlign: 'center' }]}>Room Code</Text>
 					<Text style={styles.code}>{context.room}</Text>
