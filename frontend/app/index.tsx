@@ -22,7 +22,7 @@ const HomeScreen = () => {
 				{/* <TouchableOpacity
 					style={styles.audio}
 					onPress={() => {
-						context.stopBgMusic();
+						context.stopBgMusic();s
 					}}
 				>
 					<AntDesign name="sound" size={55} color="#D7E0EB" />
@@ -31,7 +31,7 @@ const HomeScreen = () => {
 				<BackgroundMusic></BackgroundMusic>
 				<Image source={require('../assets/images/mic.png')} style={styles.logo}></Image>
 				<Text style={styles.title}>Song Wars</Text>
-				<Text style={styles.p}>Compete with your friends on exciting karaoke arena! Create lobbies, vote and have fun!</Text>
+				<Text style={styles.p}>Compete with your friends in an exciting karaoke arena! Create lobbies, vote, and have fun!</Text>
 				<View style={styles.btnBox}>
 					<TouchableOpacity style={styles.btn} onPress={() => router.push('/createroom')}>
 						<Text style={styles.btnText}>Create Room</Text>
