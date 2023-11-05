@@ -56,6 +56,10 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		room.claims.set(otp, (client: WebSocket) => {
 			clearTimeout(timeout);
 
+			if (this.sockTimeouts.has(client)) {
+				clearTimeout(this.sockTimeouts.get(client));
+			}
+
 			room.claims.delete(otp);
 
 			const availableAvatars = AVATARS.filter((avatar) => !room.players.some((player) => player.avatar === avatar));
@@ -121,7 +125,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 	public handleConnection(client: WebSocket) {
 		const timeout = setTimeout(() => {
-			client.close();
+			client.close(1008);
 			this.sockTimeouts.delete(client);
 		}, 2500);
 
@@ -175,7 +179,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 			}
 		}
 
-		setImmediate(() => client.close());
+		setImmediate(() => client.close(1008));
 		return { type: 'CLIENT_ERROR' };
 	}
 
