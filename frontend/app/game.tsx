@@ -9,6 +9,9 @@ import { ILine } from '../interfaces/ILine';
 import * as FileSystem from 'expo-file-system';
 import api from '../services/AxiosConfig';
 import { SongList } from '../data/SongList';
+import { Buffer } from 'buffer';
+import { useGame } from '../lib/game-data';
+import { IPlayer } from '../interfaces/IPlayer';
 
 const GameScreen = () => {
 	const router = useRouter();
@@ -20,6 +23,8 @@ const GameScreen = () => {
 	const [over, setOver] = useState(false);
 	const [ahead, setAhead] = useState('');
 	const scrollViewRef = useRef<any>(null);
+
+	const { data } = useGame();
 
 	function onPlaybackStatusUpdate(status: AVPlaybackStatus) {
 		if (status.isLoaded) {
@@ -82,28 +87,30 @@ const GameScreen = () => {
 				encoding: FileSystem.EncodingType.Base64,
 			});
 			const languageCode = 'en';
-			console.log(languageCode);
-			console.log(recordingBase64);
 
 			const buffer = Buffer.from(recordingBase64, 'base64');
 			const blob = new Blob([buffer], { type: 'audio/mp3' });
 			const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
 
-            const formData = new FormData();
-            formData.append('file', file);
+			const formData = new FormData();
+			if (data?.players) {
+				const player = data.players.find((player) => player.name === context.name)!;
+                formData.append('id', player.id.toString());
+			}
+			formData.append('file', file);
 
-            api.post(`/room${context.room}/recording`, formData)
-            .then((resp) => {
-                console.log(resp)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+			api.post(`/rooms/${context.room}/submit`, formData)
+				.then((resp) => {
+					console.log(resp);
+				})
+				.catch((err) => {
+					console.log(err.response);
+				});
 		}
 	}
 
 	const startTicker = useCallback(() => {
-		const lines = LyricsData[context.name].lines.reverse();
+		const lines = LyricsData[context.song].lines.reverse();
 		let startTime = performance.now(),
 			timeout: NodeJS.Timeout;
 		const tick = () => {
@@ -224,7 +231,9 @@ const GameScreen = () => {
 						<Text style={styles.ahead}>{ahead}</Text>
 					</ScrollView>
 				</View>
-                <TouchableOpacity onPress={() => stopRecording()}><Text>Stop Recording</Text></TouchableOpacity>
+				<TouchableOpacity style={{ zIndex: 99 }} onPress={() => stopRecording()}>
+					<Text>Stop Recording</Text>
+				</TouchableOpacity>
 
 				<Image source={Avatars['bee']} style={styles.avatar}></Image>
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>

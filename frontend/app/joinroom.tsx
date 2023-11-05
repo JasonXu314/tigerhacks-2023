@@ -52,6 +52,7 @@ const JoinRoomScreen = () => {
 						value={code}
 						onChangeText={setCode}
 						autoCapitalize={'characters'}
+                        autoComplete={"off"}
 					/>
 				</View>
 
