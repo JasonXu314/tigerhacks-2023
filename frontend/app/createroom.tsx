@@ -29,6 +29,7 @@ const CreateRoomScreen = () => {
 				})
 					.then((res) => {
 						const { otp } = res.data;
+						context.setName(name);
 
 						connect(otp);
 						router.push('/lobby');
@@ -95,8 +96,8 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		paddingLeft: 20,
 		width: '100%',
-        fontSize: 16,
-        marginTop: 2,
+		fontSize: 16,
+		marginTop: 2,
 	},
 	text: {
 		fontFamily: 'Neulis500',
