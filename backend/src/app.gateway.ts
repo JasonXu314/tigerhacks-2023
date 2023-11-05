@@ -144,6 +144,14 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 							socket.close(1000);
 						});
 						this.rooms = this.rooms.filter((r) => r !== room);
+					} else {
+						if (room.contestants[0] === player) {
+							room.contestants[0] = null;
+							room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'REMOVE_CONTESTANT', id: player.id })));
+						} else if (room.contestants[1] === player) {
+							room.contestants[1] = null;
+							room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'REMOVE_CONTESTANT', id: player.id })));
+						}
 					}
 					return;
 				}
