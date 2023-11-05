@@ -26,7 +26,7 @@ const Song = ({ song, nonClickable, setModalVisible }: IProps) => {
 		<TouchableOpacity
 			style={styles.songContainer}
 			onPress={() => {
-				send({ type: 'SET_SONG', data: { name: song.name } });
+				send({ event: 'SET_SONG', data: { name: song.name } });
 				setModalVisible(false);
 			}}>
 			<Image source={song.img} style={styles.icon}></Image>
