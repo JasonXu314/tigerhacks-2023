@@ -7,23 +7,8 @@ import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { AppContext } from '../lib/Context';
 import { useGame } from '../lib/game-data';
-<<<<<<< HEAD
 import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWS, useWSMessage } from '../lib/ws';
 import { Foundation } from '@expo/vector-icons';
-=======
-import {
-	AddContestantDTO,
-	ClientErrorDTO,
-	CloseRoundDTO,
-	InitRoomDTO,
-	JoinDTO,
-	RemoveContestantDTO,
-	SetSongDTO,
-	StartGameDTO,
-	useWS,
-	useWSMessage
-} from '../lib/ws';
->>>>>>> d328b46c980bfb8994d899df870f64768968b6ee
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
