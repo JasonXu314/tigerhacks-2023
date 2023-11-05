@@ -132,6 +132,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		for (const room of this.rooms) {
 			for (const player of room.players) {
 				if (client === player.socket) {
+					this.logger.log(`player ${player.id} disconnected`);
 					room.players = room.players.filter((p) => p !== player);
 					return;
 				}
