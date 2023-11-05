@@ -14,10 +14,15 @@ interface IProps {
 
 const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => {
 	const { send } = useWS();
-	console.log(isHost);
 
 	const swapSides = () => {
+		console.log(
+			contestants.some((p) => p.id === id),
+			contestants,
+			id
+		);
 		if (contestants.some((p) => p.id === id)) {
+			console.log('sending remove');
 			send({ event: 'REMOVE_CONTESTANT', data: { id } });
 		} else if (contestants.length < 4) {
 			send({ event: 'ADD_CONTESTANT', data: { id } });
@@ -35,20 +40,19 @@ const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => 
 const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'flex-start',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	avatar: {
 		height: 50,
 		width: 50,
 		borderRadius: 50,
-		overflow: 'hidden'
+		overflow: 'hidden',
 	},
 	name: {
 		fontSize: 15,
 		fontFamily: 'Neulis500',
-		color: '#210461'
-	}
+		color: '#210461',
+	},
 });
 
 export default Player;
-
