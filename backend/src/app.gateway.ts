@@ -313,7 +313,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 			return { type: 'CLIENT_ERROR' };
 		}
 
-		if (room.contestants[0] && room.contestants[1]) {
+		if (room.contestants[0] && room.contestants[1] /* && room.players.length > 2*/) {
 			room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'START_GAME' })));
 		}
 	}
