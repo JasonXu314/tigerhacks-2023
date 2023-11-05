@@ -95,7 +95,7 @@ const GameScreen = () => {
 			const formData = new FormData();
 			if (data?.players) {
 				const player = data.players.find((player) => player.name === context.name)!;
-                formData.append('id', player.name);
+                formData.append('id', player.id.toString());
 			}
 			formData.append('file', file);
 
