@@ -114,7 +114,8 @@ const GameScreen = () => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						const length = line.words.split(' ').length;
 						const time = lines[idx + 1] ? parseInt(lines[idx + 1].startTimeMs) - delta : delta - parseInt(lines[idx - 1].startTimeMs); // meh heuristic
-						const step = Math.ceil(time / length);
+						const step = time / length;
+						console.log(time, length, step);
 
 						setLineHighlightIdx(0);
 						startWordTicker(step, length);
