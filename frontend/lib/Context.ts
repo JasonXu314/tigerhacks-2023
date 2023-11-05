@@ -3,7 +3,7 @@ import { ISong } from '../interfaces/ISong';
 import { Images } from './Images';
 
 interface IProps {
-	song: ISong;
+	song: string;
 	setSong: any;
 	room: string;
 	setRoom: any;
@@ -17,12 +17,7 @@ interface IProps {
 }
 
 export const AppContext = createContext<IProps>({
-	song: {
-		name: 'Dance The Night',
-		artist: 'Dua Lipa',
-		img: Images.DuaLipa,
-		track: 'pathtotrack'
-	},
+	song: 'Dance The Night',
 	setSong: (a: ISong) => {},
 	room: '',
 	setRoom: (a: string) => {},
