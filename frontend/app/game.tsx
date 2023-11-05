@@ -77,7 +77,7 @@ const GameScreen = () => {
 				formData.append('id', player.id.toString());
 			}
 			formData.append('file', {
-                //@ts-expect-error
+				//@ts-expect-error
 				uri: recordingUri,
 				type: 'image/mp3',
 				name: 'file.mp3'
@@ -113,10 +113,8 @@ const GameScreen = () => {
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						const length = line.words.split(' ').length;
-						const time = lines[idx + 1]
-							? (parseInt(lines[idx + 1].startTimeMs) - delta) * 0.9
-							: (delta - parseInt(lines[idx - 1].startTimeMs)) * 0.9; // meh heuristic
-						const step = time / length;
+						const time = lines[idx + 1] ? parseInt(lines[idx + 1].startTimeMs) - delta : delta - parseInt(lines[idx - 1].startTimeMs); // meh heuristic
+						const step = Math.ceil(time / length);
 
 						setLineHighlightIdx(0);
 						startWordTicker(step, length);
