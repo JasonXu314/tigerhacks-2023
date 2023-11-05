@@ -80,6 +80,8 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	public submitRecording(roomId: string, userId: number, data: Buffer): void {
 		for (const room of this.rooms) {
 			if (room.id === roomId) {
+				this.logger.log(`submitting recording for ${userId}`);
+				console.log(room.contestants);
 				if (room.contestants[0]?.id === userId) {
 					room.recordings[0] = data;
 					if (room.recordings[1] !== null) {
