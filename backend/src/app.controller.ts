@@ -40,15 +40,15 @@ export class AppController {
 	@Post('/rooms/:id/submit')
 	@HttpCode(HttpStatus.OK)
 	@UseInterceptors(FileInterceptor('file', { storage: memoryStorage() }))
-	public submitRecording(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body('id') userId: number): void {
-		this.gateway.submitRecording(id, userId, file.buffer);
+	public submitRecording(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body('id') userId: string): void {
+		this.gateway.submitRecording(id, Number(userId), file.buffer);
 	}
 
 	@Get('/rooms/:id/recordings/:playerId')
 	public getRecording(@Param('id') roomId: string, @Param('playerId') playerId: number): StreamableFile {
 		const recording = this.gateway.getRecording(roomId, playerId);
 
-		return new StreamableFile(recording);
+		return new StreamableFile(recording, { type: 'audio/mp3', disposition: 'attachment; filename="recording.mp3"' });
 	}
 }
 
