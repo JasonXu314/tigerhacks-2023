@@ -21,14 +21,16 @@ const SongSelector = ({ modalVisible, setModalVisible }: IProps) => {
 				visible={modalVisible}
 				onRequestClose={() => {
 					setModalVisible(!modalVisible);
-				}}>
+				}}
+			>
 				<Pressable onPress={(event) => event.target == event.currentTarget && setModalVisible(false)} style={styles.background}>
 					<View style={styles.modalContainer}>
 						<TouchableOpacity
 							onPress={() => {
 								setModalVisible(false);
 							}}
-							style={styles.back}>
+							style={styles.back}
+						>
 							<AntDesign name="leftcircleo" size={40} color="#210461" />
 						</TouchableOpacity>
 						<View style={styles.searchbar}>
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		flex: 1
+		flex: 1,
 	},
 	modalContainer: {
 		flex: 1,
@@ -68,11 +70,11 @@ const styles = StyleSheet.create({
 		padding: 25,
 		paddingTop: 70,
 		gap: 10,
-		backgroundColor: 'white'
+		backgroundColor: 'white',
 	},
 	centeredView: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	modalView: {
 		margin: 20,
@@ -83,33 +85,33 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 2
+			height: 2,
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
-		elevation: 5
+		elevation: 5,
 	},
 	button: {
 		borderRadius: 20,
 		padding: 10,
 		elevation: 2,
 		width: 300,
-		paddingLeft: 30
+		paddingLeft: 30,
 	},
 	buttonOpen: {
-		backgroundColor: '#F194FF'
+		backgroundColor: '#ccf1fc',
 	},
 	buttonClose: {
-		backgroundColor: '#2196F3'
+		backgroundColor: '#2196F3',
 	},
 	textStyle: {
 		color: 'white',
 		fontWeight: 'bold',
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	modalText: {
 		marginBottom: 15,
-		textAlign: 'center'
+		textAlign: 'center',
 	},
 	searchbar: {
 		display: 'flex',
@@ -117,26 +119,25 @@ const styles = StyleSheet.create({
 		width: '100%',
 		borderRadius: 35,
 		overflow: 'hidden',
-		marginBottom: 10
+		marginBottom: 10,
 	},
 	input: {
 		backgroundColor: '#DEDEDE',
 		width: '100%',
 		paddingLeft: 15,
 		height: 45,
-		fontSize: 16
+		fontSize: 16,
 	},
 	searchIcon: {
 		position: 'absolute',
 		right: 10,
-		alignSelf: 'center'
+		alignSelf: 'center',
 	},
 	back: {
 		position: 'absolute',
 		top: 20,
-		left: 25
-	}
+		left: 25,
+	},
 });
 
 export default SongSelector;
-

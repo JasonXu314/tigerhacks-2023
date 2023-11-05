@@ -6,6 +6,7 @@ import api from '../services/AxiosConfig';
 import { AntDesign } from '@expo/vector-icons';
 import { AppContext } from '../lib/Context';
 import { useContext } from 'react';
+import BackgroundMusic from '../components/BackgroundMusic';
 
 const HomeScreen = () => {
 	const router = useRouter();
@@ -18,10 +19,16 @@ const HomeScreen = () => {
 			style={{ height: '100%', width: '100%' }}
 		>
 			<SafeAreaView style={styles.container}>
-				<TouchableOpacity style={styles.audio} onPress={() => context.stopBgMusic()}>
-					{/* <AntDesign name="sound" size={55} color="#D7E0EB" /> */}
+				{/* <TouchableOpacity
+					style={styles.audio}
+					onPress={() => {
+						context.stopBgMusic();
+					}}
+				>
+					<AntDesign name="sound" size={55} color="#D7E0EB" />
 					<AntDesign name="sound" size={45} color="#C2E812" />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
+				<BackgroundMusic></BackgroundMusic>
 				<Image source={require('../assets/images/mic.png')} style={styles.logo}></Image>
 				<Text style={styles.title}>Song Wars</Text>
 				<Text style={styles.p}>Compete with your friends on exciting karaoke arena! Create lobbies, vote and have fun!</Text>
