@@ -21,6 +21,7 @@ const JoinRoomScreen = () => {
 			.then((res) => {
 				const { otp } = res.data;
 				context.setName(name);
+                context.setRoom(code);
 
 				connect(otp);
 				router.push('/lobby');
