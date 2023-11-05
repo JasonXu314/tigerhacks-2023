@@ -25,7 +25,7 @@ const GameScreen = () => {
 	const [over, setOver] = useState(false);
 	const [ahead, setAhead] = useState('');
 	const scrollViewRef = useRef<any>(null);
-    const [test, setTest] = useState();
+	const [test, setTest] = useState();
 
 	const { data } = useGame();
 
@@ -36,7 +36,7 @@ const GameScreen = () => {
 	// 		}
 	// 		stopRecording();
 
-			// send recording and then move screens
+	// send recording and then move screens
 	// 	}
 	// }
 
@@ -70,9 +70,9 @@ const GameScreen = () => {
 
 			console.log('Starting recording..');
 			const data = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
-            recording = data.recording
-            // recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
-            await recording.startAsync();
+			recording = data.recording;
+			// recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+			await recording.startAsync();
 			console.log('Recording started');
 		} catch (err) {
 			console.error('Failed to start recording', err);
@@ -93,7 +93,7 @@ const GameScreen = () => {
 				formData.append('id', player.id.toString());
 			}
 			formData.append('file', {
-                //@ts-expect-error
+				//@ts-expect-error
 				uri: recordingUri,
 				type: 'image/mp3',
 				name: 'file.mp3',
@@ -125,7 +125,7 @@ const GameScreen = () => {
 			if (line && lines.indexOf(line) === 0) {
 				setAhead('');
 			}
-			else if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
+            else if (line && !words.find((word) => word.startTimeMs === line.startTimeMs)) {
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
 						return [...words, line];
@@ -134,10 +134,11 @@ const GameScreen = () => {
 				});
 				setAhead(lines[lines.indexOf(line) - 1].words);
 			}
-            if (delta + 5000 > parseInt(lines[0].startTimeMs)) {
-                stopRecording();
-                return;
-            }
+			if (delta - 5000 > parseInt(lines[0].startTimeMs)) {
+				stopRecording();
+				router.push('/voting');
+				return;
+			}
 
 			timeout = setTimeout(tick, 10);
 		};
