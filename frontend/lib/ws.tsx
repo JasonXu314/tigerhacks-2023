@@ -68,44 +68,44 @@ interface WSMetadata {
 }
 
 export interface ClaimAcknowledgeDTO {
-	event: 'CLAIM_ACK';
+	type: 'CLAIM_ACK';
 }
 
 export interface InitRoomDTO {
-	event: 'INIT_ROOM';
+	type: 'INIT_ROOM';
 	room: ISession;
 }
 
 export interface AddContestantDTO {
-	event: 'ADD_CONTESTANT';
+	type: 'ADD_CONTESTANT';
 	id: number;
 }
 
 export interface RemoveContestantDTO {
-	event: 'REMOVE_CONTESTANT';
+	type: 'REMOVE_CONTESTANT';
 	id: number;
 }
 
 export interface SetSongDTO {
-	event: 'SET_SONG';
+	type: 'SET_SONG';
 	name: string;
 }
 
 export interface ClientErrorDTO {
-	event: 'CLIENT_ERROR';
+	type: 'CLIENT_ERROR';
 }
 
 export interface StartGameDTO {
-	event: 'START_GAME';
+	type: 'START_GAME';
 }
 
 export interface JoinDTO {
-	event: 'JOIN';
+	type: 'JOIN';
 	player: IPlayer;
 }
 
 export interface VotingEndDTO {
-	event: 'VOTING_END';
+	type: 'VOTING_END';
 	result: 'TIED' | { winner: number; votes: number };
 }
 
@@ -121,7 +121,7 @@ export function useWS(): WSOperations {
 
 				meta.current.cleanup = sock.once('open', () => {
 					console.log('socket opened');
-					sock.send(JSON.stringify({ type: 'CLAIM', data: { otp } }));
+					sock.send(JSON.stringify({ event: 'CLAIM', data: { otp } }));
 					console.log('sent claim');
 
 					meta.current.cleanup = sock.once('message', (evt) => {
@@ -130,7 +130,7 @@ export function useWS(): WSOperations {
 							const msg = JSON.parse(evt.data) as ClaimAcknowledgeDTO | ClientErrorDTO;
 							console.log('parsed json');
 
-							if (msg.event === 'CLAIM_ACK') {
+							if (msg.type === 'CLAIM_ACK') {
 								console.log('claim ack');
 								setSocket(sock);
 							}
@@ -173,12 +173,12 @@ export function useWSSubscribe<T extends keyof WebSocketEventMap>(evt: T, listen
 	}, [socket, evt, listener]);
 }
 
-export function useWSMessage<T extends { event: string }>(event: T['event'], listener: (msg: T) => void): void {
+export function useWSMessage<T extends { type: string }>(type: T['type'], listener: (msg: T) => void): void {
 	useWSSubscribe('message', (evt) => {
 		try {
 			const msg = JSON.parse(evt.data) as T; // typescript hack lul
 
-			if ('event' in msg && msg.event === event) {
+			if ('type' in msg && msg.type === type) {
 				listener(msg);
 			}
 		} catch (err) {
