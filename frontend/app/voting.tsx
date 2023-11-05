@@ -44,25 +44,12 @@ const VotingScreen = () => {
 			const contestants = data.contestants;
             setPlayer1(contestants[0]);
             setPlayer2(contestants[1]);
-			// playSound(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`);
-			// api.get(`https://hktn.jasonxu.dev/room/${context.room}/recording/${contestants[0].id}`)
-			// 	.then((resp: any) => {
-			// 		const blob = new Blob([resp], { type: 'audio/mp3' });
-			// 		const file = new File([blob], 'test.mp3', { type: 'audio/mp3' });
-			//         playSound()
-			// 		setPlayer1({
-			// 			player: contestants[0],
-			// 			recording: file,
-			// 		});
-			// 		setInit(false);
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log(err);
-			// 	});
+            setInit(false)
 		}
 	}, []);
 
 	async function playSound(uri: string) {
+        console.log('playing sound')
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
 			staysActiveInBackground: true,
