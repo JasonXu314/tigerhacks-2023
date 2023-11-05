@@ -149,7 +149,9 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 				const player = claim(client);
 				const { id, host, contestants, players } = room;
-				setImmediate(() =>
+				this.logger.log(`claimed ${otp}`);
+				setImmediate(() => {
+					this.logger.log('sent init room');
 					client.send(
 						JSON.stringify({
 							type: 'INIT_ROOM',
@@ -160,8 +162,8 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 								players: players.map(this._pruneSocket)
 							}
 						})
-					)
-				);
+					);
+				});
 				room.players.forEach((p) => {
 					if (p !== player) {
 						p.socket.send(JSON.stringify({ type: 'JOIN', player: this._pruneSocket(player) }));
