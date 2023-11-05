@@ -2,7 +2,6 @@ import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { NoteFloat } from '../components/NoteFloat';
 import { LyricsData } from '../data/LyricsData';
 import { SongList } from '../data/SongList';
 import { ILine } from '../interfaces/ILine';
@@ -251,9 +250,7 @@ const GameScreen = () => {
 					</ScrollView>
 				</View>
 				{data && <Image source={Avatars[data.players.find((player) => player.name === context.name)!.avatar]} style={styles.avatar}></Image>}
-				<NoteFloat>
-					<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
-				</NoteFloat>
+				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
 			</View>
 		</ImageBackground>
 	);
