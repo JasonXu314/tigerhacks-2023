@@ -124,8 +124,8 @@ export function useWS(): WSOperations {
 					sock.send(JSON.stringify({ event: 'CLAIM', data: { otp } }));
 					console.log('sent claim');
 
-					sock.on('close', () => {
-						console.warn('socket closed');
+					sock.on('close', (evt) => {
+						console.warn('socket closed', evt, evt.reason);
 					});
 
 					meta.current.cleanup = sock.once('message', (evt) => {
