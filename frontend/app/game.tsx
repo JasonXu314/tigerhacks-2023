@@ -76,8 +76,8 @@ const GameScreen = () => {
 				const player = data.players.find((player) => player.name === context.name)!;
 				formData.append('id', player.id.toString());
 			}
-			//@ts-expect-error
 			formData.append('file', {
+                //@ts-expect-error
 				uri: recordingUri,
 				type: 'image/mp3',
 				name: 'file.mp3'
