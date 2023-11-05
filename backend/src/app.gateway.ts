@@ -143,6 +143,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 	@SubscribeMessage('CLAIM')
 	public async claimCode(@MessageBody() { otp }: ClaimCodeDTO, @ConnectedSocket() client: WebSocket): Promise<ClaimAcknowledgeDTO | ClientErrorDTO> {
+		this.logger.log(`claiming ${otp}`);
 		for (const room of this.rooms) {
 			if (room.claims.has(otp)) {
 				const claim = room.claims.get(otp)!;
