@@ -7,13 +7,24 @@ import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { AppContext } from '../lib/Context';
 import { useGame } from '../lib/game-data';
-import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWS, useWSMessage } from '../lib/ws';
+import {
+	AddContestantDTO,
+	ClientErrorDTO,
+	CloseRoundDTO,
+	InitRoomDTO,
+	JoinDTO,
+	RemoveContestantDTO,
+	SetSongDTO,
+	StartGameDTO,
+	useWS,
+	useWSMessage
+} from '../lib/ws';
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
 	const router = useRouter();
-	const { init, addContestant, removeContestant, addPlayer, data } = useGame();
+	const { init, addContestant, removeContestant, addPlayer, reset, data } = useGame();
 	const players = useMemo(() => (data === null ? [] : data.players), [data]);
 	const contestants = useMemo(() => (data === null ? [] : data.contestants), [data]);
 	const host = useMemo(() => (data === null ? null : data.host), [data]);
@@ -42,7 +53,7 @@ const LobbyScreen = () => {
 	});
 
 	const startGame = () => {
-		if (contestants.length < 2 ) {
+		if (contestants.length < 2) {
 			setError('Not enough players singing to start. Add some singers!');
 		} else {
 			send({ event: 'START_GAME' });
@@ -60,6 +71,11 @@ const LobbyScreen = () => {
 
 	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
 		console.warn('client error ws');
+	});
+
+	useWSMessage<CloseRoundDTO>('CLOSE_ROUND', () => {
+		reset();
+		router.push('/lobby'); // TODO: use back?
 	});
 
 	if (!data) {

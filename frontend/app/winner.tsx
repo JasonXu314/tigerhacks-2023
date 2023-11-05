@@ -3,11 +3,17 @@ import { useMemo } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGame } from '../lib/game-data';
+import { CloseRoundDTO, useWSMessage } from '../lib/ws';
 
 const WinnerScreen = () => {
 	const router = useRouter();
-	const { data } = useGame();
+	const { data, reset } = useGame();
 	const results = useMemo(() => data!.results, [data]);
+
+	useWSMessage<CloseRoundDTO>('CLOSE_ROUND', () => {
+		reset();
+		router.push('/lobby'); // TODO: use back?
+	});
 
 	return (
 		<ImageBackground
