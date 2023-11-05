@@ -48,7 +48,7 @@ export class AppController {
 	public getRecording(@Param('id') roomId: string, @Param('playerId') playerId: number): StreamableFile {
 		const recording = this.gateway.getRecording(roomId, playerId);
 
-		return new StreamableFile(recording);
+		return new StreamableFile(recording, { type: 'audio/mp3', disposition: 'attachment; filename="recording.mp3"' });
 	}
 }
 
