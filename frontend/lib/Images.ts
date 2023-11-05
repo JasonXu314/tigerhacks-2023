@@ -6,6 +6,8 @@ export const Images = {
 	CelineDion: require('../assets/images/songCovers/CelineDion.jpeg'),
 	Cranberries: require('../assets/images/songCovers/Cranberries.jpg'),
 	Weeknd: require('../assets/images/songCovers/Weeknd.jpeg'),
+	Note1: require('../assets/images/note1.png'),
+	Note2: require('../assets/images/note2.png')
 };
 
 export const Avatars: { [string: string]: ImageProps } = {
@@ -18,5 +20,6 @@ export const Avatars: { [string: string]: ImageProps } = {
 	jellyfish: require('../assets/images/profile-pic/jellyfish.png'),
 	koala: require('../assets/images/profile-pic/koala.png'),
 	penguin: require('../assets/images/profile-pic/penguin.png'),
-	unicorn: require('../assets/images/profile-pic/unicorn.png'),
+	unicorn: require('../assets/images/profile-pic/unicorn.png')
 };
+
