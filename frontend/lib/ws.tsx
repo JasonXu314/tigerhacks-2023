@@ -12,7 +12,7 @@ export class WS extends WebSocket {
 		close: [],
 		error: [],
 		message: [],
-		open: []
+		open: [],
 	};
 
 	public on<T extends keyof WebSocketEventMap>(evt: T, listener: (evt: WebSocketEventMap[T]) => void, once: boolean = false): () => void {
@@ -117,25 +117,19 @@ export function useWS(): WSOperations {
 		connect: (otp: string) => {
 			if (!socket) {
 				const sock = new WS('wss://hktn.jasonxu.dev/gateway');
-				console.log('created socket');
 
 				meta.current.cleanup = sock.once('open', () => {
-					console.log('socket opened');
 					sock.send(JSON.stringify({ event: 'CLAIM', data: { otp } }));
-					console.log('sent claim');
 
 					sock.on('close', (evt) => {
 						console.warn('socket closed', evt, evt.reason);
 					});
 
 					meta.current.cleanup = sock.once('message', (evt) => {
-						console.log('got message');
 						try {
 							const msg = JSON.parse(evt.data) as ClaimAcknowledgeDTO | ClientErrorDTO;
-							console.log('parsed json');
 
 							if (msg.type === 'CLAIM_ACK') {
-								console.log('claim ack');
 								setSocket(sock);
 							}
 						} catch (err) {
@@ -154,7 +148,6 @@ export function useWS(): WSOperations {
 			setSocket(null);
 		},
 		send: (msg: any) => {
-			console.log('sending', msg);
 			if (socket) {
 				if (typeof msg === 'string') {
 					socket.send(msg);
@@ -164,7 +157,7 @@ export function useWS(): WSOperations {
 			} else {
 				console.warn('Socket send while disconnected');
 			}
-		}
+		},
 	};
 }
 
@@ -191,4 +184,3 @@ export function useWSMessage<T extends { type: string }>(type: T['type'], listen
 		}
 	});
 }
-

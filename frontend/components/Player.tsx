@@ -16,13 +16,7 @@ const Player: React.FC<IProps> = ({ name, id, avatar, isHost, contestants }) => 
 	const { send } = useWS();
 
 	const swapSides = () => {
-		console.log(
-			contestants.some((p) => p.id === id),
-			contestants,
-			id
-		);
 		if (contestants.some((p) => p.id === id)) {
-			console.log('sending remove');
 			send({ event: 'REMOVE_CONTESTANT', data: { id } });
 		} else if (contestants.length < 4) {
 			send({ event: 'ADD_CONTESTANT', data: { id } });
