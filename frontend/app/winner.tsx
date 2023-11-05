@@ -28,6 +28,7 @@ const WinnerScreen = () => {
 					<Text style={styles.p}>Votes: 0</Text>
 					<Text style={styles.pLoser}>But don't get upset, Player2, you had 0 votes!</Text>
 
+					{/* TODO: this is not how to rematch, send CLOSE_ROUND websocket event */}
 					<TouchableOpacity style={styles.btn} onPress={() => router.push('createroom')}>
 						<Text style={styles.btnText}>Rematch</Text>
 					</TouchableOpacity>
