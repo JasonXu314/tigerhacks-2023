@@ -1,7 +1,7 @@
 import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LyricsData } from '../data/LyricsData';
 import { SongList } from '../data/SongList';
 import { ILine } from '../interfaces/ILine';
@@ -26,17 +26,6 @@ const GameScreen = () => {
 
 	const { data } = useGame();
 
-	// function onPlaybackStatusUpdate(status: AVPlaybackStatus) {
-	// 	if (status.isLoaded) {
-	// 		if (!status.didJustFinish) {
-	// 			return;
-	// 		}
-	// 		stopRecording();
-
-	// send recording and then move screens
-	// 	}
-	// }
-
 	async function playSound() {
 		await Audio.setAudioModeAsync({
 			allowsRecordingIOS: false,
@@ -49,8 +38,6 @@ const GameScreen = () => {
 		});
 
 		const { sound } = await Audio.Sound.createAsync(SongList.find((sng) => sng.name === context.song)!.track);
-
-		// sound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
 
 		setSong(sound);
 
@@ -138,8 +125,9 @@ const GameScreen = () => {
 				});
 				setAhead(lines[idx - 1].words);
 			}
-			if (delta + 5000 > parseInt(lines[0].startTimeMs)) {
+			if (delta - 5000 > parseInt(lines[0].startTimeMs)) {
 				stopRecording();
+				router.push('/voting');
 				return;
 			}
 
@@ -257,10 +245,6 @@ const GameScreen = () => {
 						<Text style={styles.ahead}>{ahead}</Text>
 					</ScrollView>
 				</View>
-				<TouchableOpacity style={{ zIndex: 99 }} onPress={() => stopRecording()}>
-					<Text>Stop Recording</Text>
-				</TouchableOpacity>
-
 				{data && <Image source={Avatars[data.players.find((player) => player.name === context.name)!.avatar]} style={styles.avatar}></Image>}
 				<Image source={require('../assets/images/ring.png')} style={styles.ring}></Image>
 			</View>
