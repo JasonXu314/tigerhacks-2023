@@ -373,6 +373,8 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		room.contestants = [null, null];
 		room.recordings = [null, null];
 		room.votes = [];
+
+		room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'CLOSE_ROUND' })));
 	}
 
 	private _pruneSocket<T extends Record<string, any>>(obj: T): { [K in keyof T]: T[K] extends WebSocket ? never : T[K] } {
