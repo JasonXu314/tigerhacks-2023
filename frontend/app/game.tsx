@@ -112,13 +112,14 @@ const GameScreen = () => {
 				const idx = lines.indexOf(line);
 				setWords((words) => {
 					if (!words.find((word) => word.startTimeMs === line.startTimeMs)) {
-						const length = line.words.split(' ').length;
+						const weights = line.words.split(' ').map((word) => word.length);
+						const totalWeight = weights.reduce((t, w) => t + w, 0);
 						const time = Math.abs(lines[idx + 1] ? parseInt(lines[idx + 1].startTimeMs) - delta : delta - parseInt(lines[idx - 1].startTimeMs)); // meh heuristic
-						const step = time / length;
-						console.log(time, length, step);
+						const unit = (time / totalWeight) * 0.9; // slightly sus heuristic maybe?
+						console.log(time, unit);
 
 						setLineHighlightIdx(0);
-						startWordTicker(step, length);
+						startWordTicker(unit, weights);
 
 						return [...words, line];
 					}
@@ -189,19 +190,19 @@ const GameScreen = () => {
 		return () => clearTimeout(timeout);
 	}, []);
 
-	const startWordTicker = useCallback((step: number, count: number) => {
+	const startWordTicker = useCallback((unit: number, weights: number[]) => {
 		let timeout: NodeJS.Timeout,
 			idx: number = 0;
 
 		const tick = () => {
 			setLineHighlightIdx((idx) => idx + 1);
 
-			if (++idx < count) {
-				timeout = setTimeout(tick, step);
+			if (++idx < weights.length) {
+				timeout = setTimeout(tick, weights[idx] * unit);
 			}
 		};
 
-		timeout = setTimeout(tick, step);
+		timeout = setTimeout(tick, weights[0] * unit);
 
 		return () => clearTimeout(timeout);
 	}, []);
@@ -306,13 +307,13 @@ const styles = StyleSheet.create({
 	test: {
 		flex: 1
 	},
-    lineBold: {
-        color: '#FFFFFF',
+	lineBold: {
+		color: '#FFFFFF',
 		opacity: 0.5,
 		fontSize: 22,
 		fontFamily: 'Neulis700',
 		textAlign: 'center'
-    }
+	}
 });
 
 export default GameScreen;

@@ -109,6 +109,10 @@ export interface VotingEndDTO {
 	result: 'TIED' | { winner: number; votes: number };
 }
 
+export interface CloseRoundDTO {
+	type: 'CLOSE_ROUND';
+}
+
 export function useWS(): WSOperations {
 	const { socket, setSocket } = useContext(WSContext);
 	const meta = useRef<WSMetadata>({ cleanup: null });

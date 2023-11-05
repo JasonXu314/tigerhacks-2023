@@ -7,14 +7,29 @@ import Player from '../components/Player';
 import SongSelector from '../components/SongSelector';
 import { AppContext } from '../lib/Context';
 import { useGame } from '../lib/game-data';
+<<<<<<< HEAD
 import { AddContestantDTO, ClientErrorDTO, InitRoomDTO, JoinDTO, RemoveContestantDTO, SetSongDTO, StartGameDTO, useWS, useWSMessage } from '../lib/ws';
 import { Foundation } from '@expo/vector-icons';
+=======
+import {
+	AddContestantDTO,
+	ClientErrorDTO,
+	CloseRoundDTO,
+	InitRoomDTO,
+	JoinDTO,
+	RemoveContestantDTO,
+	SetSongDTO,
+	StartGameDTO,
+	useWS,
+	useWSMessage
+} from '../lib/ws';
+>>>>>>> d328b46c980bfb8994d899df870f64768968b6ee
 
 const LobbyScreen = () => {
 	const [songSelectorVisible, setSongSelectorVisible] = useState(false);
 	const context = useContext(AppContext);
 	const router = useRouter();
-	const { init, addContestant, removeContestant, addPlayer, data } = useGame();
+	const { init, addContestant, removeContestant, addPlayer, reset, data } = useGame();
 	const players = useMemo(() => (data === null ? [] : data.players), [data]);
 	const contestants = useMemo(() => (data === null ? [] : data.contestants), [data]);
 	const host = useMemo(() => (data === null ? null : data.host), [data]);
@@ -61,6 +76,11 @@ const LobbyScreen = () => {
 
 	useWSMessage<ClientErrorDTO>('CLIENT_ERROR', () => {
 		console.warn('client error ws');
+	});
+
+	useWSMessage<CloseRoundDTO>('CLOSE_ROUND', () => {
+		reset();
+		router.push('/lobby'); // TODO: use back?
 	});
 
 	if (!data) {

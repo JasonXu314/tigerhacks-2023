@@ -27,6 +27,7 @@ const VotingScreen = () => {
 	const [player2, setPlayer2] = useState<IPlayer>();
 	const [init, setInit] = useState(true);
 	const [song, setSong] = useState<Audio.Sound>(new Audio.Sound());
+	const competing = useMemo(() => player1?.name === context.name || player2?.name === context.name, [player1, player2]);
 
 	useWSMessage<VotingEndDTO>('VOTING_END', ({ result }) => {
 		setResults(result);
@@ -91,7 +92,7 @@ const VotingScreen = () => {
 						</Text>
 					</View>
 					<TouchableOpacity
-						disabled={voted === 'top'}
+						disabled={voted === 'top' || competing}
 						style={[styles.btn, voted === 'top' ? { backgroundColor: 'lightgrey' } : {}]}
 						onPress={() => {
 							setVoted('top');
@@ -117,7 +118,7 @@ const VotingScreen = () => {
 					</View>
 					<TouchableOpacity
 						style={[styles.btn, voted === 'bottom' ? { backgroundColor: 'lightgrey' } : {}]}
-						disabled={voted === 'bottom'}
+						disabled={voted === 'bottom' || competing}
 						onPress={() => {
 							setVoted('bottom');
 							send({ event: 'SUBMIT_VOTE', data: { id: contestants[1].id } });

@@ -42,7 +42,6 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 
 		const numPlayers = room.players.length + room.claims.size;
 
-		// TODO: edit this for 1v1 and 2v2 rooms
 		if (numPlayers >= 10) {
 			throw new BadRequestException('Room is full');
 		}
@@ -314,7 +313,9 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 			return { type: 'CLIENT_ERROR' };
 		}
 
-		room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'START_GAME' })));
+		if (room.contestants[0] && room.contestants[1]) {
+			room.players.forEach((player) => player.socket.send(JSON.stringify({ type: 'START_GAME' })));
+		}
 	}
 
 	@SubscribeMessage('SUBMIT_VOTE')
@@ -372,6 +373,8 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		room.contestants = [null, null];
 		room.recordings = [null, null];
 		room.votes = [];
+
+		room.players.forEach(({ socket }) => socket.send(JSON.stringify({ type: 'CLOSE_ROUND' })));
 	}
 
 	private _pruneSocket<T extends Record<string, any>>(obj: T): { [K in keyof T]: T[K] extends WebSocket ? never : T[K] } {
